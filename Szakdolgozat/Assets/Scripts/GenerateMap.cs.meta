@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 7096a9ba89d2423409ce0f46f4b2074e
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - groundBlock: {instanceID: 0}
+  - stoneBlock: {instanceID: 0}
+  - noiseSample: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
