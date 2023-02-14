@@ -26,7 +26,7 @@ public class WorldState
     public int heightAddition;
     public bool alreadyCreated;
 
-    public SerializableDictionary<SerializableDictionary<string, int>, SerializableDictionary<Vector2, string>> blocksPos;
+    public SerializableDictionary<SerializableDictionary<Vector2, string>, int> blocksPos;
     public WorldState()
     {
         currentSpeed = 1.25f;
@@ -50,6 +50,6 @@ public class WorldState
         alreadyCreated = false;
 
         playerPos = new Vector3(mapSize * 0.32f / 2, surfaceLevel + heightAddition + 1, 0);
-        blocksPos = new SerializableDictionary<SerializableDictionary<string, int>, SerializableDictionary<Vector2, string>>();
+        blocksPos = new SerializableDictionary<SerializableDictionary<Vector2, string>, int>();
     }
 }

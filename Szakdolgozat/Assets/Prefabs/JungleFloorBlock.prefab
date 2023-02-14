@@ -103,3 +103,4 @@ MonoBehaviour:
   player: {fileID: 0}
   inventoryManager: {fileID: 0}
   itemToPickup: {fileID: 11400000, guid: 935f614bb7268af48866cdf657f0c914, type: 2}
+  map: {fileID: 0}

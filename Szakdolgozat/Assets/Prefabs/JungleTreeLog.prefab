@@ -104,6 +104,7 @@ MonoBehaviour:
   player: {fileID: 0}
   inventoryManager: {fileID: 0}
   itemToPickup: {fileID: 11400000, guid: cc74a3a90d67d7b4ab7ba841fd6cd531, type: 2}
+  map: {fileID: 0}
 --- !u!61 &2904668439435919787
 BoxCollider2D:
   m_ObjectHideFlags: 0

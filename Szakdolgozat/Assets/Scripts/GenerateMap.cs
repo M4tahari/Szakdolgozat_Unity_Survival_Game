@@ -1,9 +1,12 @@
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Unity.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
+using System;
 
 public class GenerateMap : MonoBehaviour, Persistance
 {
@@ -39,16 +42,15 @@ public class GenerateMap : MonoBehaviour, Persistance
     public int maxLeavesWidth = 20;
 
     private GameObject[] mapChunks;
-    private SerializableDictionary<SerializableDictionary<string, int>, SerializableDictionary<Vector2, string>> blocks = new SerializableDictionary<SerializableDictionary<string, int>, SerializableDictionary<Vector2, string>>();
+    private SerializableDictionary<SerializableDictionary<Vector2, string>, int> blocks = new SerializableDictionary<SerializableDictionary<Vector2, string>, int>();
     private List<Vector2> blockPositions = new List<Vector2>();
-    [SerializeField]private string id;
     private int blockCount = 0;
     private bool alreadyCreated = false;
     private void Start()
     {
         if(alreadyCreated == false)
         {
-            seed = Random.Range(-randomizationValue, randomizationValue);
+            seed = UnityEngine.Random.Range(-randomizationValue, randomizationValue);
             GenerateNoiseSample();
             GenerateChunks();
             GenerateTerrain();
@@ -57,40 +59,37 @@ public class GenerateMap : MonoBehaviour, Persistance
         else
         {
             GenerateChunks();
-            foreach(KeyValuePair<SerializableDictionary<string, int>, SerializableDictionary<Vector2, string>> blockPos in blocks)
+            foreach(KeyValuePair<SerializableDictionary<Vector2, string>, int> blockPos in blocks)
             {
-                var merged = blockPos.Key.Zip(blockPos.Value, (n, w) => new { innerChunk = n, innerBlock = w });
-                foreach (var a in merged)
+                foreach (var a in blockPos.Key)
                 { 
-                        switch (a.innerBlock.Value)
-                        {
-                            case "JungleTreeLog(Clone)":
-                            PlaceLoadedBlock(treeLogBlock, (int)a.innerBlock.Key.x, (int)a.innerBlock.Key.y, a.innerChunk.Value);
-                                break;
+                    if(a.Value.Contains("JungleTreeLog(Clone)"))
+                    {
+                        PlaceLoadedBlock(treeLogBlock, (int)a.Key.x, (int)a.Key.y, blockPos.Value);
+                    }
 
-                            case "JungleFloorBlock(Clone)":
-                                PlaceLoadedBlock(groundBlock, (int)a.innerBlock.Key.x, (int)a.innerBlock.Key.y, a.innerChunk.Value);
-                                break;
+                    else if(a.Value.Contains("JungleFloorBlock(Clone)"))
+                    {
+                        PlaceLoadedBlock(groundBlock, (int)a.Key.x, (int)a.Key.y, blockPos.Value);
+                    }
 
-                            case "SandBlock(Clone)":
-                                PlaceLoadedBlock(sandBlock, (int)a.innerBlock.Key.x, (int)a.innerBlock.Key.y, a.innerChunk.Value);
-                                break;
+                    else if(a.Value.Contains("SandBlock(Clone)"))
+                    {
+                        PlaceLoadedBlock(sandBlock, (int)a.Key.x, (int)a.Key.y, blockPos.Value);
+                    }
 
-                            case "DirtBlock(Clone)":
-                                PlaceLoadedBlock(dirtBlock, (int)a.innerBlock.Key.x, (int)a.innerBlock.Key.y, a.innerChunk.Value);
-                                break;
+                    else if(a.Value.Contains("DirtBlock(Clone)"))
+                    {
+                        PlaceLoadedBlock(dirtBlock, (int)a.Key.x, (int)a.Key.y, blockPos.Value);
+                    }
 
-                            case "JungleLeaves(Clone)":
-                                PlaceLoadedBlock(leaves, (int)a.innerBlock.Key.x, (int)a.innerBlock.Key.y, a.innerChunk.Value);
-                                break;
+                    else if(a.Value.Contains("JungleLeaves(Clone)"))
+                    {
+                        PlaceLoadedBlock(leaves, (int)a.Key.x, (int)a.Key.y, blockPos.Value);
                     }
                 }
             }
         }
-    }
-    private void GenerateGuid()
-    {
-        id = System.Guid.NewGuid().ToString();
     }
     public void LoadData(WorldState state)
     {
@@ -105,6 +104,7 @@ public class GenerateMap : MonoBehaviour, Persistance
         state.mapSize = mapSize;
         state.surfaceLevel = surfaceLevel;
         state.heightAddition = heightAddition;
+        SaveBlocks();
         state.blocksPos = blocks;
         alreadyCreated = true;
         state.alreadyCreated = alreadyCreated;
@@ -199,12 +199,6 @@ public class GenerateMap : MonoBehaviour, Persistance
         blockCount++;
         if (blocks.Count <= blockCount)
         {
-            SerializableDictionary<Vector2, string> data = new SerializableDictionary<Vector2, string>();
-            data.Add(new Vector2(x, y), block.name);
-            GenerateGuid();
-            SerializableDictionary<string, int> idChunkNum = new SerializableDictionary<string, int>();
-            idChunkNum.Add(id, (int)chunkCoord);
-            blocks.Add(idChunkNum, data);
             blockPositions.Add(block.transform.position);
         }
     }
@@ -216,25 +210,19 @@ public class GenerateMap : MonoBehaviour, Persistance
 
         if (blocks.Count <= blockCount)
         {
-            SerializableDictionary<Vector2, string> data = new SerializableDictionary<Vector2, string>();
-            data.Add(new Vector2(x, y), block.name);
-            GenerateGuid();
-            SerializableDictionary<string, int> idChunkNum = new SerializableDictionary<string, int>();
-            idChunkNum.Add(id, (int)chunk);
-            blocks.Add(idChunkNum, data);
             blockPositions.Add(block.transform.position);
         }
     }
     public void GenerateTree(GameObject log, GameObject leaf, int x, int y)
     {
-        int isTreeOn = Random.Range(0, treeSpawnChance);
+        int isTreeOn = UnityEngine.Random.Range(0, treeSpawnChance);
 
         if (isTreeOn == 1)
         {
-            int treeHeight = Random.Range(minTreeHeight, maxTreeHeight);
-            int treeWidth = Random.Range(minTreeWidth, maxTreeWidth);
-            int leavesHeight = Random.Range(minLeavesHeight, maxLeavesHeight);
-            int leavesWidth = Random.Range(minLeavesWidth, maxLeavesWidth);
+            int treeHeight = UnityEngine.Random.Range(minTreeHeight, maxTreeHeight);
+            int treeWidth = UnityEngine.Random.Range(minTreeWidth, maxTreeWidth);
+            int leavesHeight = UnityEngine.Random.Range(minLeavesHeight, maxLeavesHeight);
+            int leavesWidth = UnityEngine.Random.Range(minLeavesWidth, maxLeavesWidth);
 
             for (int i = 0; i < treeHeight; i++)
             {
@@ -253,6 +241,36 @@ public class GenerateMap : MonoBehaviour, Persistance
                     {
                         PlaceBlock(leaf, x + l, y + k);
                     }
+                }
+            }
+        }
+    }
+    public void SaveBlocks()
+    {
+        blocks.Clear();
+        if(blocks.Count <= blockCount)
+        {
+            foreach (Transform chunk in this.transform)
+            {
+                foreach (Transform block in chunk.transform)
+                {
+                    SerializableDictionary<Vector2, string> data = new SerializableDictionary<Vector2, string>();
+                    data.Add(new Vector2((float)Math.Round(block.transform.position.x / 0.32f, MidpointRounding.ToEven), 
+                        (float)Math.Round(block.transform.position.y / 0.32f, MidpointRounding.ToEven)), block.name);
+                    blocks.Add(data, int.Parse(chunk.name));
+                }
+            }
+
+            foreach(Transform placedBlock in this.transform)
+            {
+                if(placedBlock.name.Any(x => char.IsLetter(x)))
+                {
+                    SerializableDictionary<Vector2, string> data = new SerializableDictionary<Vector2, string>();
+                    data.Add(new Vector2((float)Math.Round(placedBlock.transform.position.x / 0.32f, MidpointRounding.ToEven),
+                        (float)Math.Round(placedBlock.transform.position.y / 0.32f, MidpointRounding.ToEven)), placedBlock.name);
+                    float chunkCoord = (Mathf.Round((float)Math.Round(placedBlock.transform.position.x / 0.32f, MidpointRounding.ToEven) / chunkSize) * chunkSize);
+                    chunkCoord /= chunkSize;
+                    blocks.Add(data, (int)chunkCoord);
                 }
             }
         }

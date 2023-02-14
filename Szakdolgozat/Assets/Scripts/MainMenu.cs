@@ -13,6 +13,7 @@ public class MainMenu : MonoBehaviour
         {
             File.Delete(worldSave);
         }
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
     public void ContinueGame()

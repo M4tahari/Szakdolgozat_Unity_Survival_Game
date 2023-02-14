@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -41,7 +42,6 @@ public class Player : Mover, Persistance
             Jump();
         }
     }
-
     public void LoadData(WorldState state)
     {
         this.transform.position = state.playerPos;

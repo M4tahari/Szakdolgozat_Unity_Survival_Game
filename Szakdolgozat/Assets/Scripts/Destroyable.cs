@@ -8,12 +8,9 @@ public class Destroyable : Interactable
     public float requiredTime;
     private float requiredTime2;
     private bool breakable = true;
-    [JsonIgnore]
     public Player player;
     private float distance = 0;
-    [JsonIgnore]
     public InventoryManager inventoryManager;
-    [JsonIgnore]
     public Item itemToPickup;
     [HideInInspector] private bool quit = false;
     private void Update()

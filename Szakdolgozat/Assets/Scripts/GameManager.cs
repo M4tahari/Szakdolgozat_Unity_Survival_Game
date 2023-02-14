@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System.IO;
 
 public class GameManager : MonoBehaviour
 {
@@ -49,6 +50,12 @@ public class GameManager : MonoBehaviour
     }
     public void SaveGame()
     {
+        string worldSave = Path.Combine(Application.persistentDataPath, fileName);
+        if (File.Exists(worldSave))
+        {
+            File.Delete(worldSave);
+        }
+
         foreach (Persistance persistance in persistanceObjects)
         {
             persistance.SaveData(ref state);
