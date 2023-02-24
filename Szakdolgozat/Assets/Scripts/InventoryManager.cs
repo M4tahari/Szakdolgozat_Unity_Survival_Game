@@ -118,6 +118,8 @@ public class InventoryManager : MonoBehaviour
         {
             Destroyable newDestroyable = Instantiate(inventoryItem.destroyable, map.transform);
             newDestroyable.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10));
+            newDestroyable.transform.position = new Vector3((float)Math.Round((newDestroyable.transform.position.x / 0.32f), MidpointRounding.ToEven) * 0.32f, 
+                (float)Math.Round(newDestroyable.transform.position.y / 0.32f, MidpointRounding.ToEven) * 0.32f, 10);
             newDestroyable.transform.localScale = Vector3.one;
             Destroy(newDestroyable.GetComponent<Rigidbody2D>());
             newDestroyable.gameObject.SetActive(true);
@@ -145,12 +147,4 @@ public class InventoryManager : MonoBehaviour
             inventoryItem.transform.position = inventoryItem.transform.parent.position;
         }
     }
-    /**
-    public int[] ClosestBlockToItem(InventoryItem inventoryItem)
-    {
-        
-    }
-    */
-
-
 }

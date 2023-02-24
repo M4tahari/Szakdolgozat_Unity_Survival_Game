@@ -47490,9 +47490,6 @@ MonoBehaviour:
   maxLeavesHeight: 8
   minLeavesWidth: 3
   maxLeavesWidth: 8
-  blocks:
-    keys: []
-    values: 
 --- !u!114 &1922525730 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8236162759280297936, guid: 8941bf7f8e1602044a7c0ef6d2570e0c, type: 3}
