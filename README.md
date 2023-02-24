@@ -15,3 +15,16 @@ A kilépés gombbal bezáródik az alkalmazás.
 A játék pályája blokkokból áll, ezeket ki lehet ütni, hogyha a bal egérgombot nyomva tartjuk felettük. Ez után az adott blokk az inventoryba kerül, ahol ha a bal egérgombot nyomva tartjuk a tárgy felett, akkor áthelyezhető másik helyre az inventoryban. Emellett ha jobb klikkelünk az adott tárgyra, és az lehelyezhető, akkor a blokk követni fogja a kurzort, jobb klikkel visszakerül az adott helyre az inventoryban, bal klikkel pedig lehelyezhető a pályára.
 
 A játékállás lementésére egy json szerializálást és deszerializálást alkalmazok, azonban a mentés funkción még finomítani fogok. Emellett a következő funkciók, amiket meg szeretnék valósítani, azok az ellenfelek, napszak változása, a világgenerálás további optimalizálása, animációk.
+
+További megvalósítandó funkció ötletek:
+-dinamikus pálya generálás render distance alapján
+-grafikai és világ generálási beállítások
+-particle effektek / hangok a különböző akciók során
+-harcrendszer, néhány alap ellenfél típus
+-használható közelharci fegyverek
+-seed alapú generálás leellenörzése (mennyire nemdeterminisztikus)
+-crafting rendszer
+-biome-ok egyenletes generálása
+-építkezési rendszer jelzése
+-víz működése, különböző tárgyak fizikája
+-animációk
