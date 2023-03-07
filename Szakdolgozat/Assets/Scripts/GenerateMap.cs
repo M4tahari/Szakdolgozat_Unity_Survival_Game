@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -7,6 +6,7 @@ using Unity.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using System;
+using Unity.Mathematics;
 
 public class GenerateMap : MonoBehaviour, Persistance
 {
@@ -18,20 +18,21 @@ public class GenerateMap : MonoBehaviour, Persistance
     public GameObject treeLogBlock;
 
     [Header("Palya adatok")]
-    public int mapSize = 100;
-    public float surfaceLevel = 0.2f;
-    public float terrainFrequency = 0.05f;
-    public float caveFrequency = 0.05f;
-    public float heightMultiplier = 30f;
-    public int heightAddition = 20;
-    private float seed;
+    public int mapSize;
+    public float surfaceLevel;
+    public float terrainFrequency;
+    public float caveFrequency;
+    public float heightMultiplier;
+    public int heightAddition;
+    public int seed;
     public bool generateCaves = true;
     public Texture2D noiseSample;
-    public int randomizationValue = 10000;
-    public int chunkSize = 16;
+    public int randomizationValue;
+    public int chunkSize;
 
     [Header("Fa adatok")]
-    public int treeSpawnChance = 10;
+    public float treeFrequency = 0.05f;
+    public int treeMultiplier = 10;
     public int minTreeHeight = 8;
     public int maxTreeHeight = 30;
     public int minTreeWidth = 1;
@@ -93,17 +94,30 @@ public class GenerateMap : MonoBehaviour, Persistance
     }
     public void LoadData(WorldState state)
     {
+        seed = state.seed;
+        randomizationValue = state.randomizationValue;
         mapSize = state.mapSize;
         surfaceLevel = state.surfaceLevel;
+        terrainFrequency = state.terrainFrequency;
+        caveFrequency = state.caveFrequency;
+        heightMultiplier= state.heightMultiplier;
+        generateCaves= state.generateCaves;
         heightAddition = state.heightAddition;
+        chunkSize = state.chunkSize;
         blocks = state.blocksPos;
         alreadyCreated = state.alreadyCreated;
     }
     public void SaveData(ref WorldState state)
     {
+        state.seed = seed;
+        state.randomizationValue = randomizationValue;
         state.mapSize = mapSize;
         state.surfaceLevel = surfaceLevel;
+        state.terrainFrequency = terrainFrequency;
+        state.caveFrequency = caveFrequency;
+        state.heightMultiplier = heightMultiplier;
         state.heightAddition = heightAddition;
+        state.chunkSize = chunkSize;
         SaveBlocks();
         state.blocksPos = blocks;
         alreadyCreated = true;
@@ -114,7 +128,7 @@ public class GenerateMap : MonoBehaviour, Persistance
         for(int i = 0; i < mapSize; i++)
         {
             float height = Mathf.PerlinNoise((i + seed) * terrainFrequency, seed * terrainFrequency) * heightMultiplier + heightAddition;
-
+            
             for(int j = 0; j < height; j++)
             {
                 if(j < height - 1)
@@ -215,31 +229,39 @@ public class GenerateMap : MonoBehaviour, Persistance
     }
     public void GenerateTree(GameObject log, GameObject leaf, int x, int y)
     {
-        int isTreeOn = UnityEngine.Random.Range(0, treeSpawnChance);
+        int treeSeed = seed + (int)(x * 2) + (int)(y / 2);
+        var random = new System.Random(treeSeed);
+        float treeChance = random.NextSingle(1, treeMultiplier);
+        float isTreeOn = Mathf.PerlinNoise((x + seed) * treeFrequency, seed * treeFrequency) * treeMultiplier;
 
-        if (isTreeOn == 1)
+        if (isTreeOn >= 1 && isTreeOn < 5 && treeChance < isTreeOn)
         {
-            int treeHeight = UnityEngine.Random.Range(minTreeHeight, maxTreeHeight);
-            int treeWidth = UnityEngine.Random.Range(minTreeWidth, maxTreeWidth);
-            int leavesHeight = UnityEngine.Random.Range(minLeavesHeight, maxLeavesHeight);
-            int leavesWidth = UnityEngine.Random.Range(minLeavesWidth, maxLeavesWidth);
-
-            for (int i = 0; i < treeHeight; i++)
+            SerializableDictionary<Vector2, string> key = new SerializableDictionary<Vector2, string>();
+            key.Add(new Vector2(x, y), log.name + "(Clone)");
+            if(!blocks.ContainsKey(key))
             {
-                for(int j = 0; j < treeWidth;j++)
-                {
-                    PlaceBlock(log, x + j, y + i);
-                }
-            }
+                float treeHeight = random.NextSingle(minTreeHeight, maxTreeHeight);
+                float treeWidth = random.NextSingle(minTreeWidth, maxTreeWidth);
+                float leavesHeight = random.NextSingle(minLeavesHeight, maxLeavesHeight);
+                float leavesWidth = random.NextSingle(minLeavesWidth, maxLeavesWidth);
 
-            for (int k = treeHeight; k < treeHeight + leavesHeight; k++)
-            {
-                for (int l = -leavesWidth / 2 -treeWidth; l < leavesWidth; l++)
+                for (int i = 0; i < treeHeight; i++)
                 {
-                    if((k > treeHeight + (leavesHeight / 6) && k < treeHeight + leavesHeight -1 - (leavesHeight / 6)) || 
-                        (l > -leavesWidth / 2 - treeWidth + (leavesWidth / 6) && l < leavesWidth - 1 - (leavesWidth / 6)))
+                    for (int j = 0; j < treeWidth; j++)
                     {
-                        PlaceBlock(leaf, x + l, y + k);
+                        PlaceBlock(log, x + j, y + i);
+                    }
+                }
+
+                for (float k = treeHeight; k < treeHeight + leavesHeight; k++)
+                {
+                    for (float l = -leavesWidth / 2 - treeWidth; l < leavesWidth; l++)
+                    {
+                        if ((k > treeHeight + (leavesHeight / 6) && k < treeHeight + leavesHeight - 1 - (leavesHeight / 6)) ||
+                            (l > -leavesWidth / 2 - treeWidth + (leavesWidth / 6) && l < leavesWidth - 1 - (leavesWidth / 6)))
+                        {
+                            PlaceBlock(leaf, x + (int)l, y + (int)k);
+                        }
                     }
                 }
             }

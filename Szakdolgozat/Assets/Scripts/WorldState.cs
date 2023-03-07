@@ -21,9 +21,16 @@ public class WorldState
     public float ySpeed;
     public float fatigueTimer;
 
+    public int seed;
+    public int randomizationValue;
     public int mapSize;
     public float surfaceLevel;
+    public float terrainFrequency;
+    public float caveFrequency;
+    public float heightMultiplier;
+    public bool generateCaves;
     public int heightAddition;
+    public int chunkSize;
     public bool alreadyCreated;
 
     public SerializableDictionary<SerializableDictionary<Vector2, string>, int> blocksPos;
@@ -43,10 +50,15 @@ public class WorldState
         ySpeed = 1.25f;
         fatigueTimer = 4;
 
-        mapSize = 100;
+        randomizationValue = 1000000;
+        mapSize = 200;
         surfaceLevel = 0.2f;
+        terrainFrequency = 0.05f;
+        caveFrequency = 0.05f;
+        heightMultiplier = 30f;
         heightAddition = 20;
-
+        generateCaves = true;
+        chunkSize = 20;
         alreadyCreated = false;
 
         playerPos = new Vector3(mapSize * 0.32f / 2, surfaceLevel + heightAddition + 1, 0);
