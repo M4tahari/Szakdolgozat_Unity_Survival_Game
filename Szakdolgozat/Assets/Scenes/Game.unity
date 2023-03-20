@@ -22982,7 +22982,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2629cd75bda5a9242b31eb877cfb9e31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fileName: world.json
 --- !u!1001 &642283200
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23449,7 +23448,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -245, y: 135}
+  m_AnchoredPosition: {x: -245, y: 115}
   m_SizeDelta: {x: 80, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &939953718
@@ -46801,7 +46800,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -335, y: 135}
+  m_AnchoredPosition: {x: -335, y: 115}
   m_SizeDelta: {x: 80, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1415997020
@@ -46932,11 +46931,11 @@ RectTransform:
   m_Father: {fileID: 1562791753}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -287.5, y: 169.02473}
-  m_SizeDelta: {x: -625, y: -438.0495}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 25, y: -45}
+  m_SizeDelta: {x: 175, y: 15}
+  m_Pivot: {x: 0, y: 1}
 --- !u!114 &1476239274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47137,11 +47136,11 @@ RectTransform:
   m_Father: {fileID: 1562791753}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -287.5, y: 193.23622}
-  m_SizeDelta: {x: -625, y: -426.4724}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 25, y: -10}
+  m_SizeDelta: {x: 175, y: 30}
+  m_Pivot: {x: 0, y: 1}
 --- !u!114 &1691142639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47471,17 +47470,20 @@ MonoBehaviour:
   leaves: {fileID: 1308941444}
   sandBlock: {fileID: 266224081}
   treeLogBlock: {fileID: 464405907}
+  worldName: 
   mapSize: 100
   surfaceLevel: 0.2
   terrainFrequency: 0.05
   caveFrequency: 0.05
   heightMultiplier: 30
   heightAddition: 20
+  seed: 0
   generateCaves: 1
   noiseSample: {fileID: 0}
   randomizationValue: 10000
   chunkSize: 20
-  treeSpawnChance: 15
+  treeFrequency: 0.05
+  treeMultiplier: 10
   minTreeHeight: 8
   maxTreeHeight: 30
   minTreeWidth: 1

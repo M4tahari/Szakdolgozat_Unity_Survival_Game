@@ -18,6 +18,7 @@ public class GenerateMap : MonoBehaviour, Persistance
     public GameObject treeLogBlock;
 
     [Header("Palya adatok")]
+    public string worldName;
     public int mapSize;
     public float surfaceLevel;
     public float terrainFrequency;
@@ -51,7 +52,17 @@ public class GenerateMap : MonoBehaviour, Persistance
     {
         if(alreadyCreated == false)
         {
-            seed = UnityEngine.Random.Range(-randomizationValue, randomizationValue);
+            if(InputTextHandler.worldName != null)
+            {
+                worldName = InputTextHandler.worldName;
+            }
+
+            else
+            {
+                worldName = "Uj vilag";
+            }
+
+            seed = InputTextHandler.seed;
             GenerateNoiseSample();
             GenerateChunks();
             GenerateTerrain();
@@ -94,6 +105,7 @@ public class GenerateMap : MonoBehaviour, Persistance
     }
     public void LoadData(WorldState state)
     {
+        worldName = state.worldName;
         seed = state.seed;
         randomizationValue = state.randomizationValue;
         mapSize = state.mapSize;
@@ -109,6 +121,7 @@ public class GenerateMap : MonoBehaviour, Persistance
     }
     public void SaveData(ref WorldState state)
     {
+        state.worldName = worldName;
         state.seed = seed;
         state.randomizationValue = randomizationValue;
         state.mapSize = mapSize;

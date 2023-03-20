@@ -6,9 +6,7 @@ using System.IO;
 
 public class GameManager : MonoBehaviour
 {
-    [Header("File storage config")]
-    [SerializeField] private string fileName;
-
+    private string fileName;
     private WorldState state;
     private List<Persistance> persistanceObjects;
     public static GameManager instance { get; private set;}
@@ -25,6 +23,16 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
+        if(InputTextHandler.worldName != null)
+        {
+            fileName = InputTextHandler.worldName + ".json";
+        }
+
+        else
+        {
+            fileName = "Uj vilag.json";
+        }
+        
         this.fileHandler = new WorldFileHandler(Application.persistentDataPath, fileName);
         this.persistanceObjects = FindAllPersistanceObjects();
         LoadGame();

@@ -21,6 +21,7 @@ public class WorldState
     public float ySpeed;
     public float fatigueTimer;
 
+    public string worldName;
     public int seed;
     public int randomizationValue;
     public int mapSize;
