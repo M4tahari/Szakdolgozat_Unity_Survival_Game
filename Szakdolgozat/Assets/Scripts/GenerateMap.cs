@@ -43,7 +43,10 @@ public class GenerateMap : MonoBehaviour, Persistance
     public int minLeavesWidth = 6;
     public int maxLeavesWidth = 20;
 
+    public Player player;
+
     private GameObject[] mapChunks;
+    int chunkNum = 0;
     private SerializableDictionary<SerializableDictionary<Vector2, string>, int> blocks = new SerializableDictionary<SerializableDictionary<Vector2, string>, int>();
     private List<Vector2> blockPositions = new List<Vector2>();
     private int blockCount = 0;
@@ -62,7 +65,19 @@ public class GenerateMap : MonoBehaviour, Persistance
                 worldName = "Uj vilag";
             }
 
+            if(InputTextHandler.mapSize > 0)
+            {
+                mapSize = InputTextHandler.mapSize;
+            }
+
+            else
+            {
+                mapSize = 1000;
+            }
+
             seed = InputTextHandler.seed;
+            surfaceLevel= InputTextHandler.surfaceLevel;
+            heightAddition= InputTextHandler.heightAddition;
             GenerateNoiseSample();
             GenerateChunks();
             GenerateTerrain();
@@ -102,6 +117,10 @@ public class GenerateMap : MonoBehaviour, Persistance
                 }
             }
         }
+    }
+    public void FixedUpdate()
+    {
+        LoadChunk();
     }
     public void LoadData(WorldState state)
     {
@@ -144,19 +163,39 @@ public class GenerateMap : MonoBehaviour, Persistance
             
             for(int j = 0; j < height; j++)
             {
-                if(j < height - 1)
+                float chunkCoord = (Mathf.Round(i / chunkSize) * chunkSize);
+                chunkCoord /= chunkSize;
+                GameObject currentChunk = mapChunks[(int)chunkCoord];
+
+                if (j < height - 1)
                 {
-                    if(generateCaves)
+                    if (generateCaves)
                     {
                         if (noiseSample.GetPixel(i, j).r > surfaceLevel)
                         {
-                            PlaceBlock(dirtBlock, i, j);
+                            if(currentChunk.tag == "TropicalJungle")
+                            {
+                                PlaceBlock(dirtBlock, i, j);
+                            }
+
+                            else if(currentChunk.tag == "TermitePlains")
+                            {
+                                PlaceBlock(sandBlock, i, j);
+                            }
                         }
                     }
 
                     else
                     {
-                        PlaceBlock(dirtBlock, i, j);
+                        if (currentChunk.tag == "TropicalJungle")
+                        {
+                            PlaceBlock(dirtBlock, i, j);
+                        }
+
+                        else if (currentChunk.tag == "TermitePlains")
+                        {
+                            PlaceBlock(sandBlock, i, j);
+                        }
                     }
                 }
 
@@ -166,25 +205,42 @@ public class GenerateMap : MonoBehaviour, Persistance
                     {
                         if (noiseSample.GetPixel(i, j).r > surfaceLevel)
                         {
-                            PlaceBlock(groundBlock, i, j);
+                            if (currentChunk.tag == "TropicalJungle")
+                            {
+                                PlaceBlock(groundBlock, i, j);
+                            }
+
+                            else if (currentChunk.tag == "TermitePlains")
+                            {
+                                PlaceBlock(sandBlock, i, j);
+                            }
                         }
                     }
 
                     else
                     {
-                        PlaceBlock(groundBlock, i, j);
+                        if (currentChunk.tag == "TropicalJungle")
+                        {
+                            PlaceBlock(groundBlock, i, j);
+                        }
+
+                        else if (currentChunk.tag == "TermitePlains")
+                        {
+                            PlaceBlock(sandBlock, i, j);
+                        }
                     }
 
                     if (j >= height-1 && i > 10 && i < mapSize-10)
                     {
-                      if (blockPositions.Contains(new Vector2(i * 0.32f, j * 0.32f)))
-                      {
-                        GenerateTree(treeLogBlock, leaves, i, j + 1);
-                      }
+                        if(currentChunk.tag == "TropicalJungle")
+                        {
+                            if (blockPositions.Contains(new Vector2(i * 0.32f, j * 0.32f)))
+                            {
+                                GenerateTree(treeLogBlock, leaves, i, j + 1);
+                            }
+                        }
                     }
                 }
-
-
             }
         }
     }
@@ -205,7 +261,7 @@ public class GenerateMap : MonoBehaviour, Persistance
     }
     public void GenerateChunks()
     {
-        int chunkNum = mapSize / chunkSize;
+        chunkNum = mapSize / chunkSize;
         mapChunks = new GameObject[chunkNum];
 
         for(int i = 0; i < chunkNum; i++)
@@ -213,7 +269,44 @@ public class GenerateMap : MonoBehaviour, Persistance
             GameObject chunk = new GameObject();
             chunk.name = i.ToString();
             chunk.transform.parent = this.transform;
+            var random = new System.Random();
+            double biomeValue = random.NextDouble();
+
+            if (biomeValue <= 0.5)
+            {
+                chunk.tag = "TropicalJungle";
+            }
+
+            else if (biomeValue > 0.5 && biomeValue <= 1.0)
+            {
+                chunk.tag = "TermitePlains";
+            }
+
+            /*
+            else if (random.NextDouble() > 0.66)
+            {
+                chunk.tag = "Wetlands";
+            }
+            */
+
             mapChunks[i] = chunk;
+        }
+    }
+    public void LoadChunk()
+    {
+       for(int i = 0;i < mapChunks.Length;i++)
+        {
+            float distance = Mathf.Abs(Vector3.Distance(player.transform.position, mapChunks[i].transform.GetChild(0).position) / 0.32f);
+            
+            if(distance > (Player.visibleBlocksRadius * SettingsInputHandler.renderDistanceMultiplier) + 40.0f)
+            {
+                mapChunks[i].SetActive(false);
+            }
+
+            else
+            {
+                mapChunks[i].SetActive(true);
+            }
         }
     }
     public void PlaceBlock(GameObject spawnedBlock, int x, int y)

@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System.IO;
+using Cinemachine;
 
 public class GameManager : MonoBehaviour
 {
+    public CinemachineVirtualCamera virtualCamera;
     private string fileName;
     private WorldState state;
     private List<Persistance> persistanceObjects;
     public static GameManager instance { get; private set;}
 
     private WorldFileHandler fileHandler;
-
     private void Awake()
     {
         if(instance != null)
@@ -36,6 +37,8 @@ public class GameManager : MonoBehaviour
         this.fileHandler = new WorldFileHandler(Application.persistentDataPath, fileName);
         this.persistanceObjects = FindAllPersistanceObjects();
         LoadGame();
+
+        virtualCamera.m_Lens.OrthographicSize *= SettingsInputHandler.renderDistanceMultiplier;
     }
     public void NewGame()
     {
@@ -79,5 +82,6 @@ public class GameManager : MonoBehaviour
     private void OnApplicationQuit()
     {
         SaveGame();
+        PlayerPrefs.DeleteKey("SliderValue");
     }
 }

@@ -4,14 +4,38 @@ using UnityEngine;
 
 public class MenuAppear : MonoBehaviour
 {
-    public GameObject menu;
-    private bool isShowing = false;
-    void Update()
+    public GameObject inventoryMenu;
+    public GameObject escapeMenu;
+    private bool isShowingInventory = false;
+    private bool isShowingEscape = false;
+    private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I))
+        if(Input.GetKeyDown(KeyCode.Escape))
         {
-            isShowing = !isShowing;
-            menu.SetActive(isShowing);
+            isShowingEscape = !isShowingEscape;
+            escapeMenu.SetActive(isShowingEscape);
         }
+
+        if(isShowingEscape == true)
+        {
+            Time.timeScale = 0.0f;
+        }
+
+        if(isShowingEscape == false)
+        {
+            Time.timeScale = 1.0f;
+        }
+
+        if (Input.GetKeyDown(KeyCode.I) && isShowingEscape == false)
+        {
+            isShowingInventory = !isShowingInventory;
+            inventoryMenu.SetActive(isShowingInventory);
+        }
+    }
+    public void BackToGame()
+    {
+        isShowingEscape = false;
+        escapeMenu.SetActive(isShowingEscape);
+        Time.timeScale = 1.0f;
     }
 }

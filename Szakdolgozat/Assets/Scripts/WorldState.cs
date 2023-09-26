@@ -51,18 +51,18 @@ public class WorldState
         ySpeed = 1.25f;
         fatigueTimer = 4;
 
-        randomizationValue = 1000000;
-        mapSize = 200;
-        surfaceLevel = 0.2f;
+        randomizationValue = 10000000;
+        mapSize = InputTextHandler.mapSize;
+        surfaceLevel = InputTextHandler.surfaceLevel;
         terrainFrequency = 0.05f;
         caveFrequency = 0.05f;
         heightMultiplier = 30f;
-        heightAddition = 20;
+        heightAddition = InputTextHandler.heightAddition;
         generateCaves = true;
         chunkSize = 20;
         alreadyCreated = false;
 
-        playerPos = new Vector3(mapSize * 0.32f / 2, surfaceLevel + heightAddition + 1, 0);
+        playerPos = new Vector3((mapSize * 0.32f) / 2, surfaceLevel + heightAddition + 1, 0);
         blocksPos = new SerializableDictionary<SerializableDictionary<Vector2, string>, int>();
     }
 }

@@ -16,9 +16,11 @@ public class WorldFileHandler
 
     public WorldState Load()
     {
+        
         string fullPath = Path.Combine(filePath, fileName);
         WorldState loadedState = null;
-        if(File.Exists(fullPath))
+
+        if (File.Exists(fullPath))
         {
             try
             {

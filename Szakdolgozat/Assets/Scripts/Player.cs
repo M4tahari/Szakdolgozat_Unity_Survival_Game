@@ -8,13 +8,14 @@ using UnityEngine.EventSystems;
 public class Player : Mover, Persistance
 {
     public GameObject staminaBar;
-    public GenerateMap map;
     public float hittingTimer;
     public float pickupRadius;
+    public static float visibleBlocksRadius = 10.0f;
+    
     private void Awake()
     {
         stamina = totalStamina;
-        this.transform.position = new Vector3((map.mapSize * 0.32f) / 2, map.surfaceLevel + map.heightAddition + 1, 0);
+        this.transform.position = new Vector3((InputTextHandler.mapSize * 0.32f) / 2, InputTextHandler.surfaceLevel + InputTextHandler.heightAddition + 1, 0);
     }
     private void Update()
     {

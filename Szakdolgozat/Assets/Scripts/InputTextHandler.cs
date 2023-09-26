@@ -9,9 +9,14 @@ public class InputTextHandler : MonoBehaviour
 {
     public static string worldName;
     public static int seed;
-    public int randomizationValue = 1000000;
+    public static int mapSize;
+    public static float surfaceLevel;
+    public static int heightAddition;
+    private int randomizationValue = 10000000;
     public Text nameText;
     public Text seedText;
+    public Dropdown sizeOutput;
+
     public void GenerateWorld()
     {
         if(nameText.text == "")
@@ -33,6 +38,9 @@ public class InputTextHandler : MonoBehaviour
         {
             seed = int.Parse(seedText.text);
         }
+
+        surfaceLevel = 0.2f;
+        heightAddition = 20;
        
         string worldSave = Path.Combine(Application.persistentDataPath, worldName);
         if (File.Exists(worldSave))
@@ -40,6 +48,25 @@ public class InputTextHandler : MonoBehaviour
             File.Delete(worldSave);
         }
 
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
+    }
+    public void ChooseWorldSize(int value)
+    {
+        if (value == 0)
+        {
+            mapSize = 1000;
+        }
+
+        if (value == 1)
+        {
+            mapSize = 2000;
+        }
+
+        if (value == 2)
+        {
+            mapSize = 4000;
+        }
     }
 }
+
+
