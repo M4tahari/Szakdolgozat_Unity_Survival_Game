@@ -58,7 +58,7 @@ public class WorldState
         caveFrequency = 0.05f;
         heightMultiplier = 30f;
         heightAddition = InputTextHandler.heightAddition;
-        generateCaves = true;
+        generateCaves = InputTextHandler.generateCaves;
         chunkSize = 20;
         alreadyCreated = false;
 

@@ -11,11 +11,13 @@ using Unity.Mathematics;
 public class GenerateMap : MonoBehaviour, Persistance
 {
     [Header("Blokkok")]
-    public GameObject groundBlock;
-    public GameObject dirtBlock;
+    public GameObject jungleGroundBlock;
+    public GameObject jungleDirtBlock;
+    public GameObject termitePlainsGroundBlock;
+    public GameObject termitePlainsSandBlock;
     public GameObject leaves;
-    public GameObject sandBlock;
     public GameObject treeLogBlock;
+    public GameObject termiteCastleWallBlock;
 
     [Header("Palya adatok")]
     public string worldName;
@@ -26,18 +28,18 @@ public class GenerateMap : MonoBehaviour, Persistance
     public float heightMultiplier;
     public int heightAddition;
     public int seed;
-    public bool generateCaves = true;
+    public bool generateCaves;
     public Texture2D noiseSample;
     public int randomizationValue;
     public int chunkSize;
 
     [Header("Fa adatok")]
     public float treeFrequency = 0.05f;
-    public int treeMultiplier = 10;
+    public int treeMultiplier;
     public int minTreeHeight = 8;
     public int maxTreeHeight = 30;
     public int minTreeWidth = 1;
-    public int maxTreeWidth = 3;
+    public int maxTreeWidth = 2;
     public int minLeavesHeight = 4;
     public int maxLeavesHeight = 15;
     public int minLeavesWidth = 6;
@@ -75,11 +77,23 @@ public class GenerateMap : MonoBehaviour, Persistance
                 mapSize = 1000;
             }
 
+            if (InputTextHandler.treeMultiplier >= 0 && InputTextHandler.treeMultiplier <= 10)
+            {
+                treeMultiplier = InputTextHandler.treeMultiplier;
+            }
+
+            else
+            {
+                treeMultiplier = 5;
+            }
+
             seed = InputTextHandler.seed;
-            surfaceLevel= InputTextHandler.surfaceLevel;
-            heightAddition= InputTextHandler.heightAddition;
+            surfaceLevel = InputTextHandler.surfaceLevel;
+            heightAddition = InputTextHandler.heightAddition;
+            generateCaves = InputTextHandler.generateCaves;
             GenerateNoiseSample();
             GenerateChunks();
+            GenerateBiomes();
             GenerateTerrain();
         }
 
@@ -89,25 +103,35 @@ public class GenerateMap : MonoBehaviour, Persistance
             foreach(KeyValuePair<SerializableDictionary<Vector2, string>, int> blockPos in blocks)
             {
                 foreach (var a in blockPos.Key)
-                { 
-                    if(a.Value.Contains("JungleTreeLog(Clone)"))
+                {
+                    if (a.Value.Contains("JungleFloorBlock(Clone)"))
+                    {
+                        PlaceLoadedBlock(jungleGroundBlock, (int)a.Key.x, (int)a.Key.y, blockPos.Value);
+                    }
+
+                    else if (a.Value.Contains("DirtBlock(Clone)"))
+                    {
+                        PlaceLoadedBlock(jungleDirtBlock, (int)a.Key.x, (int)a.Key.y, blockPos.Value);
+                    }
+
+                    else if (a.Value.Contains("TermitePlainsFloorBlock(Clone)"))
+                    {
+                        PlaceLoadedBlock(termitePlainsGroundBlock, (int)a.Key.x, (int)a.Key.y, blockPos.Value);
+                    }
+
+                    else if (a.Value.Contains("SandBlock(Clone)"))
+                    {
+                        PlaceLoadedBlock(termitePlainsSandBlock, (int)a.Key.x, (int)a.Key.y, blockPos.Value);
+                    }
+
+                    else if (a.Value.Contains("TermiteCastleWallBlock(Clone)"))
+                    {
+                        PlaceLoadedBlock(termiteCastleWallBlock, (int)a.Key.x, (int)a.Key.y, blockPos.Value);
+                    }
+
+                    else if (a.Value.Contains("JungleTreeLog(Clone)"))
                     {
                         PlaceLoadedBlock(treeLogBlock, (int)a.Key.x, (int)a.Key.y, blockPos.Value);
-                    }
-
-                    else if(a.Value.Contains("JungleFloorBlock(Clone)"))
-                    {
-                        PlaceLoadedBlock(groundBlock, (int)a.Key.x, (int)a.Key.y, blockPos.Value);
-                    }
-
-                    else if(a.Value.Contains("SandBlock(Clone)"))
-                    {
-                        PlaceLoadedBlock(sandBlock, (int)a.Key.x, (int)a.Key.y, blockPos.Value);
-                    }
-
-                    else if(a.Value.Contains("DirtBlock(Clone)"))
-                    {
-                        PlaceLoadedBlock(dirtBlock, (int)a.Key.x, (int)a.Key.y, blockPos.Value);
                     }
 
                     else if(a.Value.Contains("JungleLeaves(Clone)"))
@@ -120,7 +144,7 @@ public class GenerateMap : MonoBehaviour, Persistance
     }
     public void FixedUpdate()
     {
-        LoadChunk();
+        //LoadChunk();
     }
     public void LoadData(WorldState state)
     {
@@ -175,12 +199,12 @@ public class GenerateMap : MonoBehaviour, Persistance
                         {
                             if(currentChunk.tag == "TropicalJungle")
                             {
-                                PlaceBlock(dirtBlock, i, j);
+                                PlaceBlock(jungleDirtBlock, i, j);
                             }
 
                             else if(currentChunk.tag == "TermitePlains")
                             {
-                                PlaceBlock(sandBlock, i, j);
+                                PlaceBlock(termitePlainsSandBlock, i, j);
                             }
                         }
                     }
@@ -189,12 +213,12 @@ public class GenerateMap : MonoBehaviour, Persistance
                     {
                         if (currentChunk.tag == "TropicalJungle")
                         {
-                            PlaceBlock(dirtBlock, i, j);
+                            PlaceBlock(jungleDirtBlock, i, j);
                         }
 
                         else if (currentChunk.tag == "TermitePlains")
                         {
-                            PlaceBlock(sandBlock, i, j);
+                            PlaceBlock(termitePlainsSandBlock, i, j);
                         }
                     }
                 }
@@ -207,12 +231,12 @@ public class GenerateMap : MonoBehaviour, Persistance
                         {
                             if (currentChunk.tag == "TropicalJungle")
                             {
-                                PlaceBlock(groundBlock, i, j);
+                                PlaceBlock(jungleGroundBlock, i, j);
                             }
 
                             else if (currentChunk.tag == "TermitePlains")
                             {
-                                PlaceBlock(sandBlock, i, j);
+                                PlaceBlock(termitePlainsGroundBlock, i, j);
                             }
                         }
                     }
@@ -221,12 +245,12 @@ public class GenerateMap : MonoBehaviour, Persistance
                     {
                         if (currentChunk.tag == "TropicalJungle")
                         {
-                            PlaceBlock(groundBlock, i, j);
+                            PlaceBlock(jungleGroundBlock, i, j);
                         }
 
                         else if (currentChunk.tag == "TermitePlains")
                         {
-                            PlaceBlock(sandBlock, i, j);
+                            PlaceBlock(termitePlainsGroundBlock, i, j);
                         }
                     }
 
@@ -269,27 +293,48 @@ public class GenerateMap : MonoBehaviour, Persistance
             GameObject chunk = new GameObject();
             chunk.name = i.ToString();
             chunk.transform.parent = this.transform;
-            var random = new System.Random();
-            double biomeValue = random.NextDouble();
-
-            if (biomeValue <= 0.5)
-            {
-                chunk.tag = "TropicalJungle";
-            }
-
-            else if (biomeValue > 0.5 && biomeValue <= 1.0)
-            {
-                chunk.tag = "TermitePlains";
-            }
-
-            /*
-            else if (random.NextDouble() > 0.66)
-            {
-                chunk.tag = "Wetlands";
-            }
-            */
-
             mapChunks[i] = chunk;
+        }
+    }
+    public void GenerateBiomes()
+    {
+        var random = new System.Random();
+        double termitePlainsBiomeValue = random.NextDouble();
+        int termitePlainsBiomeSize = (int)random.NextSingle(4, mapChunks.Length / 8);
+        double wetlandsBiomeValue = random.NextDouble();
+
+        for (int i = 0;i < mapChunks.Length;i++)
+        {
+            if (i <= 3 || (i >= (mapChunks.Length / 2) - 4 && i <= (mapChunks.Length / 2) + 2) || i >= mapChunks.Length - 4)
+            {
+                mapChunks[i].tag = "TropicalJungle";
+            }
+
+            if(termitePlainsBiomeValue <= 0.5)
+            {
+                if((i >= (mapChunks.Length / 4) - termitePlainsBiomeSize && i <= (mapChunks.Length / 4) + termitePlainsBiomeSize))
+                {
+                    mapChunks[i].tag = "TermitePlains";
+                }
+
+                else
+                {
+                    mapChunks[i].tag = "TropicalJungle";
+                }
+            }
+            
+            else if(termitePlainsBiomeValue > 0.5)
+            {
+                if ((i >= (3 * mapChunks.Length / 4) - termitePlainsBiomeSize && i <= ( 3 * mapChunks.Length / 4) + termitePlainsBiomeSize))
+                {
+                    mapChunks[i].tag = "TermitePlains";
+                }
+
+                else
+                {
+                    mapChunks[i].tag = "TropicalJungle";
+                }
+            }
         }
     }
     public void LoadChunk()
@@ -337,10 +382,11 @@ public class GenerateMap : MonoBehaviour, Persistance
     {
         int treeSeed = seed + (int)(x * 2) + (int)(y / 2);
         var random = new System.Random(treeSeed);
-        float treeChance = random.NextSingle(1, treeMultiplier);
+        var random2 = new System.Random(treeSeed);
+        float treeChance = random2.NextSingle(0,treeMultiplier * 2);
         float isTreeOn = Mathf.PerlinNoise((x + seed) * treeFrequency, seed * treeFrequency) * treeMultiplier;
 
-        if (isTreeOn >= 1 && isTreeOn < 5 && treeChance < isTreeOn)
+        if (isTreeOn >= (treeMultiplier / 10) && isTreeOn < (treeMultiplier / 2) && treeChance < isTreeOn)
         {
             SerializableDictionary<Vector2, string> key = new SerializableDictionary<Vector2, string>();
             key.Add(new Vector2(x, y), log.name + "(Clone)");

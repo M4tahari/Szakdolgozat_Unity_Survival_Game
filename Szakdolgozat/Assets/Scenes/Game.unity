@@ -47508,6 +47508,76 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1634818179}
   m_CullTransparentMesh: 1
+--- !u!1001 &1637958876
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5443971360763074848, guid: 37afe1fcebd9c3546b71ee8725015665, type: 3}
+      propertyPath: m_Name
+      value: TermiteCastleWallBlock
+      objectReference: {fileID: 0}
+    - target: {fileID: 5443971360763074850, guid: 37afe1fcebd9c3546b71ee8725015665, type: 3}
+      propertyPath: m_RootOrder
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5443971360763074850, guid: 37afe1fcebd9c3546b71ee8725015665, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.83
+      objectReference: {fileID: 0}
+    - target: {fileID: 5443971360763074850, guid: 37afe1fcebd9c3546b71ee8725015665, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.73
+      objectReference: {fileID: 0}
+    - target: {fileID: 5443971360763074850, guid: 37afe1fcebd9c3546b71ee8725015665, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5443971360763074850, guid: 37afe1fcebd9c3546b71ee8725015665, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5443971360763074850, guid: 37afe1fcebd9c3546b71ee8725015665, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5443971360763074850, guid: 37afe1fcebd9c3546b71ee8725015665, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5443971360763074850, guid: 37afe1fcebd9c3546b71ee8725015665, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5443971360763074850, guid: 37afe1fcebd9c3546b71ee8725015665, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5443971360763074850, guid: 37afe1fcebd9c3546b71ee8725015665, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5443971360763074850, guid: 37afe1fcebd9c3546b71ee8725015665, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5443971360763074852, guid: 37afe1fcebd9c3546b71ee8725015665, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1723740580}
+    - target: {fileID: 5443971360763074852, guid: 37afe1fcebd9c3546b71ee8725015665, type: 3}
+      propertyPath: inventoryManager
+      value: 
+      objectReference: {fileID: 1302429780}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 37afe1fcebd9c3546b71ee8725015665, type: 3}
+--- !u!1 &1637958877 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5443971360763074848, guid: 37afe1fcebd9c3546b71ee8725015665, type: 3}
+  m_PrefabInstance: {fileID: 1637958876}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1667582965
 GameObject:
   m_ObjectHideFlags: 0
@@ -47987,11 +48057,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7096a9ba89d2423409ce0f46f4b2074e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundBlock: {fileID: 1273335652}
-  dirtBlock: {fileID: 2010338244}
+  jungleGroundBlock: {fileID: 1273335652}
+  jungleDirtBlock: {fileID: 2010338244}
+  termitePlainsGroundBlock: {fileID: 1926467286}
+  termitePlainsSandBlock: {fileID: 266224081}
   leaves: {fileID: 1308941444}
-  sandBlock: {fileID: 266224081}
   treeLogBlock: {fileID: 464405907}
+  termiteCastleWallBlock: {fileID: 1637958877}
   worldName: 
   mapSize: 100
   surfaceLevel: 0.2
@@ -48026,6 +48098,76 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a5fe3428af8af84ca127d49e1e42ae0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &1926467285
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5443971360763074848, guid: 72957ed66ee987b4aa7a81b2e8e53f87, type: 3}
+      propertyPath: m_Name
+      value: TermitePlainsFloorBlock
+      objectReference: {fileID: 0}
+    - target: {fileID: 5443971360763074850, guid: 72957ed66ee987b4aa7a81b2e8e53f87, type: 3}
+      propertyPath: m_RootOrder
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5443971360763074850, guid: 72957ed66ee987b4aa7a81b2e8e53f87, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.83
+      objectReference: {fileID: 0}
+    - target: {fileID: 5443971360763074850, guid: 72957ed66ee987b4aa7a81b2e8e53f87, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.73
+      objectReference: {fileID: 0}
+    - target: {fileID: 5443971360763074850, guid: 72957ed66ee987b4aa7a81b2e8e53f87, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5443971360763074850, guid: 72957ed66ee987b4aa7a81b2e8e53f87, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5443971360763074850, guid: 72957ed66ee987b4aa7a81b2e8e53f87, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5443971360763074850, guid: 72957ed66ee987b4aa7a81b2e8e53f87, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5443971360763074850, guid: 72957ed66ee987b4aa7a81b2e8e53f87, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5443971360763074850, guid: 72957ed66ee987b4aa7a81b2e8e53f87, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5443971360763074850, guid: 72957ed66ee987b4aa7a81b2e8e53f87, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5443971360763074850, guid: 72957ed66ee987b4aa7a81b2e8e53f87, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5443971360763074852, guid: 72957ed66ee987b4aa7a81b2e8e53f87, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1723740580}
+    - target: {fileID: 5443971360763074852, guid: 72957ed66ee987b4aa7a81b2e8e53f87, type: 3}
+      propertyPath: inventoryManager
+      value: 
+      objectReference: {fileID: 1302429780}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 72957ed66ee987b4aa7a81b2e8e53f87, type: 3}
+--- !u!1 &1926467286 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5443971360763074848, guid: 72957ed66ee987b4aa7a81b2e8e53f87, type: 3}
+  m_PrefabInstance: {fileID: 1926467285}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1940301730 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1666809546295728231, guid: 8941bf7f8e1602044a7c0ef6d2570e0c, type: 3}

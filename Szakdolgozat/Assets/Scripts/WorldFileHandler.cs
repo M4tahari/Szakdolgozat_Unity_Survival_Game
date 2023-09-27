@@ -16,7 +16,6 @@ public class WorldFileHandler
 
     public WorldState Load()
     {
-        
         string fullPath = Path.Combine(filePath, fileName);
         WorldState loadedState = null;
 

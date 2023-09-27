@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5443971360763074853}
   - component: {fileID: 5443971360763074852}
   m_Layer: 9
-  m_Name: SandBlock
+  m_Name: TermitePlainsFloorBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 1603927853
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1552155978, guid: d5025c160032a3f48ad990b86b0baf15, type: 3}
+  m_Sprite: {fileID: 226807504, guid: d5025c160032a3f48ad990b86b0baf15, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -129,4 +129,4 @@ MonoBehaviour:
   requiredTime: 2
   player: {fileID: 0}
   inventoryManager: {fileID: 0}
-  itemToPickup: {fileID: 11400000, guid: 935f614bb7268af48866cdf657f0c914, type: 2}
+  itemToPickup: {fileID: 11400000, guid: 80445a2d20096b744864c19d96087338, type: 2}

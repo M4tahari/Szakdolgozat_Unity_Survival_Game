@@ -12,11 +12,18 @@ public class InputTextHandler : MonoBehaviour
     public static int mapSize;
     public static float surfaceLevel;
     public static int heightAddition;
+    public static int treeMultiplier;
+    public static bool generateCaves = true;
     private int randomizationValue = 10000000;
     public Text nameText;
     public Text seedText;
     public Dropdown sizeOutput;
-
+    public Slider slider;
+    public Toggle toggle;
+    public void Start()
+    {
+        ChooseWorldSize(0);
+    }
     public void GenerateWorld()
     {
         if(nameText.text == "")
@@ -31,7 +38,7 @@ public class InputTextHandler : MonoBehaviour
         
         if(seedText.text == "" || !(int.Parse(seedText.text) >= -randomizationValue && int.Parse(seedText.text) <= randomizationValue))
         {
-            seed = UnityEngine.Random.Range(-randomizationValue, randomizationValue);
+            seed = Random.Range(-randomizationValue, randomizationValue);
         }
 
         else
@@ -41,6 +48,7 @@ public class InputTextHandler : MonoBehaviour
 
         surfaceLevel = 0.2f;
         heightAddition = 20;
+        treeMultiplier = (int) slider.value;
        
         string worldSave = Path.Combine(Application.persistentDataPath, worldName);
         if (File.Exists(worldSave))
@@ -66,6 +74,10 @@ public class InputTextHandler : MonoBehaviour
         {
             mapSize = 4000;
         }
+    }
+    public void SetGenerateCaves()
+    {
+        generateCaves = !generateCaves;
     }
 }
 

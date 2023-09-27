@@ -73,7 +73,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1603927853
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 1774515018, guid: 71e1f268f5f88524d98451b1d6df034e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -126,7 +126,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   radius: 3
   hittingTimer: 0
-  requiredTime: 2
+  requiredTime: 1
   player: {fileID: 0}
   inventoryManager: {fileID: 0}
-  itemToPickup: {fileID: 11400000, guid: 935f614bb7268af48866cdf657f0c914, type: 2}
+  itemToPickup: {fileID: 11400000, guid: abb47aacbc090d247be9737e9a940e17, type: 2}

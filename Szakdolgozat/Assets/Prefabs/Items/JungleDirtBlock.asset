@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 95553f52bc4c65443b11c734774c68e9, type: 3}
-  m_Name: SandBlock
+  m_Name: JungleDirtBlock
   m_EditorClassIdentifier: 
-  itemName: Sand block
+  itemName: Dirt block
   description: 
-  sprite: {fileID: -1552155978, guid: d5025c160032a3f48ad990b86b0baf15, type: 3}
+  sprite: {fileID: -1933719700, guid: 71e1f268f5f88524d98451b1d6df034e, type: 3}
   currentAmount: 0
   stackAmount: 32

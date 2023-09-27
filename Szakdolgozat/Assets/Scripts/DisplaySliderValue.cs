@@ -12,6 +12,6 @@ public class DisplaySliderValue : MonoBehaviour
     public void Update()
     {
         sliderValue = slider.value;
-        sliderText.text = sliderValue.ToString("0.00") + "x";
+        sliderText.text = sliderValue.ToString("0.00");
     }
 }
