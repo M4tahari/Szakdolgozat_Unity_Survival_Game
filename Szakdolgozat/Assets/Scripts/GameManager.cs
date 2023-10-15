@@ -1,42 +1,60 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System.IO;
 using Cinemachine;
+using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
     public CinemachineVirtualCamera virtualCamera;
-    private string fileName;
+    private List<string> fileNames;
+    [SerializeField] private bool useEncryption;
     private WorldState state;
     private List<Persistance> persistanceObjects;
     public static GameManager instance { get; private set;}
 
-    private WorldFileHandler fileHandler;
+    private List<WorldFileHandler> fileHandlers;
     private void Awake()
     {
         if(instance != null)
         {
             Debug.LogError("Error!");
         }
+
         instance = this;
+        this.fileNames = new List<string>();
+        this.fileHandlers = new List<WorldFileHandler>();
     }
     private void Start()
     {
-        if(InputTextHandler.worldName != null)
+        IEnumerable<DirectoryInfo> worldInfos = new DirectoryInfo(Application.persistentDataPath).EnumerateDirectories();
+        this.persistanceObjects = FindAllPersistanceObjects();
+
+        foreach (DirectoryInfo info in worldInfos)
         {
-            fileName = InputTextHandler.worldName + ".json";
+            if(fileNames.Contains(info.Name) == false)
+            {
+                fileNames.Add(info.Name);
+            }
         }
 
-        else
+        if (InputTextHandler.worldName != null && fileNames.Contains(InputTextHandler.worldName) == false)
         {
-            fileName = "Uj vilag.json";
+            fileNames.Add(InputTextHandler.worldName);
         }
-        
-        this.fileHandler = new WorldFileHandler(Application.persistentDataPath, fileName);
-        this.persistanceObjects = FindAllPersistanceObjects();
-        LoadGame();
+ 
+        foreach (string name in fileNames)
+        {
+            this.fileHandlers.Add(new WorldFileHandler(Application.persistentDataPath, name, useEncryption));
+            LoadGame(name);
+        }
+
+        if(InputTextHandler.worldName != null)
+        {
+            LoadGame(InputTextHandler.worldName);
+        }
 
         virtualCamera.m_Lens.OrthographicSize *= SettingsInputHandler.renderDistanceMultiplier;
     }
@@ -44,44 +62,84 @@ public class GameManager : MonoBehaviour
     {
         this.state = new WorldState();
     }
-    public void LoadGame()
+    public void LoadGame(string name)
     {
-        this.state = fileHandler.Load();
+        foreach(WorldFileHandler fileHandler in this.fileHandlers)
+        {
+            if(fileHandler.GetFileName().Equals(name))
+            {
+                this.state = fileHandler.Load(name);
+                break;
+            }
 
-        if(this.state == null)
-        {
-            Debug.Log("No data was found, initializing default data.");
-            NewGame();
+            else
+            {
+                continue;
+            }
         }
 
-        foreach(Persistance persistance in persistanceObjects)
-        {
-            persistance.LoadData(state);
-        }
-    }
-    public void SaveGame()
-    {
-        string worldSave = Path.Combine(Application.persistentDataPath, fileName);
-        if (File.Exists(worldSave))
-        {
-            File.Delete(worldSave);
-        }
+        LoadGameIfStateIsNull();
 
         foreach (Persistance persistance in persistanceObjects)
         {
-            persistance.SaveData(ref state);
+            persistance.LoadData(this.state);
         }
+    }
+    public void LoadGameIfStateIsNull()
+    {
+        if (this.state == null)
+        {
+            Debug.Log("No data was found.");
+            NewGame();
+        }
+    }
+    public void SaveGame(string name)
+    {
+        foreach(WorldFileHandler fileHandler in fileHandlers)
+        {
+            if(fileHandler.GetFileName().Equals(name))
+            {
+                string worldSave = Path.Combine(Application.persistentDataPath, fileHandler.GetFileName(), fileHandler.GetFileName() + ".json");
 
-        fileHandler.Save(state);
+                if (File.Exists(worldSave))
+                {
+                    File.Delete(worldSave);
+                }
+
+                foreach (Persistance persistance in persistanceObjects)
+                {
+                    persistance.SaveData(ref this.state);
+                }
+
+                fileHandler.Save(this.state, fileHandler.GetFileName());
+                break;
+            }
+        }
+    }
+    public void SaveOnClick()
+    {
+        SaveGame(InputTextHandler.worldName);
     }
     public List<Persistance> FindAllPersistanceObjects()
     {
         IEnumerable<Persistance> persistanceObjects = FindObjectsOfType<MonoBehaviour>().OfType<Persistance>();
         return new List<Persistance>(persistanceObjects);
     }
+    public Dictionary<string, WorldState> GetAllSavedWorlds()
+    {
+        Dictionary<string, WorldState> savedWorlds = new Dictionary<string, WorldState>();
+
+        foreach (WorldFileHandler fileHandler in fileHandlers)
+        {
+            Dictionary<string, WorldState> loadedWorld = fileHandler.LoadSavedWorld();
+
+            savedWorlds = loadedWorld;
+        }
+
+        return savedWorlds;
+    }
     private void OnApplicationQuit()
     {
-        SaveGame();
         PlayerPrefs.DeleteKey("SliderValue");
     }
 }

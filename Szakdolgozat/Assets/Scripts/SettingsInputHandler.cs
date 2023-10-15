@@ -31,10 +31,10 @@ public class SettingsInputHandler : MonoBehaviour
 
         if (MainMenu._sceneIndex == 0)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 2);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 3);
         }
 
-        if (MainMenu._sceneIndex == 3)
+        if (MainMenu._sceneIndex == 4)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }

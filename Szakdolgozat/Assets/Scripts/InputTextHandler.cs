@@ -1,9 +1,10 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.IO;
 using TMPro;
+using System.Collections.Generic;
 
 public class InputTextHandler : MonoBehaviour
 {
@@ -33,7 +34,24 @@ public class InputTextHandler : MonoBehaviour
 
         else
         {
-            worldName = nameText.text;
+            IEnumerable<DirectoryInfo> worldInfos = new DirectoryInfo(Application.persistentDataPath).EnumerateDirectories();
+
+            List<string> worldNames = new List<string>();
+
+            foreach(DirectoryInfo info in worldInfos)
+            {
+                worldNames.Add(info.Name);
+            }
+
+            if(worldNames.Contains(nameText.text) == false)
+            {
+                worldName = nameText.text;
+            }
+
+            else
+            {
+                Debug.LogError("Ilyen nevű világ már létezik!");
+            }
         }
         
         if(seedText.text == "" || !(int.Parse(seedText.text) >= -randomizationValue && int.Parse(seedText.text) <= randomizationValue))
@@ -56,7 +74,9 @@ public class InputTextHandler : MonoBehaviour
             File.Delete(worldSave);
         }
 
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
+        MainMenu._sceneIndex = 4;
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 3);
     }
     public void ChooseWorldSize(int value)
     {

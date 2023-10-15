@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/CreateNewWorld.unity
     guid: 32ef9e29f677f4247ab60444106fa7eb
   - enabled: 1
+    path: Assets/Scenes/LoadExistingWorlds.unity
+    guid: 87461d8b10795a9489fc9990cf3f83a2
+  - enabled: 1
     path: Assets/Scenes/SettingsMenu.unity
     guid: a1513c7e0acfa7b46a94eb085eddd8ff
   - enabled: 1

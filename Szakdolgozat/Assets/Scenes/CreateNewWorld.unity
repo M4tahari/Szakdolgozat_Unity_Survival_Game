@@ -1130,7 +1130,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1909822377}
-        m_TargetAssemblyTypeName: InputTextDisplay, Assembly-CSharp
+        m_TargetAssemblyTypeName: InputTextHandler, Assembly-CSharp
         m_MethodName: GenerateWorld
         m_Mode: 1
         m_Arguments:

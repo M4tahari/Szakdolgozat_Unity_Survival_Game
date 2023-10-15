@@ -11,11 +11,18 @@ public class Player : Mover, Persistance
     public float hittingTimer;
     public float pickupRadius;
     public static float visibleBlocksRadius = 10.0f;
-    
     private void Awake()
     {
         stamina = totalStamina;
-        this.transform.position = new Vector3((InputTextHandler.mapSize * 0.32f) / 2, InputTextHandler.surfaceLevel + InputTextHandler.heightAddition + 1, 0);
+        if(InputTextHandler.mapSize >= 1000)
+        {
+            this.transform.position = new Vector3((InputTextHandler.mapSize * 0.32f) / 2, InputTextHandler.surfaceLevel + InputTextHandler.heightAddition + 1, 0);
+        }
+
+        else
+        {
+            this.transform.position = new Vector3((1000 * 0.32f) / 2, 0.2f + 21, 0);
+        }
     }
     private void Update()
     {

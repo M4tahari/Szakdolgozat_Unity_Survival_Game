@@ -45,6 +45,12 @@ public class GenerateMap : MonoBehaviour, Persistance
     public int minLeavesWidth = 6;
     public int maxLeavesWidth = 20;
 
+    [Header("Termeszvar adatok")]
+    public float castleFrequency = 0.03f;
+    public int castleMultiplier = 10;
+    public int minCastleHeight = 2;
+    public int maxCastleHeight = 5;
+
     public Player player;
 
     private GameObject[] mapChunks;
@@ -144,7 +150,7 @@ public class GenerateMap : MonoBehaviour, Persistance
     }
     public void FixedUpdate()
     {
-        //LoadChunk();
+        LoadChunk();
     }
     public void LoadData(WorldState state)
     {
@@ -263,6 +269,14 @@ public class GenerateMap : MonoBehaviour, Persistance
                                 GenerateTree(treeLogBlock, leaves, i, j + 1);
                             }
                         }
+
+                        else if(currentChunk.tag == "TermitePlains")
+                        {
+                            if (blockPositions.Contains(new Vector2(i * 0.32f, j * 0.32f)))
+                            {
+                                GenerateTermiteCastles(termiteCastleWallBlock, i, j + 1);
+                            }
+                        }
                     }
                 }
             }
@@ -302,6 +316,7 @@ public class GenerateMap : MonoBehaviour, Persistance
         double termitePlainsBiomeValue = random.NextDouble();
         int termitePlainsBiomeSize = (int)random.NextSingle(4, mapChunks.Length / 8);
         double wetlandsBiomeValue = random.NextDouble();
+        int wetlandsBiomeSize = (int)random.NextSingle(4, mapChunks.Length / 8);
 
         for (int i = 0;i < mapChunks.Length;i++)
         {
@@ -417,6 +432,53 @@ public class GenerateMap : MonoBehaviour, Persistance
                     }
                 }
             }
+        }
+    }
+    public void GenerateTermiteCastles(GameObject termiteWall, int x, int y)
+    {
+        int castleSeed = seed + (int)(x * 2) + (int)(y / 2);
+        var random = new System.Random(castleSeed);
+        var random2 = new System.Random(castleSeed);
+        float castleChance = random2.NextSingle(0, castleMultiplier * 2);
+        float isCastleOn = Mathf.PerlinNoise((x + seed) * castleFrequency, seed * castleFrequency) * castleMultiplier;
+
+        if (isCastleOn >= (castleMultiplier / 10) && isCastleOn < (castleMultiplier / 2) && castleChance < isCastleOn)
+        {
+            SerializableDictionary<Vector2, string> key = new SerializableDictionary<Vector2, string>();
+            key.Add(new Vector2(x, y), termiteWall.name + "(Clone)");
+
+            if (!blocks.ContainsKey(key))
+            {
+                float castleHeight = random.NextSingle(minCastleHeight, maxCastleHeight);
+                float castleLength = (int) (castleHeight * 2) - 1;
+                int castleMid = (int) castleHeight / 2;
+                int castleCounter = 0;
+
+                for(int i = 0; i < castleHeight; i++)
+                {
+                    for(int j = castleMid - castleCounter; j <= castleMid + castleCounter; j++)
+                    {
+                        if(j >= castleLength)
+                        {
+                            break;
+                        }
+
+                        else if(j < 0)
+                        {
+                            continue;
+                        }
+
+                        else
+                        {
+                            PlaceBlock(termiteWall, x + i, y + j);
+                        }
+                    }
+
+                    castleCounter++;
+                }
+                
+            }
+
         }
     }
     public void SaveBlocks()
