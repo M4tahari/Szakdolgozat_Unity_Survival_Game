@@ -16,14 +16,11 @@ public class SaveWorldSlotsMenu : MonoBehaviour
     {
         allSavedWorlds = GameManager.instance.GetAllSavedWorlds();
 
-        int changePos = -10;
-
         foreach(KeyValuePair<string, WorldState> savedWorld in allSavedWorlds)
         {
             GameObject slot = Instantiate(saveWorldSlot);
-            slot.transform.SetParent(this.transform);
-            slot.transform.position = new Vector3(slot.transform.parent.position.x, slot.transform.parent.position.y - changePos, slot.transform.parent.position.z);
-            changePos += 80;
+            slot.transform.SetParent(this.transform.GetChild(0).transform);
+            slot.transform.position = new Vector3(slot.transform.parent.position.x, slot.transform.parent.position.y, slot.transform.parent.position.z);
         }
         
         saveWorldSlots = this.GetComponentsInChildren<SaveWorldToSlot>();

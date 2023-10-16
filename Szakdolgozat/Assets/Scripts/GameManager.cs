@@ -48,7 +48,11 @@ public class GameManager : MonoBehaviour
         foreach (string name in fileNames)
         {
             this.fileHandlers.Add(new WorldFileHandler(Application.persistentDataPath, name, useEncryption));
-            LoadGame(name);
+
+            if(MainMenu._sceneIndex == 0)
+            {
+                LoadGame(name);
+            }
         }
 
         if(InputTextHandler.worldName != null)
