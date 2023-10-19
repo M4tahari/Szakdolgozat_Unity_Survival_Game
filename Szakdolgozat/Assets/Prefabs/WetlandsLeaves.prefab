@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5443971360763074851}
   - component: {fileID: 5443971360763074852}
   m_Layer: 8
-  m_Name: JungleTreeLog
+  m_Name: WetlandsLeaves
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 1603927853
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: cb5d207f11b1b5340be2679e1582141f, type: 3}
+  m_Sprite: {fileID: 1904133140, guid: 1023fca8f0670a14cb75918437967ec8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -99,7 +99,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   radius: 3
   hittingTimer: 0
-  requiredTime: 4
+  requiredTime: 1
   player: {fileID: 0}
   inventoryManager: {fileID: 0}
-  itemToPickup: {fileID: 11400000, guid: cc74a3a90d67d7b4ab7ba841fd6cd531, type: 2}
+  itemToPickup: {fileID: 11400000, guid: 6c8d9cd18ce13e44483b65a4dc706e4a, type: 2}
