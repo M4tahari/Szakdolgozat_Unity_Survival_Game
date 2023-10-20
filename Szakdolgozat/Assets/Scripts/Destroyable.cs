@@ -59,10 +59,10 @@ public class Destroyable : Interactable
        Destroyable temp = this;
        if(!quit)
         {
-            Destroyable ujBlokk = Instantiate(this);
-            ujBlokk.breakable = true;
+            Destroyable newBlock = Instantiate(this);
+            newBlock.breakable = true;
 
-            bool result = inventoryManager.AddItem(temp.itemToPickup, ujBlokk);
+            bool result = inventoryManager.AddItem(temp.itemToPickup, newBlock);
         }
     }
     public void OnApplicationQuit()

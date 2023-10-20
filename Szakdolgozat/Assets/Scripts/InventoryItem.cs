@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-   
     [Header("UI")]
     public Image image;
     public Text countText;
@@ -14,7 +13,6 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public Destroyable destroyable;
     [HideInInspector] public bool buildMode = false;
     [HideInInspector] public int clickCount = 0;
-
     public void Update()
     {
         bool isOverItem = (Input.mousePosition.x >= gameObject.transform.position.x-16 && 

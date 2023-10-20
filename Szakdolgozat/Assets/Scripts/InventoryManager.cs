@@ -8,15 +8,46 @@ using UnityEngine;
 public class InventoryManager : MonoBehaviour
 {
     public InventorySlot[] inventorySlots;
+    public InventorySlot DeleteSlot;
     public GameObject InventoryItemPrefab;
     private InventoryItem itemInSlot;
     public GameObject map;
+    public Player player;
     [HideInInspector] public bool canPlace = true;
 
     int selectedSlot = -1;
+    public void Awake()
+    {
+        for (int i = 0; i < inventorySlots.Length; i++)
+        {
+            if (i < 5)
+            {
+                inventorySlots[i].Deselect();
+            }
+
+            else
+            {
+                inventorySlots[i].Select();
+            }
+        }
+    }
     public void Start()
     {
         ChangeSelectedSlot(0);
+
+        if(player.items != null)
+        {
+            foreach(KeyValuePair<SerializableDictionary<Item, Destroyable>, SerializableDictionary<int, int>> invItem in player.items)
+            {
+                foreach(var a in invItem.Key)
+                {
+                    foreach(var b in invItem.Value)
+                    {
+                        SpawnNewItem(a.Key, inventorySlots[b.Key], a.Value, b.Value);
+                    }
+                }
+            }
+        }
     }
     public void Update()
     {
@@ -28,21 +59,13 @@ public class InventoryManager : MonoBehaviour
                 ChangeSelectedSlot(number-1);
             }
         }
-    }
-    public void Awake()
-    {
-        for (int i = 0; i < inventorySlots.Length; i++)
-        {
-            if(i < 5)
-            {
-                inventorySlots[i].Deselect();
-            }
 
-            else
-            {
-                inventorySlots[i].Select();
-            }
+        if(DeleteSlot.transform.childCount > 0)
+        {
+            Destroy(DeleteSlot.transform.GetChild(0).gameObject);
         }
+
+        player.items = GatherAllItems();
     }
     void ChangeSelectedSlot(int slotId)
     {
@@ -83,14 +106,14 @@ public class InventoryManager : MonoBehaviour
            
             if(itemInSlot == null)
             {
-                SpawnNewItem(item, slot, destroyable);
+                SpawnNewItem(item, slot, destroyable, item.currentAmount);
                 return true;
             }
         }
 
         return false;
     }
-    private void SpawnNewItem(Item item, InventorySlot slot, Destroyable destroyable)
+    private void SpawnNewItem(Item item, InventorySlot slot, Destroyable destroyable, int currentAmount)
     {
         if(slot)
         {
@@ -98,6 +121,7 @@ public class InventoryManager : MonoBehaviour
             newItemObject = Instantiate(InventoryItemPrefab, slot.transform);
             InventoryItem inventoryItem = newItemObject.GetComponent<InventoryItem>();
             inventoryItem.destroyable = destroyable;
+            inventoryItem.count = currentAmount;
             inventoryItem.InitializeItem(item);
         }
     }
@@ -128,7 +152,7 @@ public class InventoryManager : MonoBehaviour
 
             if (inventoryItem.count == 1)
             {
-                Destroy(inventoryItem.gameObject);
+                DeleteItem(inventoryItem);
             }
 
             else
@@ -146,5 +170,34 @@ public class InventoryManager : MonoBehaviour
             inventoryItem.clickCount = 0;
             inventoryItem.transform.position = inventoryItem.transform.parent.position;
         }
+    }
+    public void DeleteItem(InventoryItem inventoryItem)
+    {
+        Destroy(inventoryItem.gameObject);
+    }
+    public SerializableDictionary<SerializableDictionary<Item, Destroyable>, SerializableDictionary<int, int>> GatherAllItems()
+    {
+        SerializableDictionary<SerializableDictionary<Item, Destroyable>, SerializableDictionary<int, int>> items = new SerializableDictionary<SerializableDictionary<Item, Destroyable>, SerializableDictionary<int, int>>();
+
+        for(int i = 0; i < inventorySlots.Length; i++)
+        {
+            InventorySlot slot = inventorySlots[i];
+
+            if(slot)
+            {
+                InventoryItem item = slot.GetComponentInChildren<InventoryItem>();
+                SerializableDictionary<Item, Destroyable> data = new SerializableDictionary<Item, Destroyable>();
+                SerializableDictionary<int, int> data2 = new SerializableDictionary<int, int>();
+                if(item != null)
+                {
+                    data.Add(item.item, item.destroyable);
+                    data2.Add(i, item.count);
+                }
+
+                items.Add(data, data2);
+            }
+        }
+
+        return items;
     }
 }

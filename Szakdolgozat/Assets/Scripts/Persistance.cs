@@ -4,6 +4,6 @@ using UnityEngine;
 
 public interface Persistance
 {
-    void LoadData(WorldState worldState);
-    void SaveData(ref WorldState worldState);
+    void LoadData(WorldState worldState, PlayerState playerState);
+    void SaveData(ref WorldState worldState, ref PlayerState playerState);
 }

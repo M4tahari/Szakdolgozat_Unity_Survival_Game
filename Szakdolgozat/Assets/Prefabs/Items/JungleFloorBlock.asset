@@ -15,5 +15,5 @@ MonoBehaviour:
   itemName: Jungle grass block
   description: 
   sprite: {fileID: -701493409, guid: 71e1f268f5f88524d98451b1d6df034e, type: 3}
-  currentAmount: 0
+  currentAmount: 1
   stackAmount: 32

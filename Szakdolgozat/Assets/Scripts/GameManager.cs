@@ -9,13 +9,14 @@ using Unity.VisualScripting;
 public class GameManager : MonoBehaviour
 {
     public CinemachineVirtualCamera virtualCamera;
-    private List<string> fileNames;
+    private List<string> FileNames;
     [SerializeField] private bool useEncryption;
-    private WorldState state;
+    private WorldState worldState;
+    private PlayerState playerState;
     private List<Persistance> persistanceObjects;
     public static GameManager instance { get; private set;}
 
-    private List<WorldFileHandler> fileHandlers;
+    private List<FileHandler> FileHandlers;
     private void Awake()
     {
         if(instance != null)
@@ -24,30 +25,30 @@ public class GameManager : MonoBehaviour
         }
 
         instance = this;
-        this.fileNames = new List<string>();
-        this.fileHandlers = new List<WorldFileHandler>();
+        this.FileNames = new List<string>();
+        this.FileHandlers = new List<FileHandler>();
     }
     private void Start()
     {
-        IEnumerable<DirectoryInfo> worldInfos = new DirectoryInfo(Application.persistentDataPath).EnumerateDirectories();
+        IEnumerable<DirectoryInfo> fileInfos = new DirectoryInfo(Application.persistentDataPath).EnumerateDirectories();
         this.persistanceObjects = FindAllPersistanceObjects();
 
-        foreach (DirectoryInfo info in worldInfos)
+        foreach (DirectoryInfo info in fileInfos)
         {
-            if(fileNames.Contains(info.Name) == false)
+            if(FileNames.Contains(info.Name) == false)
             {
-                fileNames.Add(info.Name);
+                FileNames.Add(info.Name);
             }
         }
 
-        if (InputTextHandler.worldName != null && fileNames.Contains(InputTextHandler.worldName) == false)
+        if (InputTextHandler.worldName != null && FileNames.Contains(InputTextHandler.worldName) == false)
         {
-            fileNames.Add(InputTextHandler.worldName);
+            FileNames.Add(InputTextHandler.worldName);
         }
  
-        foreach (string name in fileNames)
+        foreach (string name in FileNames)
         {
-            this.fileHandlers.Add(new WorldFileHandler(Application.persistentDataPath, name, useEncryption));
+            this.FileHandlers.Add(new FileHandler(Application.persistentDataPath, name, useEncryption));
 
             if(MainMenu._sceneIndex == 0)
             {
@@ -64,15 +65,17 @@ public class GameManager : MonoBehaviour
     }
     public void NewGame()
     {
-        this.state = new WorldState();
+        this.worldState = new WorldState();
+        this.playerState = new PlayerState();
     }
-    public void LoadGame(string name)
+    public void LoadGame(string worldName)
     {
-        foreach(WorldFileHandler fileHandler in this.fileHandlers)
+        foreach(FileHandler fileHandler in this.FileHandlers)
         {
-            if(fileHandler.GetFileName().Equals(name))
+            if(fileHandler.GetFileName().Equals(worldName))
             {
-                this.state = fileHandler.Load(name);
+                this.worldState = fileHandler.LoadWorld(worldName);
+                this.playerState = fileHandler.LoadPlayer(worldName);
                 break;
             }
 
@@ -86,36 +89,43 @@ public class GameManager : MonoBehaviour
 
         foreach (Persistance persistance in persistanceObjects)
         {
-            persistance.LoadData(this.state);
+            persistance.LoadData(this.worldState, this.playerState);
         }
     }
     public void LoadGameIfStateIsNull()
     {
-        if (this.state == null)
+        if (this.worldState == null && this.playerState == null)
         {
             Debug.Log("No data was found.");
             NewGame();
         }
     }
-    public void SaveGame(string name)
+    public void SaveGame(string worldName)
     {
-        foreach(WorldFileHandler fileHandler in fileHandlers)
+        foreach(FileHandler fileHandler in FileHandlers)
         {
-            if(fileHandler.GetFileName().Equals(name))
+            if(fileHandler.GetFileName().Equals(worldName))
             {
                 string worldSave = Path.Combine(Application.persistentDataPath, fileHandler.GetFileName(), fileHandler.GetFileName() + ".json");
+                string playerSave = Path.Combine(Application.persistentDataPath, fileHandler.GetFileName(), fileHandler.GetFileName() + ".json");
 
                 if (File.Exists(worldSave))
                 {
                     File.Delete(worldSave);
                 }
 
-                foreach (Persistance persistance in persistanceObjects)
+                if(File.Exists(playerSave))
                 {
-                    persistance.SaveData(ref this.state);
+                    File.Delete(playerSave);
                 }
 
-                fileHandler.Save(this.state, fileHandler.GetFileName());
+                foreach (Persistance persistance in persistanceObjects)
+                {
+                    persistance.SaveData(ref this.worldState, ref this.playerState);
+                }
+
+                fileHandler.SaveWorld(this.worldState, fileHandler.GetFileName());
+                fileHandler.SavePlayer(this.playerState, fileHandler.GetFileName());
                 break;
             }
         }
@@ -133,7 +143,7 @@ public class GameManager : MonoBehaviour
     {
         Dictionary<string, WorldState> savedWorlds = new Dictionary<string, WorldState>();
 
-        foreach (WorldFileHandler fileHandler in fileHandlers)
+        foreach (FileHandler fileHandler in FileHandlers)
         {
             Dictionary<string, WorldState> loadedWorld = fileHandler.LoadSavedWorld();
 
@@ -141,6 +151,19 @@ public class GameManager : MonoBehaviour
         }
 
         return savedWorlds;
+    }
+    public Dictionary<string, PlayerState> GetAllSavedPlayers()
+    {
+        Dictionary<string, PlayerState> savedPlayers = new Dictionary<string, PlayerState>();
+
+        foreach (FileHandler fileHandler in FileHandlers)
+        {
+            Dictionary<string, PlayerState> loadedPlayer = fileHandler.LoadSavedPlayer();
+
+            savedPlayers = loadedPlayer;
+        }
+
+        return savedPlayers;
     }
     private void OnApplicationQuit()
     {

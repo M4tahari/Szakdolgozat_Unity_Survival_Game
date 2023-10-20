@@ -69,7 +69,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -116,7 +116,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: inventorySlot
+      name: Inventory_slot
       rect:
         serializedVersion: 2
         x: 8
@@ -130,14 +130,35 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9e6cb88435adefb4c8f80d201e872e4f
-      internalID: 103456059
+      spriteID: bf7ee3d5a6dad644b9194f0007ca4d19
+      internalID: 1397934002
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: inventoryBackground
+      name: Button_background
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 23
+        width: 72
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c35a59c14e3f0954fb5f0cf43f2d22a2
+      internalID: -2059515016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Menu_background
       rect:
         serializedVersion: 2
         x: 54
@@ -151,29 +172,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4b692c2c15c1ef84eb38e11a6f12ad72
-      internalID: -2002429963
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: buttonBackground
-      rect:
-        serializedVersion: 2
-        x: 54
-        y: 24
-        width: 72
-        height: 25
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7ad12cea9a5fd0d4b80541d4a927c178
-      internalID: 111536183
+      spriteID: c04af27a8a4ffd5418ef8bcd9b054c34
+      internalID: -660734504
       vertices: []
       indices: 
       edges: []
@@ -189,9 +189,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      inventorySlot: 103456059
-      inventoryBackground: -2002429963
-      buttonBackground: 111536183
+      Menu_background: -660734504
+      Button_background: -2059515016
+      Inventory_slot: 1397934002
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

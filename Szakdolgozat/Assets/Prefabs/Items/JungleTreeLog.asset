@@ -15,5 +15,5 @@ MonoBehaviour:
   itemName: Jungle tree log
   description: 
   sprite: {fileID: 21300000, guid: cb5d207f11b1b5340be2679e1582141f, type: 3}
-  currentAmount: 0
+  currentAmount: 1
   stackAmount: 32

@@ -176,38 +176,38 @@ public class GenerateMap : MonoBehaviour, Persistance
     {
         LoadChunk();
     }
-    public void LoadData(WorldState state)
+    public void LoadData(WorldState worldState, PlayerState playerState)
     {
-        worldName = state.worldName;
-        seed = state.seed;
-        randomizationValue = state.randomizationValue;
-        mapSize = state.mapSize;
-        surfaceLevel = state.surfaceLevel;
-        terrainFrequency = state.terrainFrequency;
-        caveFrequency = state.caveFrequency;
-        heightMultiplier= state.heightMultiplier;
-        generateCaves= state.generateCaves;
-        heightAddition = state.heightAddition;
-        chunkSize = state.chunkSize;
-        blocks = state.blocksPos;
-        alreadyCreated = state.alreadyCreated;
+        worldName = worldState.worldName;
+        seed = worldState.seed;
+        randomizationValue = worldState.randomizationValue;
+        mapSize = worldState.mapSize;
+        surfaceLevel = worldState.surfaceLevel;
+        terrainFrequency = worldState.terrainFrequency;
+        caveFrequency = worldState.caveFrequency;
+        heightMultiplier = worldState.heightMultiplier;
+        generateCaves = worldState.generateCaves;
+        heightAddition = worldState.heightAddition;
+        chunkSize = worldState.chunkSize;
+        blocks = worldState.blocksPos;
+        alreadyCreated = worldState.alreadyCreated;
     }
-    public void SaveData(ref WorldState state)
+    public void SaveData(ref WorldState wolrdState, ref PlayerState playerState)
     {
-        state.worldName = worldName;
-        state.seed = seed;
-        state.randomizationValue = randomizationValue;
-        state.mapSize = mapSize;
-        state.surfaceLevel = surfaceLevel;
-        state.terrainFrequency = terrainFrequency;
-        state.caveFrequency = caveFrequency;
-        state.heightMultiplier = heightMultiplier;
-        state.heightAddition = heightAddition;
-        state.chunkSize = chunkSize;
+        wolrdState.worldName = worldName;
+        wolrdState.seed = seed;
+        wolrdState.randomizationValue = randomizationValue;
+        wolrdState.mapSize = mapSize;
+        wolrdState.surfaceLevel = surfaceLevel;
+        wolrdState.terrainFrequency = terrainFrequency;
+        wolrdState.caveFrequency = caveFrequency;
+        wolrdState.heightMultiplier = heightMultiplier;
+        wolrdState.heightAddition = heightAddition;
+        wolrdState.chunkSize = chunkSize;
         SaveBlocks();
-        state.blocksPos = blocks;
+        wolrdState.blocksPos = blocks;
         alreadyCreated = true;
-        state.alreadyCreated = alreadyCreated;
+        wolrdState.alreadyCreated = alreadyCreated;
     }
     public void GenerateTerrain()
     {

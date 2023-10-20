@@ -11,6 +11,7 @@ public class Player : Mover, Persistance
     public float hittingTimer;
     public float pickupRadius;
     public static float visibleBlocksRadius = 10.0f;
+    public SerializableDictionary<SerializableDictionary<Item, Destroyable>, SerializableDictionary<int, int>> items;
     private void Awake()
     {
         stamina = totalStamina;
@@ -50,39 +51,41 @@ public class Player : Mover, Persistance
             Jump();
         }
     }
-    public void LoadData(WorldState state)
+    public void LoadData(WorldState worldState, PlayerState playerState)
     {
-        this.transform.position = state.playerPos;
-        currentSpeed = state.currentSpeed;
-        exponentialPenalty = state.exponentialPenalty;
-        jumpForce = state.jumpForce;
-        pickupRadius = state.pickupRadius;
-        radius = state.radius;
-        sprintSpeed = state.sprintSpeed;
-        stamina = state.stamina;
-        staminaCost = state.staminaCost;
-        staminaRecoveryRate = state.staminaRecoveryRate;
-        totalStamina = state.totalStamina;
-        walkSpeed = state.walkSpeed;
-        ySpeed = state.ySpeed;
-        fatigueTimer = state.fatigueTimer;
+        this.transform.position = worldState.playerPos;
+        currentSpeed = playerState.currentSpeed;
+        exponentialPenalty = playerState.exponentialPenalty;
+        jumpForce = playerState.jumpForce;
+        pickupRadius = playerState.pickupRadius;
+        radius = playerState.radius;
+        sprintSpeed = playerState.sprintSpeed;
+        stamina = playerState.stamina;
+        staminaCost = playerState.staminaCost;
+        staminaRecoveryRate = playerState.staminaRecoveryRate;
+        totalStamina = playerState.totalStamina;
+        walkSpeed = playerState.walkSpeed;
+        ySpeed = playerState.ySpeed;
+        fatigueTimer = playerState.fatigueTimer;
+        items = playerState.items;
     }
-    public void SaveData(ref WorldState state)
+    public void SaveData(ref WorldState worldState, ref PlayerState playerState)
     {
-        state.playerPos = this.transform.position;
-        state.currentSpeed = this.currentSpeed;
-        state.exponentialPenalty = this.exponentialPenalty;
-        state.jumpForce = this.jumpForce;
-        state.pickupRadius = this.pickupRadius;
-        state.radius = this.radius;
-        state.sprintSpeed = this.sprintSpeed;
-        state.stamina = this.stamina;
-        state.staminaCost = this.staminaCost;
-        state.staminaRecoveryRate = this.staminaRecoveryRate;
-        state.totalStamina = this.totalStamina;
-        state.walkSpeed = this.walkSpeed;
-        state.ySpeed = this.ySpeed;
-        state.fatigueTimer = this.fatigueTimer;
+        worldState.playerPos = this.transform.position;
+        playerState.currentSpeed = this.currentSpeed;
+        playerState.exponentialPenalty = this.exponentialPenalty;
+        playerState.jumpForce = this.jumpForce;
+        playerState.pickupRadius = this.pickupRadius;
+        playerState.radius = this.radius;
+        playerState.sprintSpeed = this.sprintSpeed;
+        playerState.stamina = this.stamina;
+        playerState.staminaCost = this.staminaCost;
+        playerState.staminaRecoveryRate = this.staminaRecoveryRate;
+        playerState.totalStamina = this.totalStamina;
+        playerState.walkSpeed = this.walkSpeed;
+        playerState.ySpeed = this.ySpeed;
+        playerState.fatigueTimer = this.fatigueTimer;
+        playerState.items = this.items;
     }
     protected override void Jump()
     {
