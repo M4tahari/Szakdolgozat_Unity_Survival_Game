@@ -74,7 +74,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1513022637
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: a71b8360882f28a45a3474957b78c85f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -141,6 +141,8 @@ MonoBehaviour:
   stamina: 100
   staminaCost: 10
   staminaRecoveryRate: 5
+  maxHealthPoints: 100
+  currentHealthPoints: 100
   walkSpeed: 1.25
   sprintSpeed: 2.5
   currentSpeed: 1.25
@@ -149,6 +151,16 @@ MonoBehaviour:
   ySpeed: 1.25
   jumpForce: 5
   facingRight: 1
+  maxHungerPoints: 100
+  maxHydrationPoints: 100
+  currentHungerPoints: 100
+  currentHydrationPoints: 100
+  healthBar: {fileID: 0}
+  hungerBar: {fileID: 0}
+  hydrationBar: {fileID: 0}
   staminaBar: {fileID: 0}
   hittingTimer: 0
   pickupRadius: 2
+  items:
+    keys: []
+    values: []

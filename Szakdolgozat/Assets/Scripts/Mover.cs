@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Mover : Fighter
 {
+    public float maxHealthPoints;
+    public float currentHealthPoints;
     protected Vector2 moveDelta;
     public float walkSpeed = 1.25f;
     public float sprintSpeed = 2.5f;

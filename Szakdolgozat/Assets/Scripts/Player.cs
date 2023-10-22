@@ -7,6 +7,13 @@ using UnityEngine.EventSystems;
 
 public class Player : Mover, Persistance
 {
+    public float maxHungerPoints;
+    public float maxHydrationPoints;
+    public float currentHungerPoints;
+    public float currentHydrationPoints;
+    public GameObject healthBar;
+    public GameObject hungerBar;
+    public GameObject hydrationBar;
     public GameObject staminaBar;
     public float hittingTimer;
     public float pickupRadius;
@@ -14,7 +21,11 @@ public class Player : Mover, Persistance
     public SerializableDictionary<SerializableDictionary<Item, Destroyable>, SerializableDictionary<int, int>> items;
     private void Awake()
     {
-        stamina = totalStamina;
+        this.stamina = totalStamina;
+        this.currentHealthPoints = maxHealthPoints;
+        this.currentHungerPoints = maxHungerPoints;
+        this.currentHydrationPoints = maxHydrationPoints;
+
         if(InputTextHandler.mapSize >= 1000)
         {
             this.transform.position = new Vector3((InputTextHandler.mapSize * 0.32f) / 2, InputTextHandler.surfaceLevel + InputTextHandler.heightAddition + 1, 0);
@@ -25,9 +36,30 @@ public class Player : Mover, Persistance
             this.transform.position = new Vector3((1000 * 0.32f) / 2, 0.2f + 21, 0);
         }
     }
+    protected new void Start()
+    {
+        base.Start();
+
+        InvokeRepeating("DrainHungerAndHydration", 5, 5);
+    }
     private void Update()
     {
         Sprint();
+
+        if (healthBar != null)
+        {
+            healthBar.transform.localScale = new Vector2(currentHealthPoints / maxHealthPoints, healthBar.transform.localScale.y);
+        }
+
+        if (hungerBar != null)
+        {
+            hungerBar.transform.localScale = new Vector2(currentHungerPoints / maxHungerPoints, hungerBar.transform.localScale.y);
+        }
+
+        if (hydrationBar != null)
+        {
+            hydrationBar.transform.localScale = new Vector2(currentHydrationPoints / maxHydrationPoints, hydrationBar.transform.localScale.y);
+        }
 
         if (staminaBar != null)
         {
@@ -54,6 +86,12 @@ public class Player : Mover, Persistance
     public void LoadData(WorldState worldState, PlayerState playerState)
     {
         this.transform.position = worldState.playerPos;
+        maxHealthPoints = playerState.maxHealthPoints;
+        currentHealthPoints = playerState.currentHealthPoints;
+        maxHungerPoints = playerState.maxHungerPoints;
+        currentHungerPoints = playerState.currentHungerPoints;
+        maxHydrationPoints = playerState.maxHydrationPoints;
+        currentHydrationPoints = playerState.currentHydrationPoints;
         currentSpeed = playerState.currentSpeed;
         exponentialPenalty = playerState.exponentialPenalty;
         jumpForce = playerState.jumpForce;
@@ -72,6 +110,12 @@ public class Player : Mover, Persistance
     public void SaveData(ref WorldState worldState, ref PlayerState playerState)
     {
         worldState.playerPos = this.transform.position;
+        playerState.maxHealthPoints = this.maxHealthPoints;
+        playerState.currentHealthPoints = this.currentHealthPoints;
+        playerState.maxHungerPoints = this.maxHungerPoints;
+        playerState.currentHungerPoints = this.currentHungerPoints;
+        playerState.maxHydrationPoints = this.maxHydrationPoints;
+        playerState.currentHydrationPoints = this.currentHydrationPoints;
         playerState.currentSpeed = this.currentSpeed;
         playerState.exponentialPenalty = this.exponentialPenalty;
         playerState.jumpForce = this.jumpForce;
@@ -177,6 +221,55 @@ public class Player : Mover, Persistance
         if (stamina > 100f)
         {
             stamina = 100f;
+        }
+    }
+    protected void DrainHungerAndHydration()
+    {
+        if (this.currentHungerPoints > 0)
+        {
+            switch (this.isSprinting)
+            {
+                case true:
+                    this.currentHungerPoints -= 5;
+                    break;
+
+                case false:
+                    this.currentHungerPoints--;
+                    break;
+            }
+        }
+
+        if (this.currentHydrationPoints > 0)
+        {
+            switch (this.isSprinting)
+            {
+                case true:
+                    this.currentHydrationPoints -= 5;
+                    break;
+
+                case false:
+                    this.currentHydrationPoints -= 2;
+                    break;
+            }
+        }
+    }
+    protected void TakeDamageFromHungerOrDehydration()
+    {
+        if((this.currentHungerPoints == 0 || this.currentHydrationPoints == 0) && this.currentHealthPoints > 0)
+        {
+            this.currentHealthPoints -= 2;
+        }
+
+        else if((this.currentHungerPoints == 0 && this.currentHydrationPoints == 0) && this.currentHealthPoints > 0)
+        {
+            this.currentHealthPoints -= 5;
+        }
+    }
+    protected void Death()
+    {
+        if(this.currentHealthPoints == 0)
+        {
+            this.transform.position = new Vector3((InputTextHandler.mapSize * 0.32f) / 2, InputTextHandler.surfaceLevel + InputTextHandler.heightAddition + 1, 0);
         }
     }
 }

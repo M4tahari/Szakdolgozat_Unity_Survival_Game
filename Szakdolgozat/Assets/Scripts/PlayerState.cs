@@ -5,6 +5,12 @@ using UnityEngine;
 [System.Serializable]
 public class PlayerState
 {
+    public float maxHealthPoints;
+    public float currentHealthPoints;
+    public float maxHungerPoints;
+    public float currentHungerPoints;
+    public float maxHydrationPoints;
+    public float currentHydrationPoints;
     public float currentSpeed;
     public float exponentialPenalty;
     public float jumpForce;
@@ -22,6 +28,12 @@ public class PlayerState
     public SerializableDictionary<SerializableDictionary<Item, Destroyable>, SerializableDictionary<int, int>> items;
     public PlayerState()
     {
+        maxHealthPoints = 100;
+        currentHealthPoints = 100;
+        maxHungerPoints = 100;
+        currentHungerPoints = 100;
+        maxHydrationPoints = 100;
+        currentHydrationPoints = 100;
         currentSpeed = 1.25f;
         exponentialPenalty = 3;
         jumpForce = 5;
