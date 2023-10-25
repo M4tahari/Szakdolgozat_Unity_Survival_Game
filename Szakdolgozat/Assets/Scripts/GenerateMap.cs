@@ -56,18 +56,21 @@ public class GenerateMap : MonoBehaviour, Persistance
     public int maxCastleHeight = 5;
 
     public Player player;
+    public GameObject termite;
+    private GameObject[] termites;
 
     private GameObject[] mapChunks;
     int chunkNum = 0;
     private SerializableDictionary<SerializableDictionary<Vector2, string>, int> blocks = new SerializableDictionary<SerializableDictionary<Vector2, string>, int>();
+    private SerializableDictionary<SerializableDictionary<float, float>, SerializableDictionary<float, float>> termiteCastles = new SerializableDictionary<SerializableDictionary<float, float>, SerializableDictionary<float, float>>();
     private List<Vector2> blockPositions = new List<Vector2>();
     private int blockCount = 0;
     private bool alreadyCreated = false;
     private void Start()
     {
-        if(alreadyCreated == false)
+        if (alreadyCreated == false)
         {
-            if(InputTextHandler.worldName != null)
+            if (InputTextHandler.worldName != null)
             {
                 worldName = InputTextHandler.worldName;
             }
@@ -77,7 +80,7 @@ public class GenerateMap : MonoBehaviour, Persistance
                 worldName = "Uj vilag";
             }
 
-            if(InputTextHandler.mapSize > 0)
+            if (InputTextHandler.mapSize > 0)
             {
                 mapSize = InputTextHandler.mapSize;
             }
@@ -105,12 +108,14 @@ public class GenerateMap : MonoBehaviour, Persistance
             GenerateChunks();
             GenerateBiomes();
             GenerateTerrain();
+            PlaceTermites();
+            termites = GameObject.FindGameObjectsWithTag("Termite");
         }
 
         else
         {
             GenerateChunks();
-            foreach(KeyValuePair<SerializableDictionary<Vector2, string>, int> blockPos in blocks)
+            foreach (KeyValuePair<SerializableDictionary<Vector2, string>, int> blockPos in blocks)
             {
                 foreach (var a in blockPos.Key)
                 {
@@ -170,11 +175,14 @@ public class GenerateMap : MonoBehaviour, Persistance
                     }
                 }
             }
+            PlaceTermites();
+            termites = GameObject.FindGameObjectsWithTag("Termite");
         }
     }
     public void FixedUpdate()
     {
         LoadChunk();
+        LoadTermites();
     }
     public void LoadData(WorldState worldState, PlayerState playerState)
     {
@@ -190,32 +198,35 @@ public class GenerateMap : MonoBehaviour, Persistance
         heightAddition = worldState.heightAddition;
         chunkSize = worldState.chunkSize;
         blocks = worldState.blocksPos;
+        termiteCastles = worldState.termiteCastlesPos;
         alreadyCreated = worldState.alreadyCreated;
     }
-    public void SaveData(ref WorldState wolrdState, ref PlayerState playerState)
+    public void SaveData(ref WorldState worldState, ref PlayerState playerState)
     {
-        wolrdState.worldName = worldName;
-        wolrdState.seed = seed;
-        wolrdState.randomizationValue = randomizationValue;
-        wolrdState.mapSize = mapSize;
-        wolrdState.surfaceLevel = surfaceLevel;
-        wolrdState.terrainFrequency = terrainFrequency;
-        wolrdState.caveFrequency = caveFrequency;
-        wolrdState.heightMultiplier = heightMultiplier;
-        wolrdState.heightAddition = heightAddition;
-        wolrdState.chunkSize = chunkSize;
+        worldState.worldName = worldName;
+        worldState.seed = seed;
+        worldState.randomizationValue = randomizationValue;
+        worldState.mapSize = mapSize;
+        worldState.surfaceLevel = surfaceLevel;
+        worldState.terrainFrequency = terrainFrequency;
+        worldState.caveFrequency = caveFrequency;
+        worldState.heightMultiplier = heightMultiplier;
+        worldState.heightAddition = heightAddition;
+        worldState.chunkSize = chunkSize;
         SaveBlocks();
-        wolrdState.blocksPos = blocks;
+        worldState.blocksPos = blocks;
+        SaveTermiteCastles();
+        worldState.termiteCastlesPos = termiteCastles;
         alreadyCreated = true;
-        wolrdState.alreadyCreated = alreadyCreated;
+        worldState.alreadyCreated = alreadyCreated;
     }
     public void GenerateTerrain()
     {
-        for(int i = 0; i < mapSize; i++)
+        for (int i = 0; i < mapSize; i++)
         {
             float height = Mathf.PerlinNoise((i + seed) * terrainFrequency, seed * terrainFrequency) * heightMultiplier + heightAddition;
-            
-            for(int j = 0; j < height; j++)
+
+            for (int j = 0; j < height; j++)
             {
                 float chunkCoord = (Mathf.Round(i / chunkSize) * chunkSize);
                 chunkCoord /= chunkSize;
@@ -227,17 +238,17 @@ public class GenerateMap : MonoBehaviour, Persistance
                     {
                         if (noiseSample.GetPixel(i, j).r > surfaceLevel)
                         {
-                            if(currentChunk.tag == "TropicalJungle")
+                            if (currentChunk.tag == "TropicalJungle")
                             {
                                 PlaceBlock(jungleDirtBlock, i, j);
                             }
 
-                            else if(currentChunk.tag == "TermitePlains")
+                            else if (currentChunk.tag == "TermitePlains")
                             {
                                 PlaceBlock(termitePlainsSandBlock, i, j);
                             }
 
-                            else if(currentChunk.tag == "Wetlands")
+                            else if (currentChunk.tag == "Wetlands")
                             {
                                 PlaceBlock(wetlandsMudBlock, i, j);
                             }
@@ -265,7 +276,7 @@ public class GenerateMap : MonoBehaviour, Persistance
 
                 else
                 {
-                    if(generateCaves)
+                    if (generateCaves)
                     {
                         if (noiseSample.GetPixel(i, j).r > surfaceLevel)
                         {
@@ -304,9 +315,9 @@ public class GenerateMap : MonoBehaviour, Persistance
                         }
                     }
 
-                    if (j >= height-1 && i > 10 && i < mapSize-10)
+                    if (j >= height - 1 && i > 10 && i < mapSize - 10)
                     {
-                        if(currentChunk.tag == "TropicalJungle")
+                        if (currentChunk.tag == "TropicalJungle")
                         {
                             if (blockPositions.Contains(new Vector2(i * 0.32f, j * 0.32f)))
                             {
@@ -314,7 +325,7 @@ public class GenerateMap : MonoBehaviour, Persistance
                             }
                         }
 
-                        else if(currentChunk.tag == "TermitePlains")
+                        else if (currentChunk.tag == "TermitePlains")
                         {
                             if (blockPositions.Contains(new Vector2(i * 0.32f, j * 0.32f)))
                             {
@@ -322,7 +333,7 @@ public class GenerateMap : MonoBehaviour, Persistance
                             }
                         }
 
-                        else if(currentChunk.tag == "Wetlands")
+                        else if (currentChunk.tag == "Wetlands")
                         {
                             if (blockPositions.Contains(new Vector2(i * 0.32f, j * 0.32f)))
                             {
@@ -354,7 +365,7 @@ public class GenerateMap : MonoBehaviour, Persistance
         chunkNum = mapSize / chunkSize;
         mapChunks = new GameObject[chunkNum];
 
-        for(int i = 0; i < chunkNum; i++)
+        for (int i = 0; i < chunkNum; i++)
         {
             GameObject chunk = new GameObject();
             chunk.name = i.ToString();
@@ -369,16 +380,16 @@ public class GenerateMap : MonoBehaviour, Persistance
         int termitePlainsBiomeSize = (int)random.NextSingle(4, mapChunks.Length / 8);
         int wetlandsBiomeSize = (int)random.NextSingle(4, mapChunks.Length / 8);
 
-        for (int i = 0;i < mapChunks.Length;i++)
+        for (int i = 0; i < mapChunks.Length; i++)
         {
             if (i <= 3 || (i >= (mapChunks.Length / 2) - 4 && i <= (mapChunks.Length / 2) + 2) || i >= mapChunks.Length - 4)
             {
                 mapChunks[i].tag = "TropicalJungle";
             }
 
-            if(termitePlainsBiomeValue <= 0.5)
+            if (termitePlainsBiomeValue <= 0.5)
             {
-                if((i >= (mapChunks.Length / 4) - termitePlainsBiomeSize && i <= (mapChunks.Length / 4) + termitePlainsBiomeSize))
+                if ((i >= (mapChunks.Length / 4) - termitePlainsBiomeSize && i <= (mapChunks.Length / 4) + termitePlainsBiomeSize))
                 {
                     mapChunks[i].tag = "TermitePlains";
                 }
@@ -393,15 +404,15 @@ public class GenerateMap : MonoBehaviour, Persistance
                     mapChunks[i].tag = "TropicalJungle";
                 }
             }
-            
-            else if(termitePlainsBiomeValue > 0.5)
+
+            else if (termitePlainsBiomeValue > 0.5)
             {
                 if ((i >= (mapChunks.Length / 4) - wetlandsBiomeSize && i <= (mapChunks.Length / 4) + wetlandsBiomeSize))
                 {
                     mapChunks[i].tag = "Wetlands";
                 }
 
-                else if ((i >= (3 * mapChunks.Length / 4) - termitePlainsBiomeSize && i <= ( 3 * mapChunks.Length / 4) + termitePlainsBiomeSize))
+                else if ((i >= (3 * mapChunks.Length / 4) - termitePlainsBiomeSize && i <= (3 * mapChunks.Length / 4) + termitePlainsBiomeSize))
                 {
                     mapChunks[i].tag = "TermitePlains";
                 }
@@ -413,9 +424,27 @@ public class GenerateMap : MonoBehaviour, Persistance
             }
         }
     }
+    public void LoadTermites()
+    {
+        for(int i = 0; i < termites.Length; i++)
+        {
+            float distance = Mathf.Abs(Vector3.Distance(player.transform.position, termites[i].transform.position) / 0.32f);
+
+            if(distance > (Player.visibleBlocksRadius * SettingsInputHandler.renderDistanceMultiplier) + 40.0f) 
+            {
+                termites[i].SetActive(false);
+                termites[i].transform.position = termites[i].GetComponent<Termite>().castlePosition;
+            }
+
+            else
+            {
+                termites[i].SetActive(true);
+            }
+        }
+    }
     public void LoadChunk()
     {
-       for(int i = 0;i < mapChunks.Length;i++)
+        for(int i = 0;i < mapChunks.Length;i++)
         {
             float distance = Mathf.Abs(Vector3.Distance(player.transform.position, mapChunks[i].transform.GetChild(0).position) / 0.32f);
             
@@ -534,17 +563,21 @@ public class GenerateMap : MonoBehaviour, Persistance
                             PlaceBlock(termiteWall, x + i, y + j);
                         }
                     }
-
                     castleCounter++;
                 }
-                
-            }
 
+                SerializableDictionary<float, float> coord = new SerializableDictionary<float, float>();
+                SerializableDictionary<float, float> castleData = new SerializableDictionary<float, float>();
+                coord.Add(x, y);
+                castleData.Add(castleMid - 0.32f, castleHeight);
+                termiteCastles.Add(coord, castleData);
+            }
         }
     }
     public void SaveBlocks()
     {
         blocks.Clear();
+
         if(blocks.Count <= blockCount)
         {
             foreach (Transform chunk in this.transform)
@@ -571,5 +604,41 @@ public class GenerateMap : MonoBehaviour, Persistance
                 }
             }
         }
+    }
+    public void PlaceTermites()
+    {
+        foreach(KeyValuePair<SerializableDictionary<float, float>, SerializableDictionary<float, float>> termitePos in termiteCastles)
+        {
+            foreach(var a in termitePos.Key)
+            {
+                foreach(var b in termitePos.Value)
+                {
+                    SpawnTermite(a.Key, a.Value, b.Key, b.Value);
+                }
+            }
+        }
+    }
+    public void SaveTermiteCastles()
+    {
+        termiteCastles.Clear();
+
+        foreach(GameObject termite in GameObject.FindGameObjectsWithTag("Termite"))
+        {
+            Termite termiteScript = termite.GetComponent<Termite>();
+            SerializableDictionary<float, float> coord = new SerializableDictionary<float, float>();
+            SerializableDictionary<float, float> castleData = new SerializableDictionary<float, float>();
+            coord.Add((float)Math.Round(termiteScript.castlePosition.x / 0.32f, MidpointRounding.ToEven), (float)Math.Round(termiteScript.castlePosition.y / 0.32f, MidpointRounding.ToEven));
+            castleData.Add(termiteScript.castleMid, termiteScript.castleHeight);
+            termiteCastles.Add(coord, castleData);
+        }
+    }
+    public void SpawnTermite(float x, float y, float castleX, float castleY)
+    {
+        GameObject spawnedTermite = Instantiate(termite);
+        spawnedTermite.transform.position = new Vector2((x * 0.32f) + castleX, (y * 0.32f) + castleY);
+        Termite termiteScript = spawnedTermite.GetComponent<Termite>();
+        termiteScript.castlePosition = new Vector2((x * 0.32f) + castleX, (y * 0.32f) + castleY);
+        termiteScript.castleMid = castleX;
+        termiteScript.castleHeight = castleY;
     }
 }

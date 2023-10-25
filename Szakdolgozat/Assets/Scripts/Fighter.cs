@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Fighter : Interactable
+public class Fighter : Mover
 {
     public float totalStamina;
     public float stamina;

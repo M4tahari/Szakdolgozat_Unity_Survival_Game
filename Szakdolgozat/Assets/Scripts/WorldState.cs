@@ -21,6 +21,7 @@ public class WorldState
     public bool alreadyCreated;
 
     public SerializableDictionary<SerializableDictionary<Vector2, string>, int> blocksPos;
+    public SerializableDictionary<SerializableDictionary<float, float>, SerializableDictionary<float, float>> termiteCastlesPos;
     public WorldState()
     {
         randomizationValue = 10000000;
@@ -36,5 +37,6 @@ public class WorldState
 
         playerPos = new Vector3((mapSize * 0.32f) / 2, surfaceLevel + heightAddition + 1, 0);
         blocksPos = new SerializableDictionary<SerializableDictionary<Vector2, string>, int>();
+        termiteCastlesPos = new SerializableDictionary<SerializableDictionary<float, float>, SerializableDictionary<float, float>>();
     }
 }

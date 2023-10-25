@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Player : Mover, Persistance
+public class Player : Fighter, Persistance
 {
     public float maxHungerPoints;
     public float maxHydrationPoints;
@@ -33,14 +33,14 @@ public class Player : Mover, Persistance
 
         else
         {
-            this.transform.position = new Vector3((1000 * 0.32f) / 2, 0.2f + 21, 0);
+            this.transform.position = new Vector3((1000 * 0.32f) / 2, InputTextHandler.surfaceLevel + InputTextHandler.heightAddition + 1, 0);
         }
     }
-    protected new void Start()
+    protected override void Start()
     {
         base.Start();
 
-        InvokeRepeating("DrainHungerAndHydration", 5, 5);
+        InvokeRepeating("DrainHungerAndHydration", 10, 10);
     }
     private void Update()
     {
@@ -76,12 +76,16 @@ public class Player : Mover, Persistance
         float x = Input.GetAxisRaw("Horizontal");
         float y = Input.GetAxisRaw("Vertical");
 
-        UpdateMotor(new Vector2(x, y));
+        UpdateMotor(new Vector3(x, y, 0));
 
         if(canJump == true)
         {
             Jump();
         }
+
+        TakeDamageFromHungerOrDehydration();
+
+        Death();
     }
     public void LoadData(WorldState worldState, PlayerState playerState)
     {
@@ -225,9 +229,19 @@ public class Player : Mover, Persistance
     }
     protected void DrainHungerAndHydration()
     {
+        if(this.currentHungerPoints < 0)
+        {
+            this.currentHungerPoints = 0;
+        }
+
+        if(this.currentHydrationPoints < 0)
+        {
+            this.currentHydrationPoints = 0;
+        }
+
         if (this.currentHungerPoints > 0)
         {
-            switch (this.isSprinting)
+            switch ((stamina / totalStamina) < 0.5)
             {
                 case true:
                     this.currentHungerPoints -= 5;
@@ -241,7 +255,7 @@ public class Player : Mover, Persistance
 
         if (this.currentHydrationPoints > 0)
         {
-            switch (this.isSprinting)
+            switch ((stamina / totalStamina) < 0.5)
             {
                 case true:
                     this.currentHydrationPoints -= 5;
@@ -265,10 +279,14 @@ public class Player : Mover, Persistance
             this.currentHealthPoints -= 5;
         }
     }
-    protected void Death()
+    protected override void Death()
     {
         if(this.currentHealthPoints == 0)
         {
+            currentHealthPoints = maxHealthPoints;
+            currentHungerPoints = maxHungerPoints;
+            currentHydrationPoints = maxHydrationPoints;
+            stamina = totalStamina;
             this.transform.position = new Vector3((InputTextHandler.mapSize * 0.32f) / 2, InputTextHandler.surfaceLevel + InputTextHandler.heightAddition + 1, 0);
         }
     }

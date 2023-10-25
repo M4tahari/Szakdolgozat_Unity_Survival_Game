@@ -3,20 +3,25 @@ using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
 
-public class Mover : Fighter
+public class Mover : Interactable
 {
     public float maxHealthPoints;
     public float currentHealthPoints;
-    protected Vector2 moveDelta;
-    public float walkSpeed = 1.25f;
-    public float sprintSpeed = 2.5f;
-    public float currentSpeed = 1.25f;
+    protected Vector3 moveDelta;
+    public float walkSpeed;
+    public float sprintSpeed;
+    public float currentSpeed;
+    protected Vector3 pushDirection;
+    public float pushRecoverySpeed;
+    public float pushForce;
+    protected float lastImmune;
+    public float damageImmunityTime;
     protected bool isFatigued;
     protected bool isSprinting;
     public float exponentialPenalty = 1f;
     public float fatigueTimer = 0f;
-    public float ySpeed = 1.25f;
-    public float jumpForce = 2.0f;
+    public float ySpeed;
+    public float jumpForce;
     protected Rigidbody2D rb;
     public bool facingRight;
     protected bool isGrounded;
@@ -25,10 +30,10 @@ public class Mover : Fighter
     {
         rb = this.GetComponent<Rigidbody2D>();
     }
-    protected virtual void UpdateMotor(Vector2 input)
+    protected virtual void UpdateMotor(Vector3 input)
     {
-        moveDelta = new Vector2(input.x * currentSpeed, input.y * ySpeed);
-        Vector2 oldVelocity = rb.velocity;
+        moveDelta = new Vector3(input.x * currentSpeed, input.y * ySpeed, 0);
+        Vector3 oldVelocity = rb.velocity;
         oldVelocity.x = moveDelta.x;
         rb.velocity = oldVelocity;
 
@@ -41,6 +46,10 @@ public class Mover : Fighter
         {
             Flip();
         }
+
+        moveDelta += pushDirection;
+
+        pushDirection = Vector3.Lerp(pushDirection, Vector3.zero, pushRecoverySpeed);
     }
     protected void Flip()
     {
@@ -70,5 +79,28 @@ public class Mover : Fighter
         {
             isGrounded = false;
         }
+    }
+    public virtual void ReceiveDamage(float damage, Vector3 attackerPosition, float force)
+    {
+        if(Time.time - lastImmune > damageImmunityTime)
+        {
+            lastImmune = Time.time;
+            currentHealthPoints -= damage;
+            pushDirection = (transform.position - attackerPosition).normalized * force;
+        }
+
+        if(currentHealthPoints <= 0)
+        {
+            currentHealthPoints = 0;
+            Death();
+        }
+    }
+    protected virtual void Death()
+    {
+        Destroy(gameObject);
+    }
+    private void OnDestroy()
+    {
+        if (!this.gameObject.scene.isLoaded) return;
     }
 }

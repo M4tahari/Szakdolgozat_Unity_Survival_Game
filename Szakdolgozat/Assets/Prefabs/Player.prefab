@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6604484862464628310}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -137,20 +137,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 3
-  totalStamina: 100
-  stamina: 100
-  staminaCost: 10
-  staminaRecoveryRate: 5
   maxHealthPoints: 100
   currentHealthPoints: 100
   walkSpeed: 1.25
   sprintSpeed: 2.5
   currentSpeed: 1.25
+  pushRecoverySpeed: 1
+  pushForce: 5
+  damageImmunityTime: 3
   exponentialPenalty: 3
   fatigueTimer: 4
   ySpeed: 1.25
   jumpForce: 5
   facingRight: 1
+  totalStamina: 100
+  stamina: 100
+  staminaCost: 10
+  staminaRecoveryRate: 5
   maxHungerPoints: 100
   maxHydrationPoints: 100
   currentHungerPoints: 100
