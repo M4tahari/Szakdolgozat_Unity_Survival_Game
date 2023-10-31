@@ -12,6 +12,8 @@ public class Destroyable : Interactable
     private float distance = 0;
     public InventoryManager inventoryManager;
     public Item itemToPickup;
+    public Item additionalMaterial;
+    public bool hasAdditionalItem;
     [HideInInspector] private bool quit = false;
     private void Update()
     {
@@ -61,8 +63,24 @@ public class Destroyable : Interactable
         {
             Destroyable newBlock = Instantiate(this);
             newBlock.breakable = true;
+            inventoryManager.AddItem(temp.itemToPickup, newBlock);
 
-            bool result = inventoryManager.AddItem(temp.itemToPickup, newBlock);
+            if(hasAdditionalItem)
+            {
+                var random = new System.Random();
+                double multipleChance = random.NextDouble();
+
+                if(multipleChance < 0.5f)
+                {
+                    inventoryManager.AddMaterial(additionalMaterial);
+                }
+
+                else
+                {
+                    inventoryManager.AddMaterial(additionalMaterial);
+                    inventoryManager.AddMaterial(additionalMaterial);
+                }
+            }
         }
     }
     public void OnApplicationQuit()

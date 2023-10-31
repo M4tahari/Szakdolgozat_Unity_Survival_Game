@@ -11,6 +11,7 @@ public class Player : Fighter, Persistance
     public float maxHydrationPoints;
     public float currentHungerPoints;
     public float currentHydrationPoints;
+    public float attackDamage;
     public GameObject healthBar;
     public GameObject hungerBar;
     public GameObject hydrationBar;
@@ -18,7 +19,12 @@ public class Player : Fighter, Persistance
     public float hittingTimer;
     public float pickupRadius;
     public static float visibleBlocksRadius = 10.0f;
+    private ContactFilter2D filter;
+    CapsuleCollider2D playerCollider;
+    private Collider2D[] collisions = new Collider2D[10];
     public SerializableDictionary<SerializableDictionary<Item, Destroyable>, SerializableDictionary<int, int>> items;
+    public SerializableDictionary<SerializableDictionary<Item, Weapon>, int> weapons;
+    public SerializableDictionary<Item, SerializableDictionary<int, int>> materials;
     private void Awake()
     {
         this.stamina = totalStamina;
@@ -40,7 +46,9 @@ public class Player : Fighter, Persistance
     {
         base.Start();
 
-        InvokeRepeating("DrainHungerAndHydration", 10, 10);
+        this.playerCollider = this.GetComponent<CapsuleCollider2D>();
+
+        InvokeRepeating("DrainHungerAndHydration", 12, 12);
     }
     private void Update()
     {
@@ -83,6 +91,34 @@ public class Player : Fighter, Persistance
             Jump();
         }
 
+        playerCollider.OverlapCollider(filter, collisions);
+
+        for (int i = 0; i < collisions.Length; i++)
+        {
+            if (collisions[i] == null)
+            {
+                continue;
+            }
+
+            if (collisions[i].name == "WetlandsFloorBlock(Clone)" || collisions[i].name == "MudBlock(Clone)")
+            {
+                this.walkSpeed = 0.75f;
+                this.sprintSpeed = 1.5f;
+                this.currentSpeed = walkSpeed;
+            }
+
+            if (collisions[i].name == "SandBlock(Clone)" || collisions[i].name == "TermitePlainsFloorBlock(Clone)" ||
+               collisions[i].name == "TermiteCastleWallBlock(Clone)" || collisions[i].name == "JungleFloorBlock(Clone)" ||
+               collisions[i].name == "DirtBlock(Clone)")
+            {
+                this.walkSpeed = 1.25f;
+                this.sprintSpeed = 2.5f;
+                this.currentSpeed = walkSpeed;
+            }
+
+            collisions[i] = null;
+        }
+
         TakeDamageFromHungerOrDehydration();
 
         Death();
@@ -110,6 +146,8 @@ public class Player : Fighter, Persistance
         ySpeed = playerState.ySpeed;
         fatigueTimer = playerState.fatigueTimer;
         items = playerState.items;
+        weapons = playerState.weapons;
+        materials = playerState.materials;
     }
     public void SaveData(ref WorldState worldState, ref PlayerState playerState)
     {
@@ -134,6 +172,8 @@ public class Player : Fighter, Persistance
         playerState.ySpeed = this.ySpeed;
         playerState.fatigueTimer = this.fatigueTimer;
         playerState.items = this.items;
+        playerState.weapons = this.weapons;
+        playerState.materials = this.materials;
     }
     protected override void Jump()
     {

@@ -24,6 +24,7 @@ public class WorldState
     public SerializableDictionary<SerializableDictionary<float, float>, SerializableDictionary<float, float>> termiteCastlesPos;
     public WorldState()
     {
+        worldName = InputTextHandler.worldName;
         randomizationValue = 10000000;
         mapSize = InputTextHandler.mapSize;
         surfaceLevel = InputTextHandler.surfaceLevel;

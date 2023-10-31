@@ -11,8 +11,8 @@ public class GameManager : MonoBehaviour
     public CinemachineVirtualCamera virtualCamera;
     private List<string> FileNames;
     [SerializeField] private bool useEncryption;
-    private WorldState worldState;
-    private PlayerState playerState;
+    public WorldState worldState;
+    public PlayerState playerState;
     private List<Persistance> persistanceObjects;
     public static GameManager instance { get; private set;}
 

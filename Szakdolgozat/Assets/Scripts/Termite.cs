@@ -28,6 +28,7 @@ public class Termite : Fighter
         base.Start();
         this.playerTransform = GameObject.Find("Player").transform;
         this.termiteCollider = this.GetComponent<CapsuleCollider2D>();
+        Physics2D.IgnoreLayerCollision(10, 10);
     }
     private void Update()
     {
@@ -74,6 +75,11 @@ public class Termite : Fighter
             else
             {
                 UpdateMotor(this.castlePosition - this.transform.position);
+
+                if(this.currentHealthPoints < this.maxHealthPoints)
+                {
+                    this.currentHealthPoints = this.maxHealthPoints;
+                }
             }
         }
 
@@ -81,6 +87,11 @@ public class Termite : Fighter
         {
             UpdateMotor(this.castlePosition - this.transform.position);
             chasing = false;
+
+            if (this.currentHealthPoints < this.maxHealthPoints)
+            {
+                this.currentHealthPoints = this.maxHealthPoints;
+            }
         }
 
         collidingWithThePlayer = false;
@@ -96,6 +107,22 @@ public class Termite : Fighter
             if (collisions[i].tag == "Player")
             {
                 collidingWithThePlayer = true;
+            }
+
+            if (collisions[i].name == "WetlandsFloorBlock(Clone)" || collisions[i].name == "MudBlock(Clone)")
+            {
+                this.walkSpeed = 0.75f;
+                this.sprintSpeed = 1.5f;
+                this.currentSpeed = walkSpeed;
+            }
+
+            if (collisions[i].name == "SandBlock(Clone)" || collisions[i].name == "TermitePlainsFloorBlock(Clone)" ||
+                collisions[i].name == "TermiteCastleWallBlock(Clone)" || collisions[i].name == "JungleFloorBlock(Clone)" ||
+                collisions[i].name == "DirtBlock(Clone)")
+            {
+                this.walkSpeed = 1.25f;
+                this.sprintSpeed = 2.5f;
+                this.currentSpeed = walkSpeed;
             }
 
             collisions[i] = null;
@@ -184,7 +211,7 @@ public class Termite : Fighter
 
         if(hit.collider != null)
         {
-            if(hit.collider.gameObject.CompareTag("Ground"))
+            if(hit.collider.gameObject.CompareTag("Ground") || hit.collider.gameObject.CompareTag("WetlandsFloorBlock"))
             {
                 inFront = true;
             }

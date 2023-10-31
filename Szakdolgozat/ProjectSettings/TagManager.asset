@@ -9,6 +9,9 @@ TagManager:
   - Wetlands
   - Ground
   - Termite
+  - Capybara
+  - WetlandsFloorBlock
+  - Weapon
   layers:
   - Default
   - TransparentFX
@@ -20,8 +23,8 @@ TagManager:
   - Items
   - BackGroundBlock
   - GroundBlock
-  - 
-  - 
+  - Entity
+  - Weapon
   - 
   - 
   - 

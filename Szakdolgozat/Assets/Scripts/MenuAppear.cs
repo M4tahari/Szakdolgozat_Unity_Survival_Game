@@ -6,8 +6,10 @@ public class MenuAppear : MonoBehaviour
 {
     public GameObject inventoryMenu;
     public GameObject escapeMenu;
+    public GameObject craftingMenu;
     private bool isShowingInventory = false;
     private bool isShowingEscape = false;
+    private bool isShowingCrafting = false;
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.Escape))
@@ -30,6 +32,12 @@ public class MenuAppear : MonoBehaviour
         {
             isShowingInventory = !isShowingInventory;
             inventoryMenu.SetActive(isShowingInventory);
+        }
+
+        if(Input.GetKeyDown(KeyCode.C) && isShowingEscape == false)
+        {
+            isShowingCrafting = !isShowingCrafting;
+            craftingMenu.SetActive(isShowingCrafting);
         }
     }
     public void BackToGame()

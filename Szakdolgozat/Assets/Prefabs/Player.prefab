@@ -144,7 +144,7 @@ MonoBehaviour:
   currentSpeed: 1.25
   pushRecoverySpeed: 1
   pushForce: 5
-  damageImmunityTime: 3
+  damageImmunityTime: 5
   exponentialPenalty: 3
   fatigueTimer: 4
   ySpeed: 1.25
@@ -158,6 +158,7 @@ MonoBehaviour:
   maxHydrationPoints: 100
   currentHungerPoints: 100
   currentHydrationPoints: 100
+  attackDamage: 2
   healthBar: {fileID: 0}
   hungerBar: {fileID: 0}
   hydrationBar: {fileID: 0}
@@ -167,3 +168,6 @@ MonoBehaviour:
   items:
     keys: []
     values: []
+  weapons:
+    keys: []
+    values: 

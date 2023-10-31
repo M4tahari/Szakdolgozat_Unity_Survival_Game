@@ -59,6 +59,10 @@ public class GenerateMap : MonoBehaviour, Persistance
     public GameObject termite;
     private GameObject[] termites;
 
+    public GameObject capybara;
+    private GameObject[] capybaras;
+    private GameObject[] wetlandsFloorBlocks;
+
     private GameObject[] mapChunks;
     int chunkNum = 0;
     private SerializableDictionary<SerializableDictionary<Vector2, string>, int> blocks = new SerializableDictionary<SerializableDictionary<Vector2, string>, int>();
@@ -66,7 +70,7 @@ public class GenerateMap : MonoBehaviour, Persistance
     private List<Vector2> blockPositions = new List<Vector2>();
     private int blockCount = 0;
     private bool alreadyCreated = false;
-    private void Start()
+    public void Start()
     {
         if (alreadyCreated == false)
         {
@@ -108,8 +112,13 @@ public class GenerateMap : MonoBehaviour, Persistance
             GenerateChunks();
             GenerateBiomes();
             GenerateTerrain();
+            wetlandsFloorBlocks = GameObject.FindGameObjectsWithTag("WetlandsFloorBlock");
             PlaceTermites();
             termites = GameObject.FindGameObjectsWithTag("Termite");
+            PlaceCapybaras();
+            capybaras = GameObject.FindGameObjectsWithTag("Capybara");
+            PlaceTermitesOverTime();
+            PlaceCapybarasOverTime();
         }
 
         else
@@ -157,6 +166,7 @@ public class GenerateMap : MonoBehaviour, Persistance
                     if (a.Value.Contains("WetlandsFloorBlock(Clone)"))
                     {
                         PlaceLoadedBlock(wetlandsGroundBlock, (int)a.Key.x, (int)a.Key.y, blockPos.Value);
+                        SpawnCapybara(a.Key.x, a.Key.y + 1);
                     }
 
                     else if (a.Value.Contains("MudBlock(Clone)"))
@@ -175,14 +185,24 @@ public class GenerateMap : MonoBehaviour, Persistance
                     }
                 }
             }
+
+            wetlandsFloorBlocks = GameObject.FindGameObjectsWithTag("WetlandsFloorBlock");
             PlaceTermites();
             termites = GameObject.FindGameObjectsWithTag("Termite");
+            PlaceCapybaras();
+            capybaras = GameObject.FindGameObjectsWithTag("Capybara");
+            PlaceTermitesOverTime();
+            PlaceCapybarasOverTime();
         }
     }
     public void FixedUpdate()
     {
+        termites = GameObject.FindGameObjectsWithTag("Termite");
+        capybaras = GameObject.FindGameObjectsWithTag("Capybara");
+        wetlandsFloorBlocks = GameObject.FindGameObjectsWithTag("WetlandsFloorBlock");
         LoadChunk();
         LoadTermites();
+        LoadCapybaras();
     }
     public void LoadData(WorldState worldState, PlayerState playerState)
     {
@@ -430,15 +450,45 @@ public class GenerateMap : MonoBehaviour, Persistance
         {
             float distance = Mathf.Abs(Vector3.Distance(player.transform.position, termites[i].transform.position) / 0.32f);
 
-            if(distance > (Player.visibleBlocksRadius * SettingsInputHandler.renderDistanceMultiplier) + 40.0f) 
+            if(distance > (Player.visibleBlocksRadius * SettingsInputHandler.renderDistanceMultiplier) + 50.0f) 
             {
-                termites[i].SetActive(false);
+                termites[i].GetComponent<SpriteRenderer>().enabled = false;
+                termites[i].GetComponent<Rigidbody2D>().isKinematic = true;
+                termites[i].GetComponent<CapsuleCollider2D>().enabled = false;
+                termites[i].GetComponent<Termite>().enabled = false;
                 termites[i].transform.position = termites[i].GetComponent<Termite>().castlePosition;
             }
 
             else
             {
-                termites[i].SetActive(true);
+                termites[i].GetComponent<SpriteRenderer>().enabled = true;
+                termites[i].GetComponent<Rigidbody2D>().isKinematic = false;
+                termites[i].GetComponent<CapsuleCollider2D>().enabled = true;
+                termites[i].GetComponent<Termite>().enabled = true;
+            }
+        }
+    }
+    public void LoadCapybaras()
+    {
+        for (int i = 0; i < capybaras.Length; i++)
+        {
+            float distance = Mathf.Abs(Vector3.Distance(player.transform.position, capybaras[i].transform.position) / 0.32f);
+
+            if (distance > (Player.visibleBlocksRadius * SettingsInputHandler.renderDistanceMultiplier) + 50.0f)
+            {
+                capybaras[i].GetComponent<SpriteRenderer>().enabled = false;
+                capybaras[i].GetComponent<Rigidbody2D>().isKinematic = true;
+                capybaras[i].GetComponent<CapsuleCollider2D>().enabled = false;
+                capybaras[i].GetComponent<Capybara>().enabled = false;
+                capybaras[i].transform.position = new Vector3(capybaras[i].GetComponent<Capybara>().startingPosition.x, capybaras[i].GetComponent<Capybara>().startingPosition.y + 2, 0); 
+            }
+
+            else
+            {
+                capybaras[i].GetComponent<SpriteRenderer>().enabled = true;
+                capybaras[i].GetComponent<Rigidbody2D>().isKinematic = false;
+                capybaras[i].GetComponent<CapsuleCollider2D>().enabled = true;
+                capybaras[i].GetComponent<Capybara>().enabled = true;
             }
         }
     }
@@ -448,7 +498,7 @@ public class GenerateMap : MonoBehaviour, Persistance
         {
             float distance = Mathf.Abs(Vector3.Distance(player.transform.position, mapChunks[i].transform.GetChild(0).position) / 0.32f);
             
-            if(distance > (Player.visibleBlocksRadius * SettingsInputHandler.renderDistanceMultiplier) + 40.0f)
+            if(distance > (Player.visibleBlocksRadius * SettingsInputHandler.renderDistanceMultiplier) + 50.0f)
             {
                 mapChunks[i].SetActive(false);
             }
@@ -618,6 +668,45 @@ public class GenerateMap : MonoBehaviour, Persistance
             }
         }
     }
+    public void PlaceTermitesOverTime()
+    {
+        if(termites.Length <= 50)
+        {
+            float interval = 1200.0f;
+            float time = 0f;
+
+            time += Time.deltaTime;
+
+            while (time >= interval)
+            {
+                PlaceTermites();
+                time -= interval;
+            }
+        }
+    }
+    public void PlaceCapybaras()
+    {
+        foreach (GameObject wetlandsFloorBlock in wetlandsFloorBlocks)
+        {
+            SpawnCapybara(wetlandsFloorBlock.transform.position.x, wetlandsFloorBlock.transform.position.y + 1);
+        }
+    }
+    public void PlaceCapybarasOverTime()
+    {
+        if(capybaras.Length <= 50)
+        {
+            float interval = 1200.0f;
+            float time = 0f;
+
+            time += Time.deltaTime;
+
+            while (time >= interval)
+            {
+                PlaceCapybaras();
+                time -= interval;
+            }
+        }
+    }
     public void SaveTermiteCastles()
     {
         termiteCastles.Clear();
@@ -640,5 +729,16 @@ public class GenerateMap : MonoBehaviour, Persistance
         termiteScript.castlePosition = new Vector2((x * 0.32f) + castleX, (y * 0.32f) + castleY);
         termiteScript.castleMid = castleX;
         termiteScript.castleHeight = castleY;
+    }
+    public void SpawnCapybara(float x, float y)
+    {
+        var random = new System.Random();
+        double capybaraChance = random.NextDouble();
+
+        if(capybaraChance < 0.05)
+        {
+            GameObject spawnedCapybara = Instantiate(capybara);
+            spawnedCapybara.transform.position = new Vector2(x, y);
+        }
     }
 }

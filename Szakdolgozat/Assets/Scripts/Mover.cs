@@ -66,14 +66,14 @@ public class Mover : Interactable
             canJump = false;
         }
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+    protected void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.layer == 9)
         {
             isGrounded = true;
         }
     }
-    private void OnCollisionExit2D(Collision2D collision)
+    protected void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.layer == 9)
         {

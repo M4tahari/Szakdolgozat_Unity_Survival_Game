@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 446910169}
   - component: {fileID: 446910170}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: TermiteHealthBarCurrent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 964828535}
   - component: {fileID: 964828536}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: TermiteHealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1769153704}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RayCastHit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -212,7 +212,7 @@ GameObject:
   - component: {fileID: 6604484862464628306}
   - component: {fileID: 3920891138608740789}
   - component: {fileID: -5798156253906538509}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Termite
   m_TagString: Termite
   m_Icon: {fileID: 0}
@@ -338,7 +338,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc796a7c8a647394aad9446c8ea167b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 4
+  radius: 5
   maxHealthPoints: 70
   currentHealthPoints: 70
   walkSpeed: 1
@@ -346,7 +346,7 @@ MonoBehaviour:
   currentSpeed: 1
   pushRecoverySpeed: 1
   pushForce: 50
-  damageImmunityTime: 3
+  damageImmunityTime: 1
   exponentialPenalty: 1
   fatigueTimer: 0
   ySpeed: 1.5
@@ -358,7 +358,7 @@ MonoBehaviour:
   staminaRecoveryRate: 10
   maxHealthBar: {fileID: 964828534}
   currentHealthBar: {fileID: 446910168}
-  attackDamage: 10
+  attackDamage: 20
   chaseLength: 20
   castlePosition: {x: 0, y: 0, z: 0}
   castleMid: 0
