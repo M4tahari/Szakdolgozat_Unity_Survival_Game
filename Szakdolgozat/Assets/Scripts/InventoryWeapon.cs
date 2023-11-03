@@ -4,35 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InventoryWeapon : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class InventoryWeapon : InventoryEntity
 {
-    [Header("UI")]
-    public Image image;
-    [HideInInspector] public Item item;
-    [HideInInspector] public Transform parentAfterDrag;
     public Weapon weapon;
-    public void InitializeItem(Item newItem)
-    {
-        item = newItem;
-        image.sprite = item.sprite;
-    }
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        image.raycastTarget = false;
-        parentAfterDrag = transform.parent;
-        transform.SetParent(transform.root);
-    }
-    public void OnDrag(PointerEventData eventData)
-    {
-        transform.position = Input.mousePosition;
-    }
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        image.raycastTarget = true;
-        transform.SetParent(parentAfterDrag);
-    }
-    public void OnDestroy()
-    {
-        item.currentAmount = 0;
-    }
 }

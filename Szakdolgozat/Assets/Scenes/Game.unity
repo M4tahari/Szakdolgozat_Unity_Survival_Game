@@ -25497,9 +25497,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1912242774}
     - target: {fileID: 4200000183406527478, guid: e40a031d391d23849988c899aa0f3f0e, type: 3}
+      propertyPath: knife
+      value: 
+      objectReference: {fileID: 5443971360763074848, guid: 07223c35c16352b4da361bef16a182ba, type: 3}
+    - target: {fileID: 4200000183406527478, guid: e40a031d391d23849988c899aa0f3f0e, type: 3}
+      propertyPath: spear
+      value: 
+      objectReference: {fileID: 5443971360763074848, guid: a1900a5cb333430409da4a1cf6b95aa7, type: 3}
+    - target: {fileID: 4200000183406527478, guid: e40a031d391d23849988c899aa0f3f0e, type: 3}
       propertyPath: stick
       value: 
       objectReference: {fileID: 11400000, guid: 8b49c2f14d121554a9fef60a7b1e1fe5, type: 2}
+    - target: {fileID: 4200000183406527478, guid: e40a031d391d23849988c899aa0f3f0e, type: 3}
+      propertyPath: sword
+      value: 
+      objectReference: {fileID: 5443971360763074848, guid: 83d1ef859bb828844b781cb49b53d022, type: 3}
     - target: {fileID: 4200000183406527478, guid: e40a031d391d23849988c899aa0f3f0e, type: 3}
       propertyPath: player
       value: 

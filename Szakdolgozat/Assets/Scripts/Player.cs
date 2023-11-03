@@ -24,7 +24,7 @@ public class Player : Fighter, Persistance
     private Collider2D[] collisions = new Collider2D[10];
     public SerializableDictionary<SerializableDictionary<Item, Destroyable>, SerializableDictionary<int, int>> items;
     public SerializableDictionary<SerializableDictionary<Item, Weapon>, int> weapons;
-    public SerializableDictionary<Item, SerializableDictionary<int, int>> materials;
+    public SerializableDictionary<SerializableDictionary<int, int>, Item> materials;
     private void Awake()
     {
         this.stamina = totalStamina;
