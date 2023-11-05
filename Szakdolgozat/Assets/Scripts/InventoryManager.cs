@@ -25,11 +25,15 @@ public class InventoryManager : MonoBehaviour
     public GameObject knife;
     public GameObject sword;
     public GameObject spear;
+    public GameObject axe;
+    public GameObject pickaxe;
     [HideInInspector] public bool canPlace = true;
     private bool stickCraft = false;
     private bool knifeCraft = false;
     private bool swordCraft = false;
     private bool spearCraft = false;
+    private bool axeCraft = false;
+    private bool pickaxeCraft = false;
     private bool readyToCraft = false;
 
     public int selectedSlot = -1;
@@ -377,6 +381,23 @@ public class InventoryManager : MonoBehaviour
                         }
                     }
                 }
+
+                else if(item.count > 1 && item.count % 2 == 1)
+                {
+                    item.count -= 1;
+                    item.RefreshCount();
+
+                    for (int i = 0; i < inventorySlots.Length; i++)
+                    {
+                        InventorySlot slot = inventorySlots[i];
+
+                        if (slot != null && slot.transform.childCount == 0)
+                        {
+                            SpawnNewItems(item.item, slot, item.destroyable, 1);
+                            break;
+                        }
+                    }
+                }
             }
         }
     }
@@ -398,6 +419,23 @@ public class InventoryManager : MonoBehaviour
                         if (slot != null && slot.transform.childCount == 0)
                         {
                             SpawnNewMaterials(material.item, slot, material.count);
+                            break;
+                        }
+                    }
+                }
+
+                if (material.count > 1 && material.count % 2 == 1)
+                {
+                    material.count -= 1;
+                    material.RefreshCount();
+
+                    for (int i = 0; i < inventorySlots.Length; i++)
+                    {
+                        InventorySlot slot = inventorySlots[i];
+
+                        if (slot != null && slot.transform.childCount == 0)
+                        {
+                            SpawnNewMaterials(material.item, slot, 1);
                             break;
                         }
                     }
@@ -641,6 +679,8 @@ public class InventoryManager : MonoBehaviour
         CraftKnife();
         CraftSword();
         CraftSpear();
+        CraftAxe();
+        CraftPickaxe();
     }
     public void CraftStick()
     {
@@ -652,10 +692,15 @@ public class InventoryManager : MonoBehaviour
 
             if (slot)
             {
-                InventorySlot[] allButOne = craftingStationSlots.Skip(i).ToArray();
+                InventorySlot[] allButOne = craftingStationSlots;
 
                 for (int j = 0; j < allButOne.Length; j++)
                 {
+                    if(j == i)
+                    {
+                        continue;
+                    }
+
                     if (allButOne[j].transform.childCount == 0 && slot.transform.childCount == 1)
                     {
                         if (slot.transform.GetChild(0) != null)
@@ -668,6 +713,8 @@ public class InventoryManager : MonoBehaviour
                                 knifeCraft = false;
                                 swordCraft = false;
                                 spearCraft = false;
+                                axeCraft = false;
+                                pickaxeCraft = false;
                             }
                         }
                     }
@@ -690,13 +737,16 @@ public class InventoryManager : MonoBehaviour
                     CheckToDeleteMaterial(craftingResultSlot);
                 }
 
-                else if (stickCraft == true && knifeCraft == false && swordCraft == false && spearCraft == false && readyToCraft == false)
+                else if (stickCraft == true && knifeCraft == false && swordCraft == false && spearCraft == false && 
+                        axeCraft == false && pickaxeCraft == false && readyToCraft == false)
                 {
                     CraftNewMaterial(stick, craftingResultSlot, slot.transform.GetChild(0).GetComponent<InventoryItem>().count * 2);
                     stickCraft = false;
                     knifeCraft = false;
                     swordCraft = false;
                     spearCraft = false;
+                    axeCraft = false;
+                    pickaxeCraft = false;
                     readyToCraft = true;
                 }
 
@@ -713,6 +763,8 @@ public class InventoryManager : MonoBehaviour
                                 knifeCraft = false;
                                 swordCraft= false;
                                 spearCraft = false;
+                                axeCraft = false;
+                                pickaxeCraft = false;
                                 readyToCraft = false;
                             }
                         }
@@ -749,6 +801,8 @@ public class InventoryManager : MonoBehaviour
                                 stickCraft = false;
                                 swordCraft = false;
                                 spearCraft = false;
+                                axeCraft = false;
+                                pickaxeCraft = false;
                             }
                         }
                     }
@@ -779,13 +833,16 @@ public class InventoryManager : MonoBehaviour
             CheckToDeleteWeapon(craftingResultSlot);
         }
 
-        else if (knifeCraft == true && stickCraft == false && swordCraft == false && spearCraft == false && readyToCraft == false)
+        else if (knifeCraft == true && stickCraft == false && swordCraft == false && spearCraft == false &&
+                axeCraft == false && pickaxeCraft == false && readyToCraft == false)
         {
             CraftNewWeapon(knife.transform.GetComponent<Weapon>().itemToPickup, craftingResultSlot, knife.transform.GetComponent<Weapon>());
             stickCraft = false;
             knifeCraft = false;
             swordCraft = false;
             spearCraft = false;
+            axeCraft = false;
+            pickaxeCraft = false;
             readyToCraft = true;
         }
 
@@ -824,6 +881,8 @@ public class InventoryManager : MonoBehaviour
                         stickCraft = false;
                         swordCraft = false;
                         spearCraft = false;
+                        axeCraft = false;
+                        pickaxeCraft = false;
                         readyToCraft = false;
                     }
                 }
@@ -861,6 +920,8 @@ public class InventoryManager : MonoBehaviour
                                 stickCraft = false;
                                 knifeCraft = false;
                                 spearCraft = false;
+                                axeCraft = false;
+                                pickaxeCraft = false;
                             }
                         }
                     }
@@ -892,13 +953,16 @@ public class InventoryManager : MonoBehaviour
             CheckToDeleteWeapon(craftingResultSlot);
         }
 
-        else if (swordCraft == true && stickCraft == false && knifeCraft == false && spearCraft == false && readyToCraft == false)
+        else if (swordCraft == true && stickCraft == false && knifeCraft == false && spearCraft == false && 
+            axeCraft == false && pickaxeCraft == false && readyToCraft == false)
         {
             CraftNewWeapon(sword.transform.GetComponent<Weapon>().itemToPickup, craftingResultSlot, sword.transform.GetComponent<Weapon>());
             stickCraft = false;
             knifeCraft = false;
             swordCraft = false;
             spearCraft = false;
+            axeCraft = false;
+            pickaxeCraft = false;
             readyToCraft = true;
         }
 
@@ -951,6 +1015,8 @@ public class InventoryManager : MonoBehaviour
                         stickCraft = false;
                         knifeCraft = false;
                         spearCraft = false;
+                        axeCraft = false;
+                        pickaxeCraft = false;
                         readyToCraft = false;
                     }
                 }
@@ -988,6 +1054,8 @@ public class InventoryManager : MonoBehaviour
                                 stickCraft = false;
                                 knifeCraft = false;
                                 swordCraft = false;
+                                axeCraft = false;
+                                pickaxeCraft = false;
                             }
                         }
                     }
@@ -1019,13 +1087,16 @@ public class InventoryManager : MonoBehaviour
             CheckToDeleteWeapon(craftingResultSlot);
         }
 
-        else if (spearCraft == true && stickCraft == false && knifeCraft == false && swordCraft == false && readyToCraft == false)
+        else if (spearCraft == true && stickCraft == false && knifeCraft == false && swordCraft == false && 
+            axeCraft == false && pickaxeCraft == false && readyToCraft == false)
         {
             CraftNewWeapon(spear.transform.GetComponent<Weapon>().itemToPickup, craftingResultSlot, spear.transform.GetComponent<Weapon>());
             stickCraft = false;
             knifeCraft = false;
             swordCraft = false;
             spearCraft = false;
+            axeCraft = false;
+            pickaxeCraft = false;
             readyToCraft = true;
         }
 
@@ -1078,6 +1149,375 @@ public class InventoryManager : MonoBehaviour
                         stickCraft = false;
                         knifeCraft = false;
                         swordCraft = false;
+                        axeCraft = false;
+                        pickaxeCraft = false;
+                        readyToCraft = false;
+                    }
+                }
+            }
+        }
+    }
+    public void CraftAxe()
+    {
+        for (int i = 0; i < craftingStationSlots.Length; i++)
+        {
+            if (i == 1 || i == 2 || i == 4 || i == 5 || i == 7)
+            {
+                continue;
+            }
+
+            InventorySlot slot = craftingStationSlots[i];
+
+            if (slot)
+            {
+                if (slot.transform.childCount == 0 && craftingStationSlots[1].transform.childCount == 1 &&
+                    craftingStationSlots[2].transform.childCount == 1 && craftingStationSlots[4].transform.childCount == 1 &&
+                     craftingStationSlots[5].transform.childCount == 1 && craftingStationSlots[7].transform.childCount == 1)
+                {
+                    if (craftingStationSlots[1].transform.GetChild(0) != null && craftingStationSlots[2].transform.GetChild(0) != null &&
+                        craftingStationSlots[4].transform.GetChild(0) != null && craftingStationSlots[5].transform.GetChild(0) != null &&
+                        craftingStationSlots[7].transform.GetChild(0) != null)
+                    {
+                        if (craftingStationSlots[1].transform.GetChild(0).GetComponent<InventoryMaterial>() != null &&
+                            craftingStationSlots[2].transform.GetChild(0).GetComponent<InventoryMaterial>() != null &&
+                            craftingStationSlots[4].transform.GetChild(0).GetComponent<InventoryMaterial>() != null &&
+                            craftingStationSlots[5].transform.GetChild(0).GetComponent<InventoryMaterial>() != null &&
+                            craftingStationSlots[7].transform.GetChild(0).GetComponent<InventoryMaterial>() != null)
+                        {
+                            if (craftingStationSlots[1].transform.GetComponentInChildren<InventoryMaterial>().item.itemName == "Stick" &&
+                                craftingStationSlots[2].transform.GetComponentInChildren<InventoryMaterial>().item.itemName == "Pebble" &&
+                                craftingStationSlots[4].transform.GetComponentInChildren<InventoryMaterial>().item.itemName == "Stick" &&
+                                craftingStationSlots[5].transform.GetComponentInChildren<InventoryMaterial>().item.itemName == "Pebble" &&
+                                craftingStationSlots[7].transform.GetComponentInChildren<InventoryMaterial>().item.itemName == "Stick")
+                            {
+                                axeCraft = true;
+                                stickCraft = false;
+                                knifeCraft = false;
+                                swordCraft = false;
+                                spearCraft = false;
+                                pickaxeCraft = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (craftingResultSlot.transform.childCount == 1)
+        {
+            if (craftingResultSlot.transform.GetChild(0) != null)
+            {
+                if (craftingResultSlot.transform.GetChild(0).GetComponent<InventoryWeapon>() != null)
+                {
+                    if (craftingResultSlot.transform.GetChild(0).GetComponent<InventoryWeapon>().item.itemName == "Stone axe")
+                    {
+                        if (craftingStationSlots[1].transform.childCount == 0 || craftingStationSlots[2].transform.childCount == 0 ||
+                            craftingStationSlots[4].transform.childCount == 0 || craftingStationSlots[5].transform.childCount == 0 ||
+                            craftingStationSlots[7].transform.childCount == 0)
+                        {
+                            axeCraft = false;
+                            readyToCraft = false;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (axeCraft == false && readyToCraft == false)
+        {
+            CheckToDeleteWeapon(craftingResultSlot);
+        }
+
+        else if (axeCraft == true && stickCraft == false && knifeCraft == false && swordCraft == false &&
+            spearCraft == false && pickaxeCraft == false && readyToCraft == false)
+        {
+            CraftNewWeapon(axe.transform.GetComponent<Weapon>().itemToPickup, craftingResultSlot, axe.transform.GetComponent<Weapon>());
+            stickCraft = false;
+            knifeCraft = false;
+            swordCraft = false;
+            spearCraft = false;
+            axeCraft = false;
+            pickaxeCraft = false;
+            readyToCraft = true;
+        }
+
+        if (craftingResultSlot.transform.childCount == 0 && readyToCraft == true)
+        {
+            if (craftingStationSlots[1].transform.childCount == 1 && craftingStationSlots[2].transform.childCount == 1 &&
+                craftingStationSlots[4].transform.childCount == 1 && craftingStationSlots[5].transform.childCount == 1 &&
+                craftingStationSlots[7].transform.childCount == 1)
+            {
+                if (craftingStationSlots[1].transform.GetChild(0) != null && craftingStationSlots[2].transform.GetChild(0) != null &&
+                    craftingStationSlots[4].transform.GetChild(0) != null && craftingStationSlots[5].transform.GetChild(0) != null &&
+                    craftingStationSlots[7].transform.GetChild(0) != null)
+                {
+                    if (craftingStationSlots[1].transform.GetChild(0).GetComponent<InventoryMaterial>() != null &&
+                        craftingStationSlots[2].transform.GetChild(0).GetComponent<InventoryMaterial>() != null &&
+                        craftingStationSlots[4].transform.GetChild(0).GetComponent<InventoryMaterial>() != null &&
+                        craftingStationSlots[5].transform.GetChild(0).GetComponent<InventoryMaterial>() != null &&
+                        craftingStationSlots[7].transform.GetChild(0).GetComponent<InventoryMaterial>() != null)
+                    {
+                        if (craftingStationSlots[1].transform.GetChild(0).GetComponent<InventoryMaterial>().count == 1)
+                        {
+                            DeleteMaterial(craftingStationSlots[2].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>());
+                        }
+
+                        else
+                        {
+                            craftingStationSlots[1].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>().count -= 1;
+                            craftingStationSlots[1].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>().RefreshCount();
+                        }
+
+                        if (craftingStationSlots[2].transform.GetChild(0).GetComponent<InventoryMaterial>().count == 1)
+                        {
+                            DeleteMaterial(craftingStationSlots[2].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>());
+                        }
+
+                        else
+                        {
+                            craftingStationSlots[2].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>().count -= 1;
+                            craftingStationSlots[2].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>().RefreshCount();
+                        }
+
+                        if (craftingStationSlots[4].transform.GetChild(0).GetComponent<InventoryMaterial>().count == 1)
+                        {
+                            DeleteMaterial(craftingStationSlots[4].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>());
+                        }
+
+                        else
+                        {
+                            craftingStationSlots[4].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>().count -= 1;
+                            craftingStationSlots[4].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>().RefreshCount();
+                        }
+
+                        if (craftingStationSlots[5].transform.GetChild(0).GetComponent<InventoryMaterial>().count == 1)
+                        {
+                            DeleteMaterial(craftingStationSlots[5].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>());
+                        }
+
+                        else
+                        {
+                            craftingStationSlots[5].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>().count -= 1;
+                            craftingStationSlots[5].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>().RefreshCount();
+                        }
+
+                        if (craftingStationSlots[7].transform.GetChild(0).GetComponent<InventoryMaterial>().count == 1)
+                        {
+                            DeleteMaterial(craftingStationSlots[4].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>());
+                        }
+
+                        else
+                        {
+                            craftingStationSlots[7].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>().count -= 1;
+                            craftingStationSlots[7].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>().RefreshCount();
+                        }
+
+                        spearCraft = false;
+                        stickCraft = false;
+                        knifeCraft = false;
+                        swordCraft = false;
+                        axeCraft = false;
+                        pickaxeCraft = false;
+                        readyToCraft = false;
+                    }
+                }
+            }
+        }
+    }
+    public void CraftPickaxe()
+    {
+        for (int i = 0; i < craftingStationSlots.Length; i++)
+        {
+            if (i == 0 || i == 1 || i == 2 || i == 4 || i == 5 || i == 6 || i == 8)
+            {
+                continue;
+            }
+
+            InventorySlot slot = craftingStationSlots[i];
+
+            if (slot)
+            {
+                if (slot.transform.childCount == 0 && craftingStationSlots[0].transform.childCount == 1 &&
+                    craftingStationSlots[1].transform.childCount == 1 && craftingStationSlots[2].transform.childCount == 1 &&
+                    craftingStationSlots[4].transform.childCount == 1 && craftingStationSlots[5].transform.childCount == 1 &&
+                    craftingStationSlots[6].transform.childCount == 1 && craftingStationSlots[8].transform.childCount == 1)
+                {
+                    if (craftingStationSlots[0].transform.GetChild(0) != null && craftingStationSlots[1].transform.GetChild(0) != null &&
+                        craftingStationSlots[2].transform.GetChild(0) != null && craftingStationSlots[4].transform.GetChild(0) != null &&
+                        craftingStationSlots[5].transform.GetChild(0) != null && craftingStationSlots[6].transform.GetChild(0) != null &&
+                        craftingStationSlots[8].transform.GetChild(0) != null)
+                    {
+                        if (craftingStationSlots[0].transform.GetChild(0).GetComponent<InventoryMaterial>() != null &&
+                            craftingStationSlots[1].transform.GetChild(0).GetComponent<InventoryMaterial>() != null &&
+                            craftingStationSlots[2].transform.GetChild(0).GetComponent<InventoryMaterial>() != null &&
+                            craftingStationSlots[4].transform.GetChild(0).GetComponent<InventoryMaterial>() != null &&
+                            craftingStationSlots[5].transform.GetChild(0).GetComponent<InventoryMaterial>() != null &&
+                            craftingStationSlots[6].transform.GetChild(0).GetComponent<InventoryMaterial>() != null &&
+                            craftingStationSlots[8].transform.GetChild(0).GetComponent<InventoryMaterial>() != null)
+                        {
+                            if (craftingStationSlots[0].transform.GetComponentInChildren<InventoryMaterial>().item.itemName == "Pebble" &&
+                                craftingStationSlots[1].transform.GetComponentInChildren<InventoryMaterial>().item.itemName == "Pebble" &&
+                                craftingStationSlots[2].transform.GetComponentInChildren<InventoryMaterial>().item.itemName == "Stick" &&
+                                craftingStationSlots[4].transform.GetComponentInChildren<InventoryMaterial>().item.itemName == "Stick" &&
+                                craftingStationSlots[5].transform.GetComponentInChildren<InventoryMaterial>().item.itemName == "Pebble" &&
+                                craftingStationSlots[6].transform.GetComponentInChildren<InventoryMaterial>().item.itemName == "Stick" &&
+                                craftingStationSlots[8].transform.GetComponentInChildren<InventoryMaterial>().item.itemName == "Pebble")
+                            {
+                                pickaxeCraft = true;
+                                stickCraft = false;
+                                knifeCraft = false;
+                                swordCraft = false;
+                                spearCraft = false;
+                                axeCraft = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (craftingResultSlot.transform.childCount == 1)
+        {
+            if (craftingResultSlot.transform.GetChild(0) != null)
+            {
+                if (craftingResultSlot.transform.GetChild(0).GetComponent<InventoryWeapon>() != null)
+                {
+                    if (craftingResultSlot.transform.GetChild(0).GetComponent<InventoryWeapon>().item.itemName == "Stone pickaxe")
+                    {
+                        if (craftingStationSlots[0].transform.childCount == 0 || craftingStationSlots[1].transform.childCount == 0 ||
+                            craftingStationSlots[2].transform.childCount == 0 || craftingStationSlots[4].transform.childCount == 0 ||
+                            craftingStationSlots[5].transform.childCount == 0 || craftingStationSlots[6].transform.childCount == 0 ||
+                            craftingStationSlots[8].transform.childCount == 0)
+                        {
+                            pickaxeCraft = false;
+                            readyToCraft = false;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (pickaxeCraft == false && readyToCraft == false)
+        {
+            CheckToDeleteWeapon(craftingResultSlot);
+        }
+
+        else if (pickaxeCraft == true && stickCraft == false && knifeCraft == false && swordCraft == false &&
+            spearCraft == false && axeCraft == false && readyToCraft == false)
+        {
+            CraftNewWeapon(pickaxe.transform.GetComponent<Weapon>().itemToPickup, craftingResultSlot, pickaxe.transform.GetComponent<Weapon>());
+            stickCraft = false;
+            knifeCraft = false;
+            swordCraft = false;
+            spearCraft = false;
+            axeCraft = false;
+            pickaxeCraft = false;
+            readyToCraft = true;
+        }
+
+        if (craftingResultSlot.transform.childCount == 0 && readyToCraft == true)
+        {
+            if (craftingStationSlots[0].transform.childCount == 1 && craftingStationSlots[1].transform.childCount == 1 &&
+                craftingStationSlots[2].transform.childCount == 1 && craftingStationSlots[4].transform.childCount == 1 &&
+                craftingStationSlots[5].transform.childCount == 1 && craftingStationSlots[6].transform.childCount == 1 &&
+                craftingStationSlots[8].transform.childCount == 1)
+            {
+                if (craftingStationSlots[0].transform.GetChild(0) != null && craftingStationSlots[1].transform.GetChild(0) != null &&
+                    craftingStationSlots[2].transform.GetChild(0) != null && craftingStationSlots[4].transform.GetChild(0) != null &&
+                    craftingStationSlots[5].transform.GetChild(0) != null && craftingStationSlots[6].transform.GetChild(0) != null &&
+                    craftingStationSlots[8].transform.GetChild(0) != null)
+                {
+                    if (craftingStationSlots[0].transform.GetChild(0).GetComponent<InventoryMaterial>() != null &&
+                        craftingStationSlots[1].transform.GetChild(0).GetComponent<InventoryMaterial>() != null &&
+                        craftingStationSlots[2].transform.GetChild(0).GetComponent<InventoryMaterial>() != null &&
+                        craftingStationSlots[4].transform.GetChild(0).GetComponent<InventoryMaterial>() != null &&
+                        craftingStationSlots[5].transform.GetChild(0).GetComponent<InventoryMaterial>() != null &&
+                        craftingStationSlots[6].transform.GetChild(0).GetComponent<InventoryMaterial>() != null &&
+                        craftingStationSlots[8].transform.GetChild(0).GetComponent<InventoryMaterial>() != null)
+                    {
+                        if (craftingStationSlots[0].transform.GetChild(0).GetComponent<InventoryMaterial>().count == 1)
+                        {
+                            DeleteMaterial(craftingStationSlots[0].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>());
+                        }
+
+                        else
+                        {
+                            craftingStationSlots[0].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>().count -= 1;
+                            craftingStationSlots[0].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>().RefreshCount();
+                        }
+
+                        if (craftingStationSlots[1].transform.GetChild(0).GetComponent<InventoryMaterial>().count == 1)
+                        {
+                            DeleteMaterial(craftingStationSlots[1].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>());
+                        }
+
+                        else
+                        {
+                            craftingStationSlots[1].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>().count -= 1;
+                            craftingStationSlots[1].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>().RefreshCount();
+                        }
+
+                        if (craftingStationSlots[2].transform.GetChild(0).GetComponent<InventoryMaterial>().count == 1)
+                        {
+                            DeleteMaterial(craftingStationSlots[2].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>());
+                        }
+
+                        else
+                        {
+                            craftingStationSlots[2].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>().count -= 1;
+                            craftingStationSlots[2].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>().RefreshCount();
+                        }
+
+                        if (craftingStationSlots[4].transform.GetChild(0).GetComponent<InventoryMaterial>().count == 1)
+                        {
+                            DeleteMaterial(craftingStationSlots[4].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>());
+                        }
+
+                        else
+                        {
+                            craftingStationSlots[4].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>().count -= 1;
+                            craftingStationSlots[4].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>().RefreshCount();
+                        }
+
+                        if (craftingStationSlots[5].transform.GetChild(0).GetComponent<InventoryMaterial>().count == 1)
+                        {
+                            DeleteMaterial(craftingStationSlots[5].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>());
+                        }
+
+                        else
+                        {
+                            craftingStationSlots[5].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>().count -= 1;
+                            craftingStationSlots[5].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>().RefreshCount();
+                        }
+
+                        if (craftingStationSlots[6].transform.GetChild(0).GetComponent<InventoryMaterial>().count == 1)
+                        {
+                            DeleteMaterial(craftingStationSlots[6].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>());
+                        }
+
+                        else
+                        {
+                            craftingStationSlots[6].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>().count -= 1;
+                            craftingStationSlots[6].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>().RefreshCount();
+                        }
+
+                        if (craftingStationSlots[8].transform.GetChild(0).GetComponent<InventoryMaterial>().count == 1)
+                        {
+                            DeleteMaterial(craftingStationSlots[8].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>());
+                        }
+
+                        else
+                        {
+                            craftingStationSlots[8].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>().count -= 1;
+                            craftingStationSlots[8].transform.GetChild(0).GetComponentInChildren<InventoryMaterial>().RefreshCount();
+                        }
+
+                        spearCraft = false;
+                        stickCraft = false;
+                        knifeCraft = false;
+                        swordCraft = false;
+                        axeCraft = false;
+                        pickaxeCraft = false;
                         readyToCraft = false;
                     }
                 }
