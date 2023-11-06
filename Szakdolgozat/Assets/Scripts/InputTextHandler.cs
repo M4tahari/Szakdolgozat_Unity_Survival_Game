@@ -21,6 +21,7 @@ public class InputTextHandler : MonoBehaviour
     public Dropdown sizeOutput;
     public Slider slider;
     public Toggle toggle;
+    const string characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     public void Start()
     {
         ChooseWorldSize(0);
@@ -50,6 +51,17 @@ public class InputTextHandler : MonoBehaviour
 
             else
             {
+                var random = new System.Random();
+                int length = (int)random.NextSingle(1, 13);
+                char[] result = new char[length];
+
+                for(int i = 0; i < length; i++)
+                {
+                    result[i] = characters[random.Next(characters.Length)];
+                }
+
+                worldName = new string(result);
+
                 Debug.LogError("Ilyen nevű világ már létezik!");
             }
         }

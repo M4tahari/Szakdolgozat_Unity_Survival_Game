@@ -11,10 +11,8 @@ GameObject:
   - component: {fileID: 5443971360763074850}
   - component: {fileID: 5443971360763074851}
   - component: {fileID: 5443971360763074853}
-  - component: {fileID: 4224162282972715261}
-  - component: {fileID: 1707782795}
-  m_Layer: 11
-  m_Name: StoneSword
+  m_Layer: 9
+  m_Name: BarrierBlock
   m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 5443971360763074848}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.83, y: -0.73, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -73,10 +71,10 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1736311511
-  m_SortingLayer: 7
+  m_SortingLayerID: 1603927853
+  m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 3de17ea6df793c04abc3afa01919780f, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -84,7 +82,7 @@ SpriteRenderer:
   m_Size: {x: 0.32, y: 0.32}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!61 &5443971360763074853
@@ -100,56 +98,16 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.00095388293, y: 0.10078651}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.32, y: 0.64}
+    oldSize: {x: 0.32, y: 0.32}
     newSize: {x: 0.32, y: 0.32}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.32221383, y: 0.8481728}
+  m_Size: {x: 0.32, y: 0.32}
   m_EdgeRadius: 0
---- !u!114 &4224162282972715261
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5443971360763074848}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80345a6b32a7a354c902857d7b078cd1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  radius: 1
-  player: {fileID: 0}
-  inventoryManager: {fileID: 0}
-  itemToPickup: {fileID: 11400000, guid: 4e5897f0dc2911548aa1fa8c66d197a6, type: 2}
-  attackDamage: 12
-  attackSpeed: 0.75
-  pushForce: 50
-  staminaDrain: 20
---- !u!95 &1707782795
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5443971360763074848}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: eebecbd8178f69e40b4d8f21f3d672ba, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0

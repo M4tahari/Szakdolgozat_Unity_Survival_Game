@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,6 +22,14 @@ public class GenerateMap : MonoBehaviour, Persistance
     public GameObject wetlandsLeaves;
     public GameObject wetlandsTreeLogBlock;
     public GameObject termiteCastleWallBlock;
+
+    [Header("Hatter blokkok")]
+    public GameObject jungleBackgroundBlock;
+    public GameObject termitePlainsBackgroundBlock;
+    public GameObject wetlandsBackgroundBlock;
+    public GameObject skyBackgroundBlock;
+    public GameObject BarrierBlock;
+    public GameObject BarrierParent;
 
     [Header("Palya adatok")]
     public string worldName;
@@ -70,7 +78,7 @@ public class GenerateMap : MonoBehaviour, Persistance
     private List<Vector2> blockPositions = new List<Vector2>();
     private int blockCount = 0;
     private bool alreadyCreated = false;
-    public void Start()
+    public void Awake()
     {
         if (alreadyCreated == false)
         {
@@ -124,11 +132,35 @@ public class GenerateMap : MonoBehaviour, Persistance
         else
         {
             GenerateChunks();
+
+            for (int i = -1; i < mapSize + 1; i++)
+            {
+                float height = 42;
+
+                for (int j = -1; j < (height * 3) + 1; j++)
+                {
+                    if (j == -1 || j == height * 3)
+                    {
+                        PlaceBarrier(BarrierBlock, i, j);
+                    }
+
+                    if (i == -1 || i == mapSize)
+                    {
+                        PlaceBarrier(BarrierBlock, i, j);
+                    }
+                }
+            }
+
             foreach (KeyValuePair<SerializableDictionary<Vector2, string>, int> blockPos in blocks)
             {
                 foreach (var a in blockPos.Key)
                 {
-                    if (a.Value.Contains("JungleFloorBlock(Clone)"))
+                    if (a.Value.Contains("SkyBackgroundBlock(Clone)"))
+                    {
+                        PlaceLoadedBlock(skyBackgroundBlock, (int)a.Key.x, (int)a.Key.y, blockPos.Value);
+                    }
+
+                    else if (a.Value.Contains("JungleFloorBlock(Clone)"))
                     {
                         PlaceLoadedBlock(jungleGroundBlock, (int)a.Key.x, (int)a.Key.y, blockPos.Value);
                     }
@@ -136,6 +168,11 @@ public class GenerateMap : MonoBehaviour, Persistance
                     else if (a.Value.Contains("DirtBlock(Clone)"))
                     {
                         PlaceLoadedBlock(jungleDirtBlock, (int)a.Key.x, (int)a.Key.y, blockPos.Value);
+                    }
+
+                    else if (a.Value.Contains("JungleBackgroundBlock(Clone)"))
+                    {
+                        PlaceLoadedBlock(jungleBackgroundBlock, (int)a.Key.x, (int)a.Key.y, blockPos.Value);
                     }
 
                     else if (a.Value.Contains("JungleTreeLog(Clone)"))
@@ -158,6 +195,11 @@ public class GenerateMap : MonoBehaviour, Persistance
                         PlaceLoadedBlock(termitePlainsSandBlock, (int)a.Key.x, (int)a.Key.y, blockPos.Value);
                     }
 
+                    else if (a.Value.Contains("TermitePlainsBackgroundBlock(Clone)"))
+                    {
+                        PlaceLoadedBlock(termitePlainsBackgroundBlock, (int)a.Key.x, (int)a.Key.y, blockPos.Value);
+                    }
+
                     else if (a.Value.Contains("TermiteCastleWallBlock(Clone)"))
                     {
                         PlaceLoadedBlock(termiteCastleWallBlock, (int)a.Key.x, (int)a.Key.y, blockPos.Value);
@@ -172,6 +214,11 @@ public class GenerateMap : MonoBehaviour, Persistance
                     else if (a.Value.Contains("MudBlock(Clone)"))
                     {
                         PlaceLoadedBlock(wetlandsMudBlock, (int)a.Key.x, (int)a.Key.y, blockPos.Value);
+                    }
+
+                    else if (a.Value.Contains("WetlandsBackgroundBlock(Clone)"))
+                    {
+                        PlaceLoadedBlock(wetlandsBackgroundBlock, (int)a.Key.x, (int)a.Key.y, blockPos.Value);
                     }
 
                     else if (a.Value.Contains("WetlandsTreeLog(Clone)"))
@@ -242,9 +289,32 @@ public class GenerateMap : MonoBehaviour, Persistance
     }
     public void GenerateTerrain()
     {
+        for (int i = -1; i < mapSize + 1; i++)
+        {
+            float height = 42;
+
+            for(int j = -1; j < (height * 3) + 1; j++)
+            {
+                if(j == -1 || j == height * 3)
+                {
+                    PlaceBarrier(BarrierBlock, i, j);
+                }
+
+                if(i == -1 || i == mapSize)
+                {
+                    PlaceBarrier(BarrierBlock, i, j);
+                }
+            }
+        }
+
         for (int i = 0; i < mapSize; i++)
         {
             float height = Mathf.PerlinNoise((i + seed) * terrainFrequency, seed * terrainFrequency) * heightMultiplier + heightAddition;
+
+            for(int j = (int) height; j < 125; j++)
+            {
+                PlaceBlock(skyBackgroundBlock, i, j);
+            }
 
             for (int j = 0; j < height; j++)
             {
@@ -260,17 +330,38 @@ public class GenerateMap : MonoBehaviour, Persistance
                         {
                             if (currentChunk.tag == "TropicalJungle")
                             {
+                                PlaceBlock(jungleBackgroundBlock, i, j);
                                 PlaceBlock(jungleDirtBlock, i, j);
                             }
 
                             else if (currentChunk.tag == "TermitePlains")
                             {
+                                PlaceBlock(termitePlainsBackgroundBlock, i, j);
                                 PlaceBlock(termitePlainsSandBlock, i, j);
                             }
 
                             else if (currentChunk.tag == "Wetlands")
                             {
+                                PlaceBlock(wetlandsBackgroundBlock, i, j);
                                 PlaceBlock(wetlandsMudBlock, i, j);
+                            }
+                        }
+
+                        else
+                        {
+                            if (currentChunk.tag == "TropicalJungle")
+                            {
+                                PlaceBlock(jungleBackgroundBlock, i, j);
+                            }
+
+                            else if (currentChunk.tag == "TermitePlains")
+                            {
+                                PlaceBlock(termitePlainsBackgroundBlock, i, j);
+                            }
+
+                            else if (currentChunk.tag == "Wetlands")
+                            {
+                                PlaceBlock(wetlandsBackgroundBlock, i, j);
                             }
                         }
                     }
@@ -279,16 +370,19 @@ public class GenerateMap : MonoBehaviour, Persistance
                     {
                         if (currentChunk.tag == "TropicalJungle")
                         {
+                            PlaceBlock(jungleBackgroundBlock, i, j);
                             PlaceBlock(jungleDirtBlock, i, j);
                         }
 
                         else if (currentChunk.tag == "TermitePlains")
                         {
+                            PlaceBlock(termitePlainsBackgroundBlock, i, j);
                             PlaceBlock(termitePlainsSandBlock, i, j);
                         }
 
                         else if (currentChunk.tag == "Wetlands")
                         {
+                            PlaceBlock(wetlandsBackgroundBlock, i, j);
                             PlaceBlock(wetlandsMudBlock, i, j);
                         }
                     }
@@ -302,17 +396,38 @@ public class GenerateMap : MonoBehaviour, Persistance
                         {
                             if (currentChunk.tag == "TropicalJungle")
                             {
+                                PlaceBlock(jungleBackgroundBlock, i, j);
                                 PlaceBlock(jungleGroundBlock, i, j);
                             }
 
                             else if (currentChunk.tag == "TermitePlains")
                             {
+                                PlaceBlock(termitePlainsBackgroundBlock, i, j);
                                 PlaceBlock(termitePlainsGroundBlock, i, j);
                             }
 
                             else if (currentChunk.tag == "Wetlands")
                             {
+                                PlaceBlock(wetlandsBackgroundBlock, i, j);
                                 PlaceBlock(wetlandsGroundBlock, i, j);
+                            }
+                        }
+
+                        else
+                        {
+                            if (currentChunk.tag == "TropicalJungle")
+                            {
+                                PlaceBlock(jungleBackgroundBlock, i, j);
+                            }
+
+                            else if (currentChunk.tag == "TermitePlains")
+                            {
+                                PlaceBlock(termitePlainsBackgroundBlock, i, j);
+                            }
+
+                            else if (currentChunk.tag == "Wetlands")
+                            {
+                                PlaceBlock(wetlandsBackgroundBlock, i, j);
                             }
                         }
                     }
@@ -321,16 +436,19 @@ public class GenerateMap : MonoBehaviour, Persistance
                     {
                         if (currentChunk.tag == "TropicalJungle")
                         {
+                            PlaceBlock(jungleBackgroundBlock, i, j);
                             PlaceBlock(jungleGroundBlock, i, j);
                         }
 
                         else if (currentChunk.tag == "TermitePlains")
                         {
+                            PlaceBlock(termitePlainsBackgroundBlock, i, j);
                             PlaceBlock(termitePlainsGroundBlock, i, j);
                         }
 
                         else if (currentChunk.tag == "Wetlands")
                         {
+                            PlaceBlock(wetlandsBackgroundBlock, i, j);
                             PlaceBlock(wetlandsGroundBlock, i, j);
                         }
                     }
@@ -450,7 +568,7 @@ public class GenerateMap : MonoBehaviour, Persistance
         {
             float distance = Mathf.Abs(Vector3.Distance(player.transform.position, termites[i].transform.position) / 0.32f);
 
-            if(distance > (Player.visibleBlocksRadius * SettingsInputHandler.renderDistanceMultiplier) + 50.0f) 
+            if(distance > (Player.visibleBlocksRadius * SettingsInputHandler.renderDistanceMultiplier * 6) + 10.0f) 
             {
                 termites[i].GetComponent<SpriteRenderer>().enabled = false;
                 termites[i].GetComponent<Rigidbody2D>().isKinematic = true;
@@ -474,7 +592,7 @@ public class GenerateMap : MonoBehaviour, Persistance
         {
             float distance = Mathf.Abs(Vector3.Distance(player.transform.position, capybaras[i].transform.position) / 0.32f);
 
-            if (distance > (Player.visibleBlocksRadius * SettingsInputHandler.renderDistanceMultiplier) + 50.0f)
+            if (distance > (Player.visibleBlocksRadius * SettingsInputHandler.renderDistanceMultiplier * 6) + 10.0f)
             {
                 capybaras[i].GetComponent<SpriteRenderer>().enabled = false;
                 capybaras[i].GetComponent<Rigidbody2D>().isKinematic = true;
@@ -498,7 +616,7 @@ public class GenerateMap : MonoBehaviour, Persistance
         {
             float distance = Mathf.Abs(Vector3.Distance(player.transform.position, mapChunks[i].transform.GetChild(0).position) / 0.32f);
             
-            if(distance > (Player.visibleBlocksRadius * SettingsInputHandler.renderDistanceMultiplier) + 50.0f)
+            if(distance > (Player.visibleBlocksRadius * SettingsInputHandler.renderDistanceMultiplier * 6) + 40.0f)
             {
                 mapChunks[i].SetActive(false);
             }
@@ -521,6 +639,12 @@ public class GenerateMap : MonoBehaviour, Persistance
         {
             blockPositions.Add(block.transform.position);
         }
+    }
+    public void PlaceBarrier(GameObject barrier, int x, int y)
+    {
+        GameObject block = Instantiate(barrier);
+        block.transform.parent = BarrierParent.transform;
+        block.transform.position = new Vector2(x * 0.32f, y * 0.32f);
     }
     public void PlaceLoadedBlock(GameObject spawnedBlock, int x, int y, int chunk)
     {

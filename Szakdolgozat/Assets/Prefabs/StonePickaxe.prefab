@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 5443971360763074851}
   - component: {fileID: 5443971360763074853}
   - component: {fileID: 4224162282972715261}
-  m_Layer: 9
+  - component: {fileID: 1196993356}
+  m_Layer: 11
   m_Name: StonePickaxe
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -28,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 5443971360763074848}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.83, y: -0.73, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -72,8 +73,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1603927853
-  m_SortingLayer: 4
+  m_SortingLayerID: 1736311511
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 4713fefe97fe2b74eaa3f89f31305b42, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -99,7 +100,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.006532848, y: 0.014072657}
+  m_Offset: {x: 0.009535223, y: 0.09213564}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -110,7 +111,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.74705124, y: 0.6747451}
+  m_Size: {x: 0.98124045, y: 0.83087105}
   m_EdgeRadius: 0
 --- !u!114 &4224162282972715261
 MonoBehaviour:
@@ -128,5 +129,27 @@ MonoBehaviour:
   player: {fileID: 0}
   inventoryManager: {fileID: 0}
   itemToPickup: {fileID: 11400000, guid: 0f755a69f298c2e45a0bab7f8ccf3fb7, type: 2}
-  attackDamage: 10
-  attackSpeed: 2
+  attackDamage: 6
+  attackSpeed: 1
+  pushForce: 40
+  staminaDrain: 20
+--- !u!95 &1196993356
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5443971360763074848}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 824f8fc1129b9a740a1ae8667d3700bf, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

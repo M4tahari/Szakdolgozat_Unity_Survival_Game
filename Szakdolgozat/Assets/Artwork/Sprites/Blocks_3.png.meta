@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 1023fca8f0670a14cb75918437967ec8
+guid: 2d19057c67d93e749bf8ba8c17fcbd4e
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -116,7 +116,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Wetlands_floor_0
+      name: Jungle_background_block_0
       rect:
         serializedVersion: 2
         x: 0
@@ -124,20 +124,20 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a0d437ab48f6f4546ad04ecfb0c6485e
-      internalID: 459284675
+      spriteID: 65c4e45bd7c213e4698df5ffc575750b
+      internalID: 574949441
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Wetlands_ground_block_0
+      name: Wetlands_background_block_0
       rect:
         serializedVersion: 2
         x: 0
@@ -145,41 +145,20 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 18e0874b76d1e264ab12f30a57239a08
-      internalID: -1218911603
+      spriteID: 84d3bd6300b4c414f9f109bb351ed6b7
+      internalID: -1986435336
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Wetlands_tree_log
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7f46b23ff69b5ec4db53e034b482a3d7
-      internalID: 2007156318
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Wetlands_tree_leaves
+      name: Sky_background_0
       rect:
         serializedVersion: 2
         x: 32
@@ -193,8 +172,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 48ca32c02413e2b4789d53bb13546541
-      internalID: 1904133140
+      spriteID: 4eb9f1f8a8d0b044eb86afbc0453360f
+      internalID: -689472360
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Termite_plains_background_block_0
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 672924c5e1eabe2478d6b9a749c64b7f
+      internalID: -576954705
       vertices: []
       indices: 
       edges: []
@@ -210,10 +210,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Wetlands_ground_block_0: -1218911603
-      Wetlands_tree_log: 2007156318
-      Wetlands_tree_leaves: 1904133140
-      Wetlands_floor_0: 459284675
+      Wetlands_background_block_0: -1986435336
+      Sky_background_0: -689472360
+      Termite_plains_background_block_0: -576954705
+      Jungle_background_block_0: 574949441
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

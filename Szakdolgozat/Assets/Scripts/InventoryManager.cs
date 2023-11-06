@@ -56,11 +56,11 @@ public class InventoryManager : MonoBehaviour
         {
             craftingStationSlots[i].Select();
         }
+
+        ChangeSelectedSlot(0);
     }
     public void Start()
     {
-        ChangeSelectedSlot(0);
-
         if(player.items != null)
         {
             foreach(KeyValuePair<SerializableDictionary<Item, Destroyable>, SerializableDictionary<int, int>> invItem in player.items)
@@ -96,6 +96,11 @@ public class InventoryManager : MonoBehaviour
                 }
             }
         }
+
+        for(int i = 0;i < player.transform.childCount; i++)
+        {
+            makeWeaponInactive(player.transform.GetChild(i).gameObject);
+        }
     }
     public void Update()
     {
@@ -117,6 +122,7 @@ public class InventoryManager : MonoBehaviour
         player.weapons = GatherAllWeapons();
         player.materials = GatherAllMaterials();
 
+        EquipWeapon();
         Separate();
         Crafting();
     }
@@ -129,6 +135,95 @@ public class InventoryManager : MonoBehaviour
 
         inventorySlots[slotId].Select();
         selectedSlot = slotId;
+    }
+    public void EquipWeapon()
+    {
+        InventorySlot currentSlot = inventorySlots[selectedSlot];
+
+        if (currentSlot != null && player != null)
+        {
+            if(currentSlot.transform.childCount == 1)
+            {
+                if(currentSlot.transform.GetChild(0) != null)
+                {
+                    if (currentSlot.transform.GetChild(0).GetComponent<InventoryWeapon>() != null && player.transform.childCount == 5)
+                    {
+                        switch (currentSlot.transform.GetChild(0).GetComponent<InventoryWeapon>().item.itemName)
+                        {
+                            case "Stone sword":
+                                makeWeaponActive(player.transform.GetChild(0).transform.gameObject);
+                                makeWeaponInactive(player.transform.GetChild(1).transform.gameObject);
+                                makeWeaponInactive(player.transform.GetChild(2).transform.gameObject);
+                                makeWeaponInactive(player.transform.GetChild(3).transform.gameObject);
+                                makeWeaponInactive(player.transform.GetChild(4).transform.gameObject);
+                                break;
+
+                            case "Stone knife":
+                                makeWeaponInactive(player.transform.GetChild(0).transform.gameObject);
+                                makeWeaponActive(player.transform.GetChild(1).transform.gameObject);
+                                makeWeaponInactive(player.transform.GetChild(2).transform.gameObject);
+                                makeWeaponInactive(player.transform.GetChild(3).transform.gameObject);
+                                makeWeaponInactive(player.transform.GetChild(4).transform.gameObject);
+                                break;
+
+                            case "Stone axe":
+                                makeWeaponInactive(player.transform.GetChild(0).transform.gameObject);
+                                makeWeaponInactive(player.transform.GetChild(1).transform.gameObject);
+                                makeWeaponActive(player.transform.GetChild(2).transform.gameObject);
+                                makeWeaponInactive(player.transform.GetChild(3).transform.gameObject);
+                                makeWeaponInactive(player.transform.GetChild(4).transform.gameObject);
+                                break;
+
+                            case "Stone pickaxe":
+                                makeWeaponInactive(player.transform.GetChild(0).transform.gameObject);
+                                makeWeaponInactive(player.transform.GetChild(1).transform.gameObject);
+                                makeWeaponInactive(player.transform.GetChild(2).transform.gameObject);
+                                makeWeaponActive(player.transform.GetChild(3).transform.gameObject);
+                                makeWeaponInactive(player.transform.GetChild(4).transform.gameObject);
+                                break;
+
+                            case "Stone spear":
+                                makeWeaponInactive(player.transform.GetChild(0).transform.gameObject);
+                                makeWeaponInactive(player.transform.GetChild(1).transform.gameObject);
+                                makeWeaponInactive(player.transform.GetChild(2).transform.gameObject);
+                                makeWeaponInactive(player.transform.GetChild(3).transform.gameObject);
+                                makeWeaponActive(player.transform.GetChild(4).transform.gameObject);
+                                break;
+                        }
+                    }
+
+                    else if (currentSlot.transform.GetChild(0).GetComponent<InventoryWeapon>() == null)
+                    {
+                        makeWeaponInactive(player.transform.GetChild(0).transform.gameObject);
+                        makeWeaponInactive(player.transform.GetChild(1).transform.gameObject);
+                        makeWeaponInactive(player.transform.GetChild(2).transform.gameObject);
+                        makeWeaponInactive(player.transform.GetChild(3).transform.gameObject);
+                        makeWeaponInactive(player.transform.GetChild(4).transform.gameObject);
+                    }
+                }
+            }
+
+            else if(currentSlot.transform.childCount == 0)
+            {
+                makeWeaponInactive(player.transform.GetChild(0).transform.gameObject);
+                makeWeaponInactive(player.transform.GetChild(1).transform.gameObject);
+                makeWeaponInactive(player.transform.GetChild(2).transform.gameObject);
+                makeWeaponInactive(player.transform.GetChild(3).transform.gameObject);
+                makeWeaponInactive(player.transform.GetChild(4).transform.gameObject);
+            }
+        }
+    }
+    public void makeWeaponInactive(GameObject weapon)
+    {
+        weapon.GetComponent<SpriteRenderer>().enabled = false;
+        weapon.GetComponent<Weapon>().enabled = false;
+        weapon.GetComponent<Animator>().enabled = false;
+    }
+    public void makeWeaponActive(GameObject weapon)
+    {
+        weapon.GetComponent<SpriteRenderer>().enabled = true;
+        weapon.GetComponent<Weapon>().enabled = true;
+        weapon.GetComponent<Animator>().enabled = true;
     }
     public bool AddItem(Item item, Destroyable destroyable)
     {
@@ -1551,5 +1646,3 @@ public class InventoryManager : MonoBehaviour
         }
     }
 }
-
-

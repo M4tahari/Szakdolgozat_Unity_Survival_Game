@@ -61,6 +61,12 @@ TagManager:
   - name: Blocks
     uniqueID: 1603927853
     locked: 0
+  - name: Entity
+    uniqueID: 2756984581
+    locked: 0
   - name: Player
     uniqueID: 2781944659
+    locked: 0
+  - name: Weapon
+    uniqueID: 1736311511
     locked: 0

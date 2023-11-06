@@ -41,8 +41,14 @@ public class Capybara : Mover
         {
             if (this.currentHealthPoints < this.maxHealthPoints)
             {
-                maxHealthBar.SetActive(true);
-                currentHealthBar.SetActive(true);
+                maxHealthBar.GetComponent<SpriteRenderer>().enabled = true;
+                currentHealthBar.GetComponent<SpriteRenderer>().enabled = true;
+            }
+
+            else
+            {
+                maxHealthBar.GetComponent<SpriteRenderer>().enabled = false;
+                currentHealthBar.GetComponent<SpriteRenderer>().enabled = false;
             }
 
             currentHealthBar.transform.localScale = new Vector2(currentHealthPoints / maxHealthPoints, currentHealthBar.transform.localScale.y);
