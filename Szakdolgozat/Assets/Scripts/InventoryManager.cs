@@ -16,9 +16,11 @@ public class InventoryManager : MonoBehaviour
     public GameObject inventoryItemPrefab;
     public GameObject inventoryWeaponPrefab;
     public GameObject inventoryMaterialPrefab;
+    public GameObject inventoryFoodPrefab;
     private InventoryItem itemInSlot;
     private InventoryWeapon weaponInSlot;
     private InventoryMaterial materialInSlot;
+    private InventoryFood foodInSlot;
     public Item stick;
     public GameObject map;
     public Player player;
@@ -97,6 +99,23 @@ public class InventoryManager : MonoBehaviour
             }
         }
 
+        if(player.foods != null)
+        {
+            foreach (KeyValuePair<SerializableDictionary<SerializableDictionary<int, int>, SerializableDictionary<float, float>>, Item> invFood in player.foods)
+            {
+                foreach (var a in invFood.Key)
+                {
+                    foreach(var b in a.Key)
+                    {
+                        foreach(var c in a.Value)
+                        {
+                            SpawnNewFoods(invFood.Value, inventorySlots[b.Key], b.Value, c.Key, c.Value);
+                        }
+                    }
+                }
+            }
+        }
+
         for(int i = 0;i < player.transform.childCount; i++)
         {
             makeWeaponInactive(player.transform.GetChild(i).gameObject);
@@ -121,9 +140,11 @@ public class InventoryManager : MonoBehaviour
         player.items = GatherAllItems();
         player.weapons = GatherAllWeapons();
         player.materials = GatherAllMaterials();
+        player.foods = GatherAllFoods();
 
         EquipWeapon();
         Separate();
+        Eat();
         Crafting();
     }
     private void ChangeSelectedSlot(int slotId)
@@ -216,12 +237,14 @@ public class InventoryManager : MonoBehaviour
     public void makeWeaponInactive(GameObject weapon)
     {
         weapon.GetComponent<SpriteRenderer>().enabled = false;
+        weapon.GetComponent<BoxCollider2D>().enabled = false;
         weapon.GetComponent<Weapon>().enabled = false;
         weapon.GetComponent<Animator>().enabled = false;
     }
     public void makeWeaponActive(GameObject weapon)
     {
         weapon.GetComponent<SpriteRenderer>().enabled = true;
+        weapon.GetComponent<BoxCollider2D>().enabled = true;
         weapon.GetComponent<Weapon>().enabled = true;
         weapon.GetComponent<Animator>().enabled = true;
     }
@@ -235,9 +258,10 @@ public class InventoryManager : MonoBehaviour
                itemInSlot = slot.GetComponentInChildren<InventoryItem>();
                weaponInSlot = slot.GetComponentInChildren<InventoryWeapon>();
                materialInSlot = slot.GetComponentInChildren<InventoryMaterial>();
+               foodInSlot = slot.GetComponentInChildren<InventoryFood>();
             }
             
-            if (itemInSlot != null && weaponInSlot == null && materialInSlot == null && itemInSlot.item == item && itemInSlot.count < itemInSlot.item.stackAmount)
+            if (itemInSlot != null && weaponInSlot == null && materialInSlot == null && foodInSlot == null && itemInSlot.item == item && itemInSlot.count < itemInSlot.item.stackAmount)
             {
                 itemInSlot.count++;
                 itemInSlot.item.currentAmount++;
@@ -254,9 +278,10 @@ public class InventoryManager : MonoBehaviour
                 itemInSlot = slot.GetComponentInChildren<InventoryItem>();
                 weaponInSlot = slot.GetComponentInChildren<InventoryWeapon>();
                 materialInSlot = slot.GetComponentInChildren<InventoryMaterial>();
+                foodInSlot = slot.GetComponentInChildren<InventoryFood>();
             }
            
-            if(itemInSlot == null && weaponInSlot == null && materialInSlot == null)
+            if(itemInSlot == null && weaponInSlot == null && materialInSlot == null && foodInSlot == null)
             {
                 SpawnNewItem(item, slot, destroyable);
                 return true;
@@ -275,9 +300,10 @@ public class InventoryManager : MonoBehaviour
                 itemInSlot = slot.GetComponentInChildren<InventoryItem>();
                 weaponInSlot = slot.GetComponentInChildren<InventoryWeapon>();
                 materialInSlot = slot.GetComponentInChildren<InventoryMaterial>();
+                foodInSlot = slot.GetComponentInChildren<InventoryFood>();
             }
 
-            if (weaponInSlot != null && itemInSlot == null && materialInSlot == null && weaponInSlot.item == item)
+            if (weaponInSlot != null && itemInSlot == null && materialInSlot == null && foodInSlot == null && weaponInSlot.item == item)
             {
                 return true;
             }
@@ -291,9 +317,10 @@ public class InventoryManager : MonoBehaviour
                 itemInSlot = slot.GetComponentInChildren<InventoryItem>();
                 weaponInSlot = slot.GetComponentInChildren<InventoryWeapon>();
                 materialInSlot = slot.GetComponentInChildren<InventoryMaterial>();
+                foodInSlot = slot.GetComponentInChildren<InventoryFood>();
             }
 
-            if (weaponInSlot == null && itemInSlot == null && materialInSlot == null)
+            if (weaponInSlot == null && itemInSlot == null && materialInSlot == null && foodInSlot == null)
             {
                 SpawnNewWeapon(item, slot, weapon);
                 return true;
@@ -312,9 +339,10 @@ public class InventoryManager : MonoBehaviour
                 itemInSlot = slot.GetComponentInChildren<InventoryItem>();
                 weaponInSlot = slot.GetComponentInChildren<InventoryWeapon>();
                 materialInSlot = slot.GetComponentInChildren<InventoryMaterial>();
+                foodInSlot = slot.GetComponentInChildren<InventoryFood>();
             }
 
-            if (materialInSlot != null && itemInSlot == null && weaponInSlot == null && materialInSlot.item == item && materialInSlot.count < materialInSlot.item.stackAmount)
+            if (materialInSlot != null && itemInSlot == null && weaponInSlot == null && foodInSlot == null && materialInSlot.item == item && materialInSlot.count < materialInSlot.item.stackAmount)
             {
                 materialInSlot.count++;
                 materialInSlot.item.currentAmount++;
@@ -331,11 +359,54 @@ public class InventoryManager : MonoBehaviour
                 itemInSlot = slot.GetComponentInChildren<InventoryItem>();
                 weaponInSlot = slot.GetComponentInChildren<InventoryWeapon>();
                 materialInSlot = slot.GetComponentInChildren<InventoryMaterial>();
+                foodInSlot = slot.GetComponentInChildren<InventoryFood>();
             }
 
-            if (materialInSlot == null && itemInSlot == null && weaponInSlot == null)
+            if (materialInSlot == null && itemInSlot == null && weaponInSlot == null && foodInSlot == null)
             {
                 SpawnNewMaterial(item, slot);
+                return true;
+            }
+        }
+
+        return false;
+    }
+    public bool AddFood(Item item, float foodValue, float thirstValue)
+    {
+        for (int i = 0; i < inventorySlots.Length; i++)
+        {
+            InventorySlot slot = inventorySlots[i];
+            if (slot)
+            {
+                itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+                weaponInSlot = slot.GetComponentInChildren<InventoryWeapon>();
+                materialInSlot = slot.GetComponentInChildren<InventoryMaterial>();
+                foodInSlot = slot.GetComponentInChildren<InventoryFood>();
+            }
+
+            if (foodInSlot != null && itemInSlot == null && weaponInSlot == null && materialInSlot == null && foodInSlot.item == item && foodInSlot.count < foodInSlot.item.stackAmount)
+            {
+                foodInSlot.count++;
+                foodInSlot.item.currentAmount++;
+                foodInSlot.RefreshCount();
+                return true;
+            }
+        }
+
+        for (int i = 0; i < inventorySlots.Length; i++)
+        {
+            InventorySlot slot = inventorySlots[i];
+            if (slot)
+            {
+                itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+                weaponInSlot = slot.GetComponentInChildren<InventoryWeapon>();
+                materialInSlot = slot.GetComponentInChildren<InventoryMaterial>();
+                foodInSlot = slot.GetComponentInChildren<InventoryFood>();
+            }
+
+            if (foodInSlot == null && itemInSlot == null && weaponInSlot == null && materialInSlot == null)
+            {
+                SpawnNewFood(item, slot, foodValue, thirstValue);
                 return true;
             }
         }
@@ -425,6 +496,34 @@ public class InventoryManager : MonoBehaviour
             inventoryMaterial.RefreshCount();
         }
     }
+    private void SpawnNewFood(Item item, InventorySlot slot, float foodValue, float thirstValue)
+    {
+        if (slot)
+        {
+            GameObject newItemObject;
+            newItemObject = Instantiate(inventoryFoodPrefab, slot.transform);
+            InventoryFood inventoryFood = newItemObject.GetComponent<InventoryFood>();
+            inventoryFood.count = 1;
+            inventoryFood.foodValue = foodValue;
+            inventoryFood.thirstValue = thirstValue;
+            inventoryFood.InitializeItem(item);
+            inventoryFood.RefreshCount();
+        }
+    }
+    private void SpawnNewFoods(Item item, InventorySlot slot, int currentAmount, float foodValue, float thirstValue)
+    {
+        if (slot)
+        {
+            GameObject newItemObject;
+            newItemObject = Instantiate(inventoryFoodPrefab, slot.transform);
+            InventoryFood inventoryFood = newItemObject.GetComponent<InventoryFood>();
+            inventoryFood.count = currentAmount;
+            inventoryFood.foodValue = foodValue;
+            inventoryFood.thirstValue = thirstValue;
+            inventoryFood.InitializeItem(item);
+            inventoryFood.RefreshCount();
+        }
+    }
     private void SpawnNewWeapon(Item item, InventorySlot slot, Weapon weapon)
     {
         if (slot)
@@ -496,6 +595,24 @@ public class InventoryManager : MonoBehaviour
             }
         }
     }
+    public void MergeMaterials(InventoryMaterial material, InventoryMaterial material2)
+    {
+        if (material.count + material2.count <= material.item.stackAmount)
+        {
+            material.count += material2.count;
+            material.item.currentAmount += material2.item.currentAmount;
+            material.RefreshCount();
+            DeleteMaterial(material2);
+        }
+
+        else
+        {
+            material2.count -= (material.item.stackAmount - material.count);
+            material2.RefreshCount();
+            material.count = material.item.stackAmount;
+            material.RefreshCount();
+        }
+    }
     public void SeparateMaterials(InventoryMaterial material)
     {
         if (material.isOverMaterial)
@@ -538,10 +655,132 @@ public class InventoryManager : MonoBehaviour
             }
         }
     }
+    public void MergeFoods(InventoryFood food, InventoryFood food2)
+    {
+        if (food.count + food2.count <= food.item.stackAmount)
+        {
+            food.count += food2.count;
+            food.item.currentAmount += food2.item.currentAmount;
+            food.RefreshCount();
+            DeleteFood(food2);
+        }
+
+        else
+        {
+            food2.count -= (food.item.stackAmount - food.count);
+            food2.RefreshCount();
+            food.count = food.item.stackAmount;
+            food.RefreshCount();
+        }
+    }
+    public void SeparateFoods(InventoryFood food)
+    {
+        if (food.isOverFood)
+        {
+            if (Input.GetKeyDown(KeyCode.V))
+            {
+                if (food.count > 1 && food.count % 2 == 0)
+                {
+                    food.count /= 2;
+                    food.RefreshCount();
+
+                    for (int i = 0; i < inventorySlots.Length; i++)
+                    {
+                        InventorySlot slot = inventorySlots[i];
+
+                        if (slot != null && slot.transform.childCount == 0)
+                        {
+                            SpawnNewFoods(food.item, slot, food.count, food.foodValue, food.thirstValue);
+                            break;
+                        }
+                    }
+                }
+
+                if (food.count > 1 && food.count % 2 == 1)
+                {
+                    food.count -= 1;
+                    food.RefreshCount();
+
+                    for (int i = 0; i < inventorySlots.Length; i++)
+                    {
+                        InventorySlot slot = inventorySlots[i];
+
+                        if (slot != null && slot.transform.childCount == 0)
+                        {
+                            SpawnNewFoods(food.item, slot, 1, food.foodValue, food.thirstValue);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    public void EatFood(InventoryFood food)
+    {
+        if(food.isOverFood)
+        {
+            if(Input.GetKeyDown(KeyCode.E))
+            {
+                if(player.currentHungerPoints + food.foodValue < player.maxHungerPoints)
+                {
+                    player.currentHungerPoints += food.foodValue;
+                }
+
+                else
+                {
+                    player.currentHungerPoints = player.maxHungerPoints;
+                }
+
+                if (player.currentHydrationPoints + food.thirstValue < player.maxHydrationPoints)
+                {
+                    player.currentHydrationPoints += food.thirstValue;
+                }
+
+                else
+                {
+                    player.currentHydrationPoints = player.maxHydrationPoints;
+                }
+
+                if (food.count > 1)
+                {
+                    food.count -= 1;
+                    food.RefreshCount();
+                }
+
+                else if(food.count == 1)
+                {
+                    DeleteFood(food);
+                }
+            }
+        }
+    }
+    public void Eat()
+    {
+        InventoryFood[] allFoodsInInventory = new InventoryFood[inventorySlots.Length];
+
+        for (int i = 0; i < inventorySlots.Length; i++)
+        {
+            InventorySlot slot = inventorySlots[i];
+
+            if (slot != null && slot.transform.GetComponentInChildren<InventoryFood>() != null)
+            {
+                allFoodsInInventory[i] = slot.transform.GetComponentInChildren<InventoryFood>();
+            }
+        }
+
+        for (int j = 0; j < allFoodsInInventory.Length; j++)
+        {
+            if (allFoodsInInventory[j] != null)
+            {
+                EatFood(allFoodsInInventory[j]);
+            }
+        }
+    }
     public void Separate()
     {
         InventoryItem[] allItemsInInventory = new InventoryItem[inventorySlots.Length];
         InventoryMaterial[] allMaterialsInInventory = new InventoryMaterial[inventorySlots.Length];
+        InventoryFood[] allFoodsInInventory = new InventoryFood[inventorySlots.Length];
 
         for(int i = 0; i < inventorySlots.Length; i++)
         {
@@ -578,23 +817,23 @@ public class InventoryManager : MonoBehaviour
                 SeparateMaterials(allMaterialsInInventory[j]);
             }
         }
-    }
-    public void MergeMaterials(InventoryMaterial material, InventoryMaterial material2)
-    {
-        if (material.count + material2.count <= material.item.stackAmount)
+
+        for (int i = 0; i < inventorySlots.Length; i++)
         {
-            material.count += material2.count;
-            material.item.currentAmount += material2.item.currentAmount;
-            material.RefreshCount();
-            DeleteMaterial(material2);
+            InventorySlot slot = inventorySlots[i];
+
+            if (slot != null && slot.transform.GetComponentInChildren<InventoryFood>() != null)
+            {
+                allFoodsInInventory[i] = slot.transform.GetComponentInChildren<InventoryFood>();
+            }
         }
 
-        else
+        for (int j = 0; j < allFoodsInInventory.Length; j++)
         {
-            material2.count -= (material.item.stackAmount - material.count);
-            material2.RefreshCount();
-            material.count = material.item.stackAmount;
-            material.RefreshCount();
+            if (allFoodsInInventory[j] != null)
+            {
+                SeparateFoods(allFoodsInInventory[j]);
+            }
         }
     }
     public void PlaceItem(InventoryItem inventoryItem)
@@ -641,6 +880,10 @@ public class InventoryManager : MonoBehaviour
     public void DeleteMaterial(InventoryMaterial inventoryMaterial)
     {
         Destroy(inventoryMaterial.gameObject);
+    }
+    public void DeleteFood(InventoryFood inventoryFood)
+    {
+        Destroy(inventoryFood.gameObject);
     }
     public void DeleteWeapon(InventoryWeapon inventoryWeapon)
     {
@@ -767,6 +1010,52 @@ public class InventoryManager : MonoBehaviour
         }
 
         return materials;
+    }
+    public SerializableDictionary<SerializableDictionary<SerializableDictionary<int, int>, SerializableDictionary<float, float>>, Item> GatherAllFoods()
+    {
+        SerializableDictionary<SerializableDictionary<SerializableDictionary<int, int>, SerializableDictionary<float, float>>, Item> foods = new SerializableDictionary<SerializableDictionary<SerializableDictionary<int, int>, SerializableDictionary<float, float>>, Item>();
+
+        for (int i = 0; i < inventorySlots.Length; i++)
+        {
+            InventorySlot slot = inventorySlots[i];
+
+            if (slot)
+            {
+                InventoryFood food = slot.GetComponentInChildren<InventoryFood>();
+                SerializableDictionary<int, int> data = new SerializableDictionary<int, int>();
+                SerializableDictionary<float, float> data2 = new SerializableDictionary<float, float>();
+                SerializableDictionary<SerializableDictionary<int, int>, SerializableDictionary<float, float>> data3 = new SerializableDictionary<SerializableDictionary<int, int>, SerializableDictionary<float, float>>();
+                if (food != null)
+                {
+                    data.Add(i, food.count);
+                    data2.Add(food.foodValue, food.thirstValue);
+                    data3.Add(data, data2);
+                    foods.Add(data3, food.item);
+                }
+            }
+        }
+
+        for (int i = 0; i < craftingStationSlots.Length; i++)
+        {
+            InventorySlot slot = craftingStationSlots[i];
+
+            if (slot)
+            {
+                InventoryFood food = slot.GetComponentInChildren<InventoryFood>();
+                SerializableDictionary<int, int> data = new SerializableDictionary<int, int>();
+                SerializableDictionary<float, float> data2 = new SerializableDictionary<float, float>();
+                SerializableDictionary<SerializableDictionary<int, int>, SerializableDictionary<float, float>> data3 = new SerializableDictionary<SerializableDictionary<int, int>, SerializableDictionary<float, float>>();
+                if (food != null)
+                {
+                    data.Add(i, food.count);
+                    data2.Add(food.foodValue, food.thirstValue);
+                    data3.Add(data, data2);
+                    foods.Add(data3, food.item);
+                }
+            }
+        }
+
+        return foods;
     }
     public void Crafting()
     {

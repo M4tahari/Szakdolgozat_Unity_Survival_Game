@@ -252,6 +252,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1723740580}
     - target: {fileID: 5443971360763074852, guid: 234264095bbb914409d6db8eb72ba86f, type: 3}
+      propertyPath: requiredTime
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5443971360763074852, guid: 234264095bbb914409d6db8eb72ba86f, type: 3}
       propertyPath: inventoryManager
       value: 
       objectReference: {fileID: 1302429780}
@@ -439,9 +443,29 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1723740580}
     - target: {fileID: 5443971360763074852, guid: 37afe1fcebd9c3546b71ee8725015665, type: 3}
+      propertyPath: foodValue
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5443971360763074852, guid: 37afe1fcebd9c3546b71ee8725015665, type: 3}
+      propertyPath: thirstValue
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5443971360763074852, guid: 37afe1fcebd9c3546b71ee8725015665, type: 3}
+      propertyPath: requiredTime
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5443971360763074852, guid: 37afe1fcebd9c3546b71ee8725015665, type: 3}
+      propertyPath: additionalFood
+      value: 
+      objectReference: {fileID: 11400000, guid: b89319c5cb25824438cecc11f1ae4a0f, type: 2}
+    - target: {fileID: 5443971360763074852, guid: 37afe1fcebd9c3546b71ee8725015665, type: 3}
       propertyPath: inventoryManager
       value: 
       objectReference: {fileID: 1302429780}
+    - target: {fileID: 5443971360763074852, guid: 37afe1fcebd9c3546b71ee8725015665, type: 3}
+      propertyPath: hasAdditionalFood
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 37afe1fcebd9c3546b71ee8725015665, type: 3}
 --- !u!1 &172165687 stripped
@@ -643,6 +667,76 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a5fe3428af8af84ca127d49e1e42ae0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &227444014
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8516817622798164857, guid: bc2e244b4d7a9ad49be5fc9782dc3bb0, type: 3}
+      propertyPath: foodToPickUp
+      value: 
+      objectReference: {fileID: 11400000, guid: 89e17eb1f6f23c040b8732e953f8b9e9, type: 2}
+    - target: {fileID: -8516817622798164857, guid: bc2e244b4d7a9ad49be5fc9782dc3bb0, type: 3}
+      propertyPath: inventoryManager
+      value: 
+      objectReference: {fileID: 1302429780}
+    - target: {fileID: 6604484862464628304, guid: bc2e244b4d7a9ad49be5fc9782dc3bb0, type: 3}
+      propertyPath: m_RootOrder
+      value: 21
+      objectReference: {fileID: 0}
+    - target: {fileID: 6604484862464628304, guid: bc2e244b4d7a9ad49be5fc9782dc3bb0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -53
+      objectReference: {fileID: 0}
+    - target: {fileID: 6604484862464628304, guid: bc2e244b4d7a9ad49be5fc9782dc3bb0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6604484862464628304, guid: bc2e244b4d7a9ad49be5fc9782dc3bb0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6604484862464628304, guid: bc2e244b4d7a9ad49be5fc9782dc3bb0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6604484862464628304, guid: bc2e244b4d7a9ad49be5fc9782dc3bb0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6604484862464628304, guid: bc2e244b4d7a9ad49be5fc9782dc3bb0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6604484862464628304, guid: bc2e244b4d7a9ad49be5fc9782dc3bb0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6604484862464628304, guid: bc2e244b4d7a9ad49be5fc9782dc3bb0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6604484862464628304, guid: bc2e244b4d7a9ad49be5fc9782dc3bb0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6604484862464628304, guid: bc2e244b4d7a9ad49be5fc9782dc3bb0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6604484862464628333, guid: bc2e244b4d7a9ad49be5fc9782dc3bb0, type: 3}
+      propertyPath: m_Name
+      value: Capybara
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bc2e244b4d7a9ad49be5fc9782dc3bb0, type: 3}
+--- !u!1 &227444015 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6604484862464628333, guid: bc2e244b4d7a9ad49be5fc9782dc3bb0, type: 3}
+  m_PrefabInstance: {fileID: 227444014}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &234198177
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -702,6 +796,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1723740580}
+    - target: {fileID: 5443971360763074852, guid: 72957ed66ee987b4aa7a81b2e8e53f87, type: 3}
+      propertyPath: requiredTime
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5443971360763074852, guid: 72957ed66ee987b4aa7a81b2e8e53f87, type: 3}
       propertyPath: inventoryManager
       value: 
@@ -3332,6 +3430,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1723740580}
     - target: {fileID: 5443971360763074852, guid: 9c83a37c13b19024aa4a895b01da6007, type: 3}
+      propertyPath: requiredTime
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5443971360763074852, guid: 9c83a37c13b19024aa4a895b01da6007, type: 3}
       propertyPath: additionalItem
       value: 
       objectReference: {fileID: 0}
@@ -3587,6 +3689,10 @@ PrefabInstance:
       propertyPath: craftingResultSlot
       value: 
       objectReference: {fileID: 1117106339}
+    - target: {fileID: 4200000183406527478, guid: e40a031d391d23849988c899aa0f3f0e, type: 3}
+      propertyPath: inventoryFoodPrefab
+      value: 
+      objectReference: {fileID: 1310400024930109216, guid: 1ef0371cb8b1731438fd511a94eb2183, type: 3}
     - target: {fileID: 4200000183406527478, guid: e40a031d391d23849988c899aa0f3f0e, type: 3}
       propertyPath: inventoryItemPrefab
       value: 
@@ -3877,6 +3983,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1723740580}
+    - target: {fileID: 5443971360763074852, guid: 9850546ef7cd62b47b36a2b795fb6990, type: 3}
+      propertyPath: requiredTime
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5443971360763074852, guid: 9850546ef7cd62b47b36a2b795fb6990, type: 3}
       propertyPath: additionalItem
       value: 
@@ -6028,6 +6138,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1723740580}
     - target: {fileID: 2236476223392684601, guid: 0c40d0ad07e560946b8d79896346d800, type: 3}
+      propertyPath: requiredTime
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2236476223392684601, guid: 0c40d0ad07e560946b8d79896346d800, type: 3}
       propertyPath: inventoryManager
       value: 
       objectReference: {fileID: 1302429780}
@@ -6452,6 +6566,76 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a5fe3428af8af84ca127d49e1e42ae0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &1909810606
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -5798156253906538509, guid: ce40453b49631414d91d3663ce3a6254, type: 3}
+      propertyPath: foodToPickUp
+      value: 
+      objectReference: {fileID: 11400000, guid: 9aba0dd902912364ea27cbf14b94d316, type: 2}
+    - target: {fileID: -5798156253906538509, guid: ce40453b49631414d91d3663ce3a6254, type: 3}
+      propertyPath: inventoryManager
+      value: 
+      objectReference: {fileID: 1302429780}
+    - target: {fileID: 6604484862464628304, guid: ce40453b49631414d91d3663ce3a6254, type: 3}
+      propertyPath: m_RootOrder
+      value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 6604484862464628304, guid: ce40453b49631414d91d3663ce3a6254, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -43
+      objectReference: {fileID: 0}
+    - target: {fileID: 6604484862464628304, guid: ce40453b49631414d91d3663ce3a6254, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6604484862464628304, guid: ce40453b49631414d91d3663ce3a6254, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6604484862464628304, guid: ce40453b49631414d91d3663ce3a6254, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6604484862464628304, guid: ce40453b49631414d91d3663ce3a6254, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6604484862464628304, guid: ce40453b49631414d91d3663ce3a6254, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6604484862464628304, guid: ce40453b49631414d91d3663ce3a6254, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6604484862464628304, guid: ce40453b49631414d91d3663ce3a6254, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6604484862464628304, guid: ce40453b49631414d91d3663ce3a6254, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6604484862464628304, guid: ce40453b49631414d91d3663ce3a6254, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6604484862464628333, guid: ce40453b49631414d91d3663ce3a6254, type: 3}
+      propertyPath: m_Name
+      value: Termite
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ce40453b49631414d91d3663ce3a6254, type: 3}
+--- !u!1 &1909810607 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6604484862464628333, guid: ce40453b49631414d91d3663ce3a6254, type: 3}
+  m_PrefabInstance: {fileID: 1909810606}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1912242774
 GameObject:
   m_ObjectHideFlags: 0
@@ -6540,8 +6724,8 @@ MonoBehaviour:
   minCastleHeight: 2
   maxCastleHeight: 5
   player: {fileID: 1723740580}
-  termite: {fileID: 6604484862464628333, guid: ce40453b49631414d91d3663ce3a6254, type: 3}
-  capybara: {fileID: 6604484862464628333, guid: bc2e244b4d7a9ad49be5fc9782dc3bb0, type: 3}
+  termite: {fileID: 1909810607}
+  capybara: {fileID: 227444015}
 --- !u!114 &1922525730 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8236162759280297936, guid: 8941bf7f8e1602044a7c0ef6d2570e0c, type: 3}
@@ -6873,6 +7057,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1723740580}
     - target: {fileID: 5337773803694815479, guid: 481d1de6acaf9024687b5eb81dc1c1dd, type: 3}
+      propertyPath: requiredTime
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5337773803694815479, guid: 481d1de6acaf9024687b5eb81dc1c1dd, type: 3}
       propertyPath: inventoryManager
       value: 
       objectReference: {fileID: 1302429780}
@@ -7093,6 +7281,10 @@ PrefabInstance:
       propertyPath: hydrationBar
       value: 
       objectReference: {fileID: 908894339}
+    - target: {fileID: 6604484862464628310, guid: 0c823ba399a448341a1df27b14e8fb46, type: 3}
+      propertyPath: damageImmunityTime
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6604484862464628333, guid: 0c823ba399a448341a1df27b14e8fb46, type: 3}
       propertyPath: m_Name
       value: Player

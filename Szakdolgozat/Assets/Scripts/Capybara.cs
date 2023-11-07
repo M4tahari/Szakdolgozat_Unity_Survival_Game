@@ -7,6 +7,10 @@ public class Capybara : Mover
 {
     public GameObject maxHealthBar;
     public GameObject currentHealthBar;
+    public Item foodToPickUp;
+    public float foodValue;
+    public float thirstValue;
+    public InventoryManager inventoryManager;
     public float runningLength;
     private bool runningAway;
     private Transform playerTransform;
@@ -95,8 +99,8 @@ public class Capybara : Mover
 
             if (collisions[i].name == "WetlandsFloorBlock(Clone)" || collisions[i].name == "MudBlock(Clone)")
             {
-                this.walkSpeed = 1f;
-                this.sprintSpeed = 2f;
+                this.walkSpeed = 0.75f;
+                this.sprintSpeed = 1.5f;
                 this.currentSpeed = walkSpeed;
             }
 
@@ -104,8 +108,8 @@ public class Capybara : Mover
                 collisions[i].name == "TermiteCastleWallBlock(Clone)" || collisions[i].name == "JungleFloorBlock(Clone)" ||
                 collisions[i].name == "DirtBlock(Clone)")
             {
-                this.walkSpeed = 0.75f;
-                this.sprintSpeed = 1.5f;
+                this.walkSpeed = 0.5f;
+                this.sprintSpeed = 1f;
                 this.currentSpeed = walkSpeed;
             }
 
@@ -157,5 +161,26 @@ public class Capybara : Mover
         }
 
         return inFront;
+    }
+    public void PickupFood()
+    {
+        var random = new System.Random();
+        double multipleChance = random.NextDouble();
+
+        if (multipleChance > 0.33f && multipleChance <= 0.66f)
+        {
+            inventoryManager.AddFood(foodToPickUp, foodValue, thirstValue);
+        }
+
+        else if (multipleChance > 0.66f)
+        {
+            inventoryManager.AddFood(foodToPickUp, foodValue, thirstValue);
+            inventoryManager.AddFood(foodToPickUp, foodValue, thirstValue);
+        }
+    }
+    protected override void Death()
+    {
+        PickupFood();
+        base.Death();
     }
 }

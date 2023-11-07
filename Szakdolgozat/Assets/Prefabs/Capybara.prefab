@@ -301,7 +301,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 5
+  m_Mass: 3
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -341,19 +341,23 @@ MonoBehaviour:
   radius: 3
   maxHealthPoints: 50
   currentHealthPoints: 50
-  walkSpeed: 1
-  sprintSpeed: 2
-  currentSpeed: 1
+  walkSpeed: 0.75
+  sprintSpeed: 1.5
+  currentSpeed: 0.75
   pushRecoverySpeed: 0.2
-  pushForce: 5
+  pushForce: 3
   damageImmunityTime: 0.4
   exponentialPenalty: 1
   fatigueTimer: 1
   ySpeed: 2
-  jumpForce: 5
+  jumpForce: 2
   facingRight: 0
   maxHealthBar: {fileID: 964828534}
   currentHealthBar: {fileID: 446910168}
+  foodToPickUp: {fileID: 0}
+  foodValue: 30
+  thirstValue: 0
+  inventoryManager: {fileID: 0}
   runningLength: 10
   startingPosition: {x: 0, y: 0, z: 0}
   castPoint: {fileID: 1769153704}

@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [System.Serializable]
@@ -13,7 +14,11 @@ public class Destroyable : Interactable
     public InventoryManager inventoryManager;
     public Item itemToPickup;
     public Item additionalMaterial;
+    public Item additionalFood;
+    public float foodValue;
+    public float thirstValue;
     public bool hasAdditionalItem;
+    public bool hasAdditionalFood;
     [HideInInspector] private bool quit = false;
     private void Update()
     {
@@ -31,6 +36,7 @@ public class Destroyable : Interactable
     {
         if (distance <= radius)
         {
+            BreakFasterWithProperTools();
             hittingTimer += Time.deltaTime;
             requiredTime2 = requiredTime;
 
@@ -70,16 +76,56 @@ public class Destroyable : Interactable
                 var random = new System.Random();
                 double multipleChance = random.NextDouble();
 
-                if(multipleChance < 0.5f)
+                if(multipleChance > 0.33f && multipleChance <= 0.66f)
                 {
                     inventoryManager.AddMaterial(additionalMaterial);
                 }
 
-                else
+                else if(multipleChance > 0.66f)
                 {
                     inventoryManager.AddMaterial(additionalMaterial);
                     inventoryManager.AddMaterial(additionalMaterial);
                 }
+            }
+
+            if(hasAdditionalFood)
+            {
+                var random = new System.Random();
+                double multipleChance = random.NextDouble();
+
+                if (multipleChance > 0.33f && multipleChance <= 0.66f)
+                {
+                    inventoryManager.AddFood(additionalFood, foodValue, thirstValue);
+                }
+
+                else if (multipleChance > 0.66f)
+                {
+                    inventoryManager.AddFood(additionalFood, foodValue, thirstValue);
+                    inventoryManager.AddFood(additionalFood, foodValue, thirstValue);
+                }
+            }
+        }
+    }
+    public void BreakFasterWithProperTools()
+    {
+        if(itemToPickup.itemName == "Jungle tree log" || itemToPickup.itemName == "Wetlands tree log")
+        {
+            if(player.transform.GetChild(2).GetComponent<Weapon>() != null && 
+                player.transform.GetChild(2).GetComponent<Weapon>().enabled == true)
+            {
+                hittingTimer += Time.deltaTime;
+            }
+        }
+
+        if (itemToPickup.itemName == "Jungle grass block" || itemToPickup.itemName == "Dirt block" ||
+            itemToPickup.itemName == "Hardened sand block" || itemToPickup.itemName == "Sand block" ||
+            itemToPickup.itemName == "Termite castle wall" || itemToPickup.itemName == "Dirt block" ||
+            itemToPickup.itemName == "Wetlands grass block" || itemToPickup.itemName == "Mud block")
+        {
+            if (player.transform.GetChild(3).GetComponent<Weapon>() != null &&
+                player.transform.GetChild(3).GetComponent<Weapon>().enabled == true)
+            {
+                hittingTimer += Time.deltaTime;
             }
         }
     }

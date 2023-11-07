@@ -121,12 +121,12 @@ public class GenerateMap : MonoBehaviour, Persistance
             GenerateBiomes();
             GenerateTerrain();
             wetlandsFloorBlocks = GameObject.FindGameObjectsWithTag("WetlandsFloorBlock");
-            PlaceTermites();
             termites = GameObject.FindGameObjectsWithTag("Termite");
-            PlaceCapybaras();
             capybaras = GameObject.FindGameObjectsWithTag("Capybara");
-            PlaceTermitesOverTime();
-            PlaceCapybarasOverTime();
+            PlaceTermites();
+            PlaceCapybaras();
+            InvokeRepeating("PlaceTermites", 1200, 1200);
+            InvokeRepeating("PlaceCapybaras", 1200, 1200);
         }
 
         else
@@ -234,12 +234,12 @@ public class GenerateMap : MonoBehaviour, Persistance
             }
 
             wetlandsFloorBlocks = GameObject.FindGameObjectsWithTag("WetlandsFloorBlock");
-            PlaceTermites();
-            termites = GameObject.FindGameObjectsWithTag("Termite");
-            PlaceCapybaras();
             capybaras = GameObject.FindGameObjectsWithTag("Capybara");
-            PlaceTermitesOverTime();
-            PlaceCapybarasOverTime();
+            termites = GameObject.FindGameObjectsWithTag("Termite");
+            PlaceTermites();
+            PlaceCapybaras();
+            InvokeRepeating("PlaceTermites", 1200, 1200);
+            InvokeRepeating("PlaceCapybaras", 1200, 1200);
         }
     }
     public void FixedUpdate()
@@ -781,53 +781,27 @@ public class GenerateMap : MonoBehaviour, Persistance
     }
     public void PlaceTermites()
     {
-        foreach(KeyValuePair<SerializableDictionary<float, float>, SerializableDictionary<float, float>> termitePos in termiteCastles)
+        if (termites.Length <= 50)
         {
-            foreach(var a in termitePos.Key)
+            foreach (KeyValuePair<SerializableDictionary<float, float>, SerializableDictionary<float, float>> termitePos in termiteCastles)
             {
-                foreach(var b in termitePos.Value)
+                foreach (var a in termitePos.Key)
                 {
-                    SpawnTermite(a.Key, a.Value, b.Key, b.Value);
+                    foreach (var b in termitePos.Value)
+                    {
+                        SpawnTermite(a.Key, a.Value, b.Key, b.Value);
+                    }
                 }
-            }
-        }
-    }
-    public void PlaceTermitesOverTime()
-    {
-        if(termites.Length <= 50)
-        {
-            float interval = 1200.0f;
-            float time = 0f;
-
-            time += Time.deltaTime;
-
-            while (time >= interval)
-            {
-                PlaceTermites();
-                time -= interval;
             }
         }
     }
     public void PlaceCapybaras()
     {
-        foreach (GameObject wetlandsFloorBlock in wetlandsFloorBlocks)
+        if (capybaras.Length <= 50)
         {
-            SpawnCapybara(wetlandsFloorBlock.transform.position.x, wetlandsFloorBlock.transform.position.y + 1);
-        }
-    }
-    public void PlaceCapybarasOverTime()
-    {
-        if(capybaras.Length <= 50)
-        {
-            float interval = 1200.0f;
-            float time = 0f;
-
-            time += Time.deltaTime;
-
-            while (time >= interval)
+            foreach (GameObject wetlandsFloorBlock in wetlandsFloorBlocks)
             {
-                PlaceCapybaras();
-                time -= interval;
+                SpawnCapybara(wetlandsFloorBlock.transform.position.x, wetlandsFloorBlock.transform.position.y + 1);
             }
         }
     }

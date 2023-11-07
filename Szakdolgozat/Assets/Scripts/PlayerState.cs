@@ -28,6 +28,7 @@ public class PlayerState
     public SerializableDictionary<SerializableDictionary<Item, Destroyable>, SerializableDictionary<int, int>> items;
     public SerializableDictionary<SerializableDictionary<Item, Weapon>, int> weapons;
     public SerializableDictionary<SerializableDictionary<int, int>, Item> materials;
+    public SerializableDictionary<SerializableDictionary<SerializableDictionary<int, int>, SerializableDictionary<float, float>>, Item> foods;
     public PlayerState()
     {
         maxHealthPoints = 100;
@@ -52,5 +53,6 @@ public class PlayerState
         items = new SerializableDictionary<SerializableDictionary<Item, Destroyable>, SerializableDictionary<int, int>>();
         weapons = new SerializableDictionary<SerializableDictionary<Item, Weapon>, int>();
         materials = new SerializableDictionary<SerializableDictionary<int, int>, Item>();
+        foods = new SerializableDictionary<SerializableDictionary<SerializableDictionary<int, int>, SerializableDictionary<float, float>>, Item>();
     }
 }

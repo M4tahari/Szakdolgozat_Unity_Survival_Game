@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Capybara meat
   description: 
-  sprite: {fileID: 0}
+  sprite: {fileID: 21300000, guid: 8a981e675e18df647aaf5426dcd6a04a, type: 3}
   currentAmount: 1
   stackAmount: 16

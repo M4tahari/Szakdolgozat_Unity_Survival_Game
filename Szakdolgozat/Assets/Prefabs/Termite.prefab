@@ -301,7 +301,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 2
+  m_Mass: 3
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -323,8 +323,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.06322468, y: -0.0027894008}
-  m_Size: {x: 0.72554135, y: 0.2958275}
+  m_Offset: {x: -0.09988339, y: -0.0027893963}
+  m_Size: {x: 0.79886436, y: 0.29582983}
   m_Direction: 1
 --- !u!114 &-5798156253906538509
 MonoBehaviour:
@@ -345,12 +345,12 @@ MonoBehaviour:
   sprintSpeed: 2
   currentSpeed: 1
   pushRecoverySpeed: 0.2
-  pushForce: 5
+  pushForce: 3
   damageImmunityTime: 0.4
   exponentialPenalty: 1
   fatigueTimer: 0
   ySpeed: 1.5
-  jumpForce: 5
+  jumpForce: 4
   facingRight: 0
   totalStamina: 100
   stamina: 100
@@ -358,7 +358,11 @@ MonoBehaviour:
   staminaRecoveryRate: 10
   maxHealthBar: {fileID: 964828534}
   currentHealthBar: {fileID: 446910168}
-  attackDamage: 20
+  foodToPickUp: {fileID: 0}
+  foodValue: 15
+  thirstValue: 15
+  inventoryManager: {fileID: 0}
+  attackDamage: 10
   chaseLength: 20
   castlePosition: {x: 0, y: 0, z: 0}
   castleMid: 0

@@ -25,6 +25,7 @@ public class Player : Fighter, Persistance
     public SerializableDictionary<SerializableDictionary<Item, Destroyable>, SerializableDictionary<int, int>> items;
     public SerializableDictionary<SerializableDictionary<Item, Weapon>, int> weapons;
     public SerializableDictionary<SerializableDictionary<int, int>, Item> materials;
+    public SerializableDictionary<SerializableDictionary<SerializableDictionary<int, int>, SerializableDictionary<float, float>>, Item> foods;
     private void Awake()
     {
         this.stamina = totalStamina;
@@ -49,10 +50,13 @@ public class Player : Fighter, Persistance
         this.playerCollider = this.GetComponent<CapsuleCollider2D>();
 
         InvokeRepeating("DrainHungerAndHydration", 12, 12);
+        InvokeRepeating("TakeDamageFromHungerOrDehydration", 3, 3);
+        InvokeRepeating("Heal", 3, 3);
     }
     private void Update()
     {
         Sprint();
+        Death();
 
         if (healthBar != null)
         {
@@ -118,10 +122,6 @@ public class Player : Fighter, Persistance
 
             collisions[i] = null;
         }
-
-        TakeDamageFromHungerOrDehydration();
-
-        Death();
     }
     public void LoadData(WorldState worldState, PlayerState playerState)
     {
@@ -148,6 +148,7 @@ public class Player : Fighter, Persistance
         items = playerState.items;
         weapons = playerState.weapons;
         materials = playerState.materials;
+        foods = playerState.foods;
     }
     public void SaveData(ref WorldState worldState, ref PlayerState playerState)
     {
@@ -174,6 +175,7 @@ public class Player : Fighter, Persistance
         playerState.items = this.items;
         playerState.weapons = this.weapons;
         playerState.materials = this.materials;
+        playerState.foods = this.foods;
     }
     protected override void Jump()
     {
@@ -309,14 +311,26 @@ public class Player : Fighter, Persistance
     }
     protected void TakeDamageFromHungerOrDehydration()
     {
-        if((this.currentHungerPoints == 0 || this.currentHydrationPoints == 0) && this.currentHealthPoints > 0)
+        if ((this.currentHungerPoints == 0 || this.currentHydrationPoints == 0) && this.currentHealthPoints > 0)
         {
             this.currentHealthPoints -= 2;
         }
 
-        else if((this.currentHungerPoints == 0 && this.currentHydrationPoints == 0) && this.currentHealthPoints > 0)
+        else if ((this.currentHungerPoints == 0 && this.currentHydrationPoints == 0) && this.currentHealthPoints > 0)
         {
             this.currentHealthPoints -= 5;
+        }
+    }
+    protected void Heal()
+    {   
+        if ((this.currentHungerPoints >= 70 || this.currentHydrationPoints >= 70) && this.currentHealthPoints > 0 && this.currentHealthPoints < 99)
+        {
+            this.currentHealthPoints += 2;
+        }
+
+        else if ((this.currentHungerPoints >= 70 && this.currentHydrationPoints >= 70) && this.currentHealthPoints > 0 && this.currentHealthPoints < 96)
+        {
+            this.currentHealthPoints += 5;
         }
     }
     protected override void Death()

@@ -26,6 +26,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         InventoryItem inventoryItem = eventData.pointerDrag.GetComponent<InventoryItem>();
         InventoryWeapon inventoryWeapon = eventData.pointerDrag.GetComponent<InventoryWeapon>();
         InventoryMaterial inventoryMaterial = eventData.pointerDrag.GetComponent<InventoryMaterial>();
+        InventoryFood inventoryFood = eventData.pointerDrag.GetComponent<InventoryFood>();
 
         if (transform.childCount == 0)
         {
@@ -43,12 +44,18 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             {
                 inventoryMaterial.parentAfterDrag = transform;
             }
+
+            if(inventoryFood != null)
+            {
+                inventoryFood.parentAfterDrag = transform;
+            }
         }
 
         else if(transform.childCount == 1)
         {
             InventoryItem currentItem = this.transform.GetChild(0).GetComponentInChildren<InventoryItem>();
             InventoryMaterial currentMaterial = this.transform.GetChild(0).GetComponentInChildren<InventoryMaterial>();
+            InventoryFood currentFood = this.transform.GetChild(0).GetComponentInChildren<InventoryFood>();
 
             if (currentItem != null && inventoryItem != null && currentItem.item.itemName == inventoryItem.item.itemName)
             {
@@ -58,6 +65,11 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             if(currentMaterial != null && inventoryMaterial != null && currentMaterial.item.itemName == inventoryMaterial.item.itemName)
             {
                 inventoryManager.MergeMaterials(currentMaterial, inventoryMaterial);
+            }
+
+            if(currentFood != null && inventoryFood != null && currentFood.item.itemName == inventoryFood.item.itemName)
+            {
+                inventoryManager.MergeFoods(currentFood, inventoryFood);
             }
         }
     }

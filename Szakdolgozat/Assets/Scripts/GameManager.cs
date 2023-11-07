@@ -62,6 +62,8 @@ public class GameManager : MonoBehaviour
         }
 
         virtualCamera.m_Lens.OrthographicSize *= SettingsInputHandler.renderDistanceMultiplier;
+
+        InvokeRepeating("SaveOnClick", 1200, 1200);
     }
     public void NewGame()
     {

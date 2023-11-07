@@ -6,6 +6,10 @@ public class Termite : Fighter
 {
     public GameObject maxHealthBar;
     public GameObject currentHealthBar;
+    public Item foodToPickUp;
+    public float foodValue;
+    public float thirstValue;
+    public InventoryManager inventoryManager;
     public float attackDamage;
     public float chaseLength;
     private bool chasing;
@@ -238,5 +242,26 @@ public class Termite : Fighter
         {
             player.ReceiveDamage(this.attackDamage, this.transform.position, this.pushForce);
         }
+    }
+    public void PickupFood()
+    {
+        var random = new System.Random();
+        double multipleChance = random.NextDouble();
+
+        if (multipleChance > 0.33f && multipleChance <= 0.66f)
+        {
+            inventoryManager.AddFood(foodToPickUp, foodValue, thirstValue);
+        }
+
+        else if (multipleChance > 0.66f)
+        {
+            inventoryManager.AddFood(foodToPickUp, foodValue, thirstValue);
+            inventoryManager.AddFood(foodToPickUp, foodValue, thirstValue);
+        }
+    }
+    protected override void Death()
+    {
+        PickupFood();
+        base.Death();
     }
 }
