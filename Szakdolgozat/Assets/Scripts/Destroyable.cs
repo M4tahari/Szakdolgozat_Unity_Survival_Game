@@ -6,6 +6,9 @@ using UnityEngine;
 public class Destroyable : Interactable
 {
     public float hittingTimer = 0;
+    private float damage = 0;
+    private SpriteRenderer spriteRenderer;
+    private Material material;
     public float requiredTime;
     private float requiredTime2;
     private bool breakable = true;
@@ -20,9 +23,16 @@ public class Destroyable : Interactable
     public bool hasAdditionalItem;
     public bool hasAdditionalFood;
     [HideInInspector] private bool quit = false;
+    private void Start()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        material = spriteRenderer.material;
+    }
     private void Update()
     {
-        if(player != null)
+        material.SetFloat("_Damage", damage);
+
+        if (player != null)
         {
             distance = Vector2.Distance(player.transform.position, transform.position);
         }
@@ -38,6 +48,7 @@ public class Destroyable : Interactable
         {
             BreakFasterWithProperTools();
             hittingTimer += Time.deltaTime;
+            damage += Time.deltaTime / requiredTime;
             requiredTime2 = requiredTime;
 
             if (hittingTimer > requiredTime2 && breakable)
@@ -114,6 +125,7 @@ public class Destroyable : Interactable
                 player.transform.GetChild(2).GetComponent<Weapon>().enabled == true)
             {
                 hittingTimer += Time.deltaTime;
+                damage += Time.deltaTime / requiredTime;
             }
         }
 
@@ -126,6 +138,7 @@ public class Destroyable : Interactable
                 player.transform.GetChild(3).GetComponent<Weapon>().enabled == true)
             {
                 hittingTimer += Time.deltaTime;
+                damage += Time.deltaTime / requiredTime;
             }
         }
     }

@@ -54,7 +54,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: bb5ca5a50256e8e41adb6a79be89d9fa, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 1603927853
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 226807504, guid: d5025c160032a3f48ad990b86b0baf15, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a88701bdd5d22fa4f882d86169d5f10e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -130,3 +130,9 @@ MonoBehaviour:
   player: {fileID: 0}
   inventoryManager: {fileID: 0}
   itemToPickup: {fileID: 11400000, guid: 80445a2d20096b744864c19d96087338, type: 2}
+  additionalMaterial: {fileID: 0}
+  additionalFood: {fileID: 0}
+  foodValue: 0
+  thirstValue: 0
+  hasAdditionalItem: 0
+  hasAdditionalFood: 0

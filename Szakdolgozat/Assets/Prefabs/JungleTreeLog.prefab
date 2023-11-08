@@ -54,7 +54,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9da58d849596d4f478ce859844cb1c9d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -131,4 +131,8 @@ MonoBehaviour:
   inventoryManager: {fileID: 0}
   itemToPickup: {fileID: 11400000, guid: cc74a3a90d67d7b4ab7ba841fd6cd531, type: 2}
   additionalMaterial: {fileID: 0}
+  additionalFood: {fileID: 0}
+  foodValue: 0
+  thirstValue: 0
   hasAdditionalItem: 0
+  hasAdditionalFood: 0

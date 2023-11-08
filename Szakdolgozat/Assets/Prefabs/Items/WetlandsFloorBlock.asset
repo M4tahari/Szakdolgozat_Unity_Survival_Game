@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Wetlands grass block
   description: 
-  sprite: {fileID: 459284675, guid: 1023fca8f0670a14cb75918437967ec8, type: 3}
+  sprite: {fileID: 21300000, guid: 5bb409fdc2e70a1478ee024ca47b102d, type: 3}
   currentAmount: 1
   stackAmount: 32
