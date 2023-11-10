@@ -348,12 +348,16 @@ public class Player : Fighter, Persistance
     {
         if (this.currentHealthPoints == 0)
         {
-            currentHealthPoints = maxHealthPoints;
-            currentHungerPoints = maxHungerPoints;
-            currentHydrationPoints = maxHydrationPoints;
-            stamina = totalStamina;
-
-            if (InputTextHandler.difficulty == "hard")
+            if(InputTextHandler.difficulty == "easy" || InputTextHandler.difficulty == "medium")
+            {
+                currentHealthPoints = maxHealthPoints;
+                currentHungerPoints = maxHungerPoints;
+                currentHydrationPoints = maxHydrationPoints;
+                stamina = totalStamina;
+                this.transform.position = new Vector3((InputTextHandler.mapSize * 0.32f) / 2, InputTextHandler.surfaceLevel + InputTextHandler.heightAddition + 1, 0);
+            }
+           
+            else if (InputTextHandler.difficulty == "hard")
             {
                 string worldSave = Path.Combine(Application.persistentDataPath, InputTextHandler.worldName);
 
@@ -369,15 +373,11 @@ public class Player : Fighter, Persistance
                     Directory.Delete(worldSave);
                 }
 
-                this.transform.gameObject.SetActive(false);
-
                 if (MainMenu._sceneIndex == 4)
                 {
                     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 4);
                 }
             }
-
-            this.transform.position = new Vector3((InputTextHandler.mapSize * 0.32f) / 2, InputTextHandler.surfaceLevel + InputTextHandler.heightAddition + 1, 0);
         }
     }
 }
