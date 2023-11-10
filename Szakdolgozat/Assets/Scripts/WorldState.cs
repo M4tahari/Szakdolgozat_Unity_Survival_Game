@@ -19,6 +19,7 @@ public class WorldState
     public int heightAddition;
     public int chunkSize;
     public bool alreadyCreated;
+    public string difficulty;
 
     public SerializableDictionary<SerializableDictionary<Vector2, string>, int> blocksPos;
     public SerializableDictionary<SerializableDictionary<float, float>, SerializableDictionary<float, float>> termiteCastlesPos;
@@ -35,6 +36,7 @@ public class WorldState
         generateCaves = InputTextHandler.generateCaves;
         chunkSize = 20;
         alreadyCreated = false;
+        difficulty = InputTextHandler.difficulty;
 
         playerPos = new Vector3((mapSize * 0.32f) / 2, surfaceLevel + heightAddition + 1, 0);
         blocksPos = new SerializableDictionary<SerializableDictionary<Vector2, string>, int>();

@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class SaveWorldToSlot : MonoBehaviour
 {
     private string worldID = "";
+    private string difficulty = "";
     [SerializeField] public GameObject noLoadedWorld;
     [SerializeField] public GameObject hasLoadedWorld;
     [SerializeField] private TextMeshProUGUI worldName;
@@ -34,6 +35,7 @@ public class SaveWorldToSlot : MonoBehaviour
             hasLoadedWorld.SetActive(true);
 
             worldID = state.worldName;
+            difficulty = state.difficulty;
             worldName.text = worldID;
             SetIsLoaded(true);
         }
@@ -41,6 +43,10 @@ public class SaveWorldToSlot : MonoBehaviour
     public string GetWorldID()
     {
         return this.worldID;
+    }
+    public string GetDifficulty()
+    {
+        return this.difficulty;
     }
     public bool GetIsLoaded()
     {
@@ -65,6 +71,7 @@ public class SaveWorldToSlot : MonoBehaviour
         {
             MainMenu._sceneIndex = 4;
             InputTextHandler.worldName = this.GetWorldID();
+            InputTextHandler.difficulty= this.GetDifficulty();
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
         }
     }

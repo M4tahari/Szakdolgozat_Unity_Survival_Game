@@ -15,10 +15,12 @@ public class InputTextHandler : MonoBehaviour
     public static int heightAddition;
     public static int treeMultiplier;
     public static bool generateCaves = true;
+    public static string difficulty;
     private int randomizationValue = 10000000;
     public Text nameText;
     public Text seedText;
     public Dropdown sizeOutput;
+    public Dropdown difficultyOutput;
     public Slider slider;
     public Toggle toggle;
     const string characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -79,12 +81,6 @@ public class InputTextHandler : MonoBehaviour
         surfaceLevel = 0.2f;
         heightAddition = 20;
         treeMultiplier = (int) slider.value;
-       
-        string worldSave = Path.Combine(Application.persistentDataPath, worldName);
-        if (File.Exists(worldSave))
-        {
-            File.Delete(worldSave);
-        }
 
         MainMenu._sceneIndex = 4;
 
@@ -105,6 +101,23 @@ public class InputTextHandler : MonoBehaviour
         if (value == 2)
         {
             mapSize = 4000;
+        }
+    }
+    public void ChooseDifficulty(int value)
+    {
+        if (value == 0)
+        {
+            difficulty = "easy";
+        }
+
+        if (value == 1)
+        {
+            difficulty = "medium";
+        }
+
+        if (value == 2)
+        {
+            difficulty = "hard";
         }
     }
     public void SetGenerateCaves()

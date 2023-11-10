@@ -3121,6 +3121,116 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8586933111163481191, guid: f8a33cc55c73c1f4084e2f172c82ee2a, type: 3}
   m_PrefabInstance: {fileID: 908894337}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &933281392
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1310400024930109216, guid: df53f41be79f8624dae99d5697e7c7eb, type: 3}
+      propertyPath: m_Name
+      value: InventoryDrop
+      objectReference: {fileID: 0}
+    - target: {fileID: 1310400024930109219, guid: df53f41be79f8624dae99d5697e7c7eb, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1310400024930109219, guid: df53f41be79f8624dae99d5697e7c7eb, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1310400024930109219, guid: df53f41be79f8624dae99d5697e7c7eb, type: 3}
+      propertyPath: m_RootOrder
+      value: 23
+      objectReference: {fileID: 0}
+    - target: {fileID: 1310400024930109219, guid: df53f41be79f8624dae99d5697e7c7eb, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1310400024930109219, guid: df53f41be79f8624dae99d5697e7c7eb, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1310400024930109219, guid: df53f41be79f8624dae99d5697e7c7eb, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1310400024930109219, guid: df53f41be79f8624dae99d5697e7c7eb, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1310400024930109219, guid: df53f41be79f8624dae99d5697e7c7eb, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1310400024930109219, guid: df53f41be79f8624dae99d5697e7c7eb, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1310400024930109219, guid: df53f41be79f8624dae99d5697e7c7eb, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1310400024930109219, guid: df53f41be79f8624dae99d5697e7c7eb, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1310400024930109219, guid: df53f41be79f8624dae99d5697e7c7eb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1310400024930109219, guid: df53f41be79f8624dae99d5697e7c7eb, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1310400024930109219, guid: df53f41be79f8624dae99d5697e7c7eb, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1310400024930109219, guid: df53f41be79f8624dae99d5697e7c7eb, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1310400024930109219, guid: df53f41be79f8624dae99d5697e7c7eb, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1310400024930109219, guid: df53f41be79f8624dae99d5697e7c7eb, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -5.700012
+      objectReference: {fileID: 0}
+    - target: {fileID: 1310400024930109219, guid: df53f41be79f8624dae99d5697e7c7eb, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -9.899994
+      objectReference: {fileID: 0}
+    - target: {fileID: 1310400024930109219, guid: df53f41be79f8624dae99d5697e7c7eb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1310400024930109219, guid: df53f41be79f8624dae99d5697e7c7eb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1310400024930109219, guid: df53f41be79f8624dae99d5697e7c7eb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4525846279548827590, guid: df53f41be79f8624dae99d5697e7c7eb, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1723740580}
+    - target: {fileID: 4525846279548827590, guid: df53f41be79f8624dae99d5697e7c7eb, type: 3}
+      propertyPath: inventoryManager
+      value: 
+      objectReference: {fileID: 1302429780}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: df53f41be79f8624dae99d5697e7c7eb, type: 3}
+--- !u!1 &933281393 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1310400024930109216, guid: df53f41be79f8624dae99d5697e7c7eb, type: 3}
+  m_PrefabInstance: {fileID: 933281392}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &939953716
 GameObject:
   m_ObjectHideFlags: 0
@@ -3689,6 +3799,10 @@ PrefabInstance:
       propertyPath: craftingResultSlot
       value: 
       objectReference: {fileID: 1117106339}
+    - target: {fileID: 4200000183406527478, guid: e40a031d391d23849988c899aa0f3f0e, type: 3}
+      propertyPath: inventoryDropPrefab
+      value: 
+      objectReference: {fileID: 933281393}
     - target: {fileID: 4200000183406527478, guid: e40a031d391d23849988c899aa0f3f0e, type: 3}
       propertyPath: inventoryFoodPrefab
       value: 
@@ -6721,6 +6835,7 @@ MonoBehaviour:
   noiseSample: {fileID: 0}
   randomizationValue: 10000
   chunkSize: 20
+  difficulty: 
   treeFrequency: 0.05
   treeMultiplier: 10
   minTreeHeight: 8
@@ -7293,6 +7408,10 @@ PrefabInstance:
       propertyPath: hydrationBar
       value: 
       objectReference: {fileID: 908894339}
+    - target: {fileID: 6604484862464628310, guid: 0c823ba399a448341a1df27b14e8fb46, type: 3}
+      propertyPath: inventoryManager
+      value: 
+      objectReference: {fileID: 1302429780}
     - target: {fileID: 6604484862464628310, guid: 0c823ba399a448341a1df27b14e8fb46, type: 3}
       propertyPath: damageImmunityTime
       value: 3

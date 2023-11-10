@@ -44,6 +44,7 @@ public class GenerateMap : MonoBehaviour, Persistance
     public Texture2D noiseSample;
     public int randomizationValue;
     public int chunkSize;
+    public string difficulty;
 
     [Header("Fa adatok")]
     public float treeFrequency = 0.05f;
@@ -112,10 +113,53 @@ public class GenerateMap : MonoBehaviour, Persistance
                 treeMultiplier = 5;
             }
 
+            if(InputTextHandler.difficulty != null && InputTextHandler.difficulty != "")
+            {
+                difficulty = InputTextHandler.difficulty;
+            }
+
+            else
+            {
+                difficulty = "easy";
+            }
+
             seed = InputTextHandler.seed;
             surfaceLevel = InputTextHandler.surfaceLevel;
             heightAddition = InputTextHandler.heightAddition;
             generateCaves = InputTextHandler.generateCaves;
+
+            if (difficulty == "easy")
+            {
+                if(termite != null)
+                {
+                    termite.GetComponent<Termite>().maxHealthPoints = 50;
+                    termite.GetComponent<Termite>().currentHealthPoints = 50;
+                    termite.GetComponent<Termite>().attackDamage = 10;
+                }
+
+                if(capybara!= null)
+                {
+                    capybara.GetComponent<Capybara>().maxHealthPoints = 40;
+                    capybara.GetComponent<Capybara>().currentHealthPoints = 40;
+                }
+            }
+
+            if (difficulty == "medium" || difficulty == "hard")
+            {
+                if (termite != null)
+                {
+                    termite.GetComponent<Termite>().maxHealthPoints = 70;
+                    termite.GetComponent<Termite>().currentHealthPoints = 70;
+                    termite.GetComponent<Termite>().attackDamage = 15;
+                }
+
+                if (capybara != null)
+                {
+                    capybara.GetComponent<Capybara>().maxHealthPoints = 50;
+                    capybara.GetComponent<Capybara>().currentHealthPoints = 50;
+                }
+            }
+
             GenerateNoiseSample();
             GenerateChunks();
             GenerateBiomes();
@@ -267,6 +311,7 @@ public class GenerateMap : MonoBehaviour, Persistance
         blocks = worldState.blocksPos;
         termiteCastles = worldState.termiteCastlesPos;
         alreadyCreated = worldState.alreadyCreated;
+        difficulty = worldState.difficulty;
     }
     public void SaveData(ref WorldState worldState, ref PlayerState playerState)
     {
@@ -286,6 +331,7 @@ public class GenerateMap : MonoBehaviour, Persistance
         worldState.termiteCastlesPos = termiteCastles;
         alreadyCreated = true;
         worldState.alreadyCreated = alreadyCreated;
+        worldState.difficulty = difficulty;
     }
     public void GenerateTerrain()
     {

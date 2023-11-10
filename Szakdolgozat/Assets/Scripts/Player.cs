@@ -4,6 +4,7 @@ using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class Player : Fighter, Persistance
 {
@@ -49,9 +50,19 @@ public class Player : Fighter, Persistance
 
         this.playerCollider = this.GetComponent<CapsuleCollider2D>();
 
-        InvokeRepeating("DrainHungerAndHydration", 12, 12);
-        InvokeRepeating("TakeDamageFromHungerOrDehydration", 3, 3);
-        InvokeRepeating("Heal", 3, 3);
+        if(InputTextHandler.difficulty == "easy")
+        {
+            InvokeRepeating("DrainHungerAndHydration", 12, 12);
+            InvokeRepeating("TakeDamageFromHungerOrDehydration", 3, 3);
+            InvokeRepeating("Heal", 3, 3);
+        }
+
+        if(InputTextHandler.difficulty == "medium" || InputTextHandler.difficulty == "hard")
+        {
+            InvokeRepeating("DrainHungerAndHydration", 6, 6);
+            InvokeRepeating("TakeDamageFromHungerOrDehydration", 2, 2);
+            InvokeRepeating("Heal", 5, 5);
+        }
     }
     private void Update()
     {
@@ -335,12 +346,37 @@ public class Player : Fighter, Persistance
     }
     protected override void Death()
     {
-        if(this.currentHealthPoints == 0)
+        if (this.currentHealthPoints == 0)
         {
             currentHealthPoints = maxHealthPoints;
             currentHungerPoints = maxHungerPoints;
             currentHydrationPoints = maxHydrationPoints;
             stamina = totalStamina;
+
+            if (InputTextHandler.difficulty == "hard")
+            {
+                string worldSave = Path.Combine(Application.persistentDataPath, InputTextHandler.worldName);
+
+                if (Directory.Exists(worldSave))
+                {
+                    DirectoryInfo world = new DirectoryInfo(worldSave);
+
+                    foreach(FileInfo file in world.GetFiles())
+                    {
+                        file.Delete();
+                    }
+
+                    Directory.Delete(worldSave);
+                }
+
+                this.transform.gameObject.SetActive(false);
+
+                if (MainMenu._sceneIndex == 4)
+                {
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 4);
+                }
+            }
+
             this.transform.position = new Vector3((InputTextHandler.mapSize * 0.32f) / 2, InputTextHandler.surfaceLevel + InputTextHandler.heightAddition + 1, 0);
         }
     }

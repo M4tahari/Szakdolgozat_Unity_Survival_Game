@@ -17,6 +17,7 @@ public class InventoryManager : MonoBehaviour
     public GameObject inventoryWeaponPrefab;
     public GameObject inventoryMaterialPrefab;
     public GameObject inventoryFoodPrefab;
+    public GameObject inventoryDropPrefab;
     private InventoryItem itemInSlot;
     private InventoryWeapon weaponInSlot;
     private InventoryMaterial materialInSlot;
@@ -425,7 +426,7 @@ public class InventoryManager : MonoBehaviour
             inventoryItem.RefreshCount();
         }
     }
-    private void SpawnNewItems(Item item, InventorySlot slot, Destroyable destroyable, int currentAmount)
+    public void SpawnNewItems(Item item, InventorySlot slot, Destroyable destroyable, int currentAmount)
     {
         if(slot)
         {
@@ -484,7 +485,7 @@ public class InventoryManager : MonoBehaviour
             inventoryMaterial.RefreshCount();
         }
     }
-    private void SpawnNewMaterials(Item item, InventorySlot slot, int currentAmount)
+    public void SpawnNewMaterials(Item item, InventorySlot slot, int currentAmount)
     {
         if (slot)
         {
@@ -510,7 +511,7 @@ public class InventoryManager : MonoBehaviour
             inventoryFood.RefreshCount();
         }
     }
-    private void SpawnNewFoods(Item item, InventorySlot slot, int currentAmount, float foodValue, float thirstValue)
+    public void SpawnNewFoods(Item item, InventorySlot slot, int currentAmount, float foodValue, float thirstValue)
     {
         if (slot)
         {
@@ -524,7 +525,7 @@ public class InventoryManager : MonoBehaviour
             inventoryFood.RefreshCount();
         }
     }
-    private void SpawnNewWeapon(Item item, InventorySlot slot, Weapon weapon)
+    public void SpawnNewWeapon(Item item, InventorySlot slot, Weapon weapon)
     {
         if (slot)
         {
