@@ -164,7 +164,7 @@ MonoBehaviour:
   hydrationBar: {fileID: 0}
   staminaBar: {fileID: 0}
   hittingTimer: 0
-  pickupRadius: 2
+  pickupRadius: 1
   items:
     keys: []
     values: []

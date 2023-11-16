@@ -39,7 +39,16 @@ public class Destroyable : Interactable
         
         if (breakable == false && distance <= player.pickupRadius)
         {
-            Destroy(gameObject);
+            for(int i = 0; i < inventoryManager.inventorySlots.Length; i++)
+            {
+                InventorySlot slot = inventoryManager.inventorySlots[i];
+
+                if(slot.transform.childCount == 0)
+                {
+                    Destroy(gameObject);
+                    break;
+                }
+            }
         }
     }
     private void OnMouseDrag()
@@ -64,6 +73,8 @@ public class Destroyable : Interactable
     private void OnMouseUp()
     {
         hittingTimer = 0;
+        damage = 0;
+        material.SetFloat("_Damage", damage);
     }
     public void OnMouseOver()
     { 
