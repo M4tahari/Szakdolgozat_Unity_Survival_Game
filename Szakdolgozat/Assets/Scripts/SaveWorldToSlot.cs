@@ -10,9 +10,12 @@ public class SaveWorldToSlot : MonoBehaviour
 {
     private string worldID = "";
     private string difficulty = "";
+    private string size = "";
     [SerializeField] public GameObject noLoadedWorld;
     [SerializeField] public GameObject hasLoadedWorld;
     [SerializeField] private TextMeshProUGUI worldName;
+    [SerializeField] private TextMeshProUGUI diffText;
+    [SerializeField] private TextMeshProUGUI sizeText;
     [SerializeField] private bool isLoaded = false;
 
     private Button saveWorldSlotButton;
@@ -36,7 +39,10 @@ public class SaveWorldToSlot : MonoBehaviour
 
             worldID = state.worldName;
             difficulty = state.difficulty;
+            size = state.mapSize.ToString();
             worldName.text = worldID;
+            SetDifficultyText(difficulty);
+            SetSizeText(size);
             SetIsLoaded(true);
         }
     }
@@ -71,8 +77,42 @@ public class SaveWorldToSlot : MonoBehaviour
         {
             MainMenu._sceneIndex = 4;
             InputTextHandler.worldName = this.GetWorldID();
-            InputTextHandler.difficulty= this.GetDifficulty();
+            InputTextHandler.difficulty = this.GetDifficulty();
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
+        }
+    }
+    public void SetDifficultyText(string text)
+    {
+        if (text == "easy")
+        {
+            diffText.text = "Könnyű";
+        }
+
+        else if (text == "medium")
+        {
+            diffText.text = "Közepes";
+        }
+
+        else if (text == "hard")
+        {
+            diffText.text = "Nehéz";
+        }
+    }
+    public void SetSizeText(string text)
+    {
+        if(text == "1000")
+        {
+            sizeText.text = "Kicsi (1000)";
+        }
+
+        if (text == "2000")
+        {
+            sizeText.text = "Közepes (2000)";
+        }
+
+        if (text == "4000")
+        {
+            sizeText.text = "Nagy (4000)";
         }
     }
 }

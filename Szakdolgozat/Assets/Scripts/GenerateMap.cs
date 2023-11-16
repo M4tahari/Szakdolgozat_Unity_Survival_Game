@@ -144,7 +144,7 @@ public class GenerateMap : MonoBehaviour, Persistance
                 }
             }
 
-            if (difficulty == "medium" || difficulty == "hard")
+            else if (difficulty == "medium" || difficulty == "hard")
             {
                 if (termite != null)
                 {
@@ -175,6 +175,16 @@ public class GenerateMap : MonoBehaviour, Persistance
 
         else
         {
+            if (InputTextHandler.difficulty != null && InputTextHandler.difficulty != "")
+            {
+                difficulty = InputTextHandler.difficulty;
+            }
+
+            else
+            {
+                difficulty = "easy";
+            }
+
             GenerateChunks();
 
             for (int i = -1; i < mapSize + 1; i++)

@@ -57,7 +57,7 @@ public class Player : Fighter, Persistance
             InvokeRepeating("Heal", 3, 3);
         }
 
-        if(InputTextHandler.difficulty == "medium" || InputTextHandler.difficulty == "hard")
+        else if(InputTextHandler.difficulty == "medium" || InputTextHandler.difficulty == "hard")
         {
             InvokeRepeating("DrainHungerAndHydration", 6, 6);
             InvokeRepeating("TakeDamageFromHungerOrDehydration", 2, 2);
